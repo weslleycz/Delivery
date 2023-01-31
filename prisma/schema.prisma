@@ -2,10 +2,102 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id       String    @id @default(auto()) @map("_id") @db.ObjectId
+    email    String    @unique
+    password String
+    cpf      String    @unique
+    name     String
+    card     Cart?     @relation(fields: [cartId], references: [id])
+    cartId   String?   @db.ObjectId
+    addresss Address[]
+    Order    Order[]
+
+    @@map("Users")
+}
+
+model Adm {
+    id         String       @id @default(auto()) @map("_id") @db.ObjectId
+    email      String       @unique
+    password   String
+    Restaurant Restaurant[]
+
+    @@map("Adms")
+}
+
+model Cart {
+    id       String    @id @default(auto()) @map("_id") @db.ObjectId
+    User     User[]
+    products Product[]
+
+    @@map("Carts")
+}
+
+model Product {
+    id           String      @id @default(auto()) @map("_id") @db.ObjectId
+    name         String
+    price        BigInt
+    description  String
+    type         String
+    discount     String?
+    Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+    restaurantId String?     @db.ObjectId
+    Cart         Cart?       @relation(fields: [cartId], references: [id])
+    cartId       String?     @db.ObjectId
+
+    @@map("Products")
+}
+
+model Restaurant {
+    id        String    @id @default(auto()) @map("_id") @db.ObjectId
+    name      String
+    logo      String?
+    cnpj      String    @unique
+    products  Product[]
+    adm       Adm       @relation(fields: [admId], references: [id])
+    admId     String    @db.ObjectId
+    address   Address   @relation(fields: [addressId], references: [id])
+    addressId String    @db.ObjectId
+    Order     Order?    @relation(fields: [orderId], references: [id])
+    orderId   String?   @db.ObjectId
+
+    @@map("Restaurants")
+}
+
+model Address {
+    id         String       @id @default(auto()) @map("_id") @db.ObjectId
+    state      String
+    city       String
+    cep        String
+    district   String
+    street     String
+    number     Int
+    User       User?        @relation(fields: [userId], references: [id])
+    userId     String?      @db.ObjectId
+    Restaurant Restaurant[]
+    Order      Order[]
+
+    @@map("Address")
+}
+
+model Order {
+    id          String       @id @default(auto()) @map("_id") @db.ObjectId
+    total       BigInt
+    restaurants Restaurant[]
+    address     Address      @relation(fields: [addressId], references: [id])
+    addressId   String       @db.ObjectId
+    user        User         @relation(fields: [userId], references: [id])
+    userId      String       @db.ObjectId
+    latitude    String
+    longitude   String
+
+    @@map("Orders")
 }
