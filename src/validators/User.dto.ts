@@ -3,6 +3,7 @@ import { IsCPF } from "brazilian-class-validator";
 import {
     IsEmail,
     IsNotEmpty,
+    IsOptional,
     IsString,
     Matches,
     MaxLength,
@@ -45,5 +46,35 @@ export class CreateUserDTO {
 
     @IsString()
     @IsNotEmpty({ message: "Esse campo e obrigatório" })
+    name!: string;
+}
+
+export class UpdateUserDTO {
+    @IsOptional()
+    @IsString()
+    @IsEmail({}, { message: "Este não é um e-mail" })
+    email!: string;
+
+    @IsString()
+    @IsOptional()
+    @IsString()
+    @MinLength(8, {
+        message: "Uma senha forte deve conter no mínimo 8 caracteres",
+    })
+    @MaxLength(20, {
+        message: "Uma senha forte deve conter no máximo 20 caracteres",
+    })
+    @Matches(/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+        message: "Senha muito fraca",
+    })
+    password!: string;
+
+    @IsOptional()
+    @IsString()
+    @IsCPF({ message: "Número de CPF inválido" })
+    cpf!: string;
+
+    @IsString()
+    @IsOptional()
     name!: string;
 }

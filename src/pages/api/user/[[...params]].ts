@@ -8,12 +8,14 @@ import {
     Get,
     Param,
     Post,
+    Put,
     Res,
     UnauthorizedException,
     ValidationPipe,
 } from "next-api-decorators";
 import { prismaClient } from "../../../services/prismaClient";
 import { Error } from "../../../types/Error";
+import { UpdateUserDTO } from "../../../validators/User.dto";
 
 class UserHandler {
     @Post()
@@ -67,6 +69,28 @@ class UserHandler {
                 },
             });
             return res.status(200).json({ status: "deleted" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Put("/:id")
+    public async updateUser(
+        @Param("id") id: string,
+        @Body(ValidationPipe) body: UpdateUserDTO,
+        @Res() res: Next.NextApiResponse
+    ) {
+        try {
+            const data = body;
+            await prismaClient.user.update({
+                where: {
+                    id,
+                },
+                data: {
+                    ...data,
+                },
+            });
+            return res.status(200).json({ status: "update" });
         } catch (error) {
             return res.status(400).json(error);
         }
