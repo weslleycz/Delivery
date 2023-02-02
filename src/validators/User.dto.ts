@@ -78,3 +78,13 @@ export class UpdateUserDTO {
     @IsOptional()
     name!: string;
 }
+
+export class LoginUserDTO {
+    @IsString()
+    @IsNotEmpty({ message: "Esse campo e obrigatório" })
+    email!: string;
+
+    @IsString()
+    @IsNotEmpty({ message: "Esse campo e obrigatório" })
+    password!: string;
+}

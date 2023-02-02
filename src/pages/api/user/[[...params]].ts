@@ -1,5 +1,7 @@
-import { CreateUserDTO } from "@/validators/User.dto";
-import { hash } from "bcrypt";
+import { JwtAuthGuard } from "@/middlewares/jwtAuthGuard";
+import { CreateUserDTO, LoginUserDTO } from "@/validators/User.dto";
+import { compare, hash } from "bcrypt";
+import { sign } from "jsonwebtoken";
 import * as Next from "next";
 import {
     Body,
@@ -19,6 +21,7 @@ import { UpdateUserDTO } from "../../../validators/User.dto";
 
 class UserHandler {
     @Post()
+    @JwtAuthGuard()
     public async createUser(
         @Body(ValidationPipe) body: CreateUserDTO,
         @Res() res: Next.NextApiResponse
@@ -47,18 +50,66 @@ class UserHandler {
     }
 
     @Get()
+    @JwtAuthGuard()
     public async listUser(@Res() res: Next.NextApiResponse) {
         try {
-            const users = await prismaClient.user.findMany();
-            console.log(users);
+            const users = await prismaClient.user.findMany({
+                select: {
+                    name: true,
+                    cpf: true,
+                    email: true,
+                    id: true,
+                    orders: true,
+                    cart: true,
+                },
+            });
             return res.status(200).json(users);
         } catch (error) {
             return res.status(400).json(error);
         }
     }
-    @Delete("/:id")
+
+    @Post("/login")
+    public async login(
+        @Res() res: Next.NextApiResponse,
+        @Body(ValidationPipe) body: LoginUserDTO
+    ) {
+        try {
+            const { email, password } = body;
+            const user = await prismaClient.user.findUnique({
+                where: {
+                    email,
+                },
+                select: {
+                    id: true,
+                    password: true,
+                },
+            });
+            if (!user) {
+                return res.status(400).json({
+                    message: "e-mail não cadastrado",
+                });
+            }
+            if (await compare(password, user.password)) {
+                if (process.env.TOKEN_KAY) {
+                    return res.status(200).json({
+                        token: sign({ data: user.id }, process.env.TOKEN_KAY, {
+                            expiresIn: "24h",
+                        }),
+                    });
+                }
+            } else {
+                return res.status(400).json({
+                    message: "Senha incorreta",
+                });
+            }
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
 
     @Delete("/:id")
+    @JwtAuthGuard()
     public async deleteUser(
         @Param("id") id: string,
         @Res() res: Next.NextApiResponse
@@ -76,6 +127,7 @@ class UserHandler {
     }
 
     @Put("/:id")
+    @JwtAuthGuard()
     public async updateUser(
         @Param("id") id: string,
         @Body(ValidationPipe) body: UpdateUserDTO,
