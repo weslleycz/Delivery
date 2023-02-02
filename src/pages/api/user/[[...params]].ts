@@ -21,7 +21,6 @@ class UserHandler {
         @Body(ValidationPipe) body: CreateUserDTO,
         @Res() res: Next.NextApiResponse
     ) {
-        console.log(123);
         const { cpf, email, name, password } = body;
         try {
             await prismaClient.user.create({
@@ -48,9 +47,26 @@ class UserHandler {
     @Get()
     public async listUser(@Res() res: Next.NextApiResponse) {
         try {
-            const users = await prismaClient.user.findMany()
+            const users = await prismaClient.user.findMany();
             console.log(users);
             return res.status(200).json(users);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Delete("/:id")
+    public async deleteUser(
+        @Param("id") id: string,
+        @Res() res: Next.NextApiResponse
+    ) {
+        try {
+            await prismaClient.user.delete({
+                where: {
+                    id,
+                },
+            });
+            return res.status(200).json({ status: "deleted" });
         } catch (error) {
             return res.status(400).json(error);
         }
