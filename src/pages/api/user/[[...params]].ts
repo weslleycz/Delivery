@@ -56,6 +56,7 @@ class UserHandler {
             return res.status(400).json(error);
         }
     }
+    @Delete("/:id")
 
     @Delete("/:id")
     public async deleteUser(
