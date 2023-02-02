@@ -16,27 +16,27 @@ model User {
     password String
     cpf      String    @unique
     name     String
-    card     Cart?     @relation(fields: [cartId], references: [id])
-    cartId   String?   @db.ObjectId
-    addresss Address[]
-    Order    Order[]
+    cart     Cart[]
+    address  Address[]
+    orders   Order[]
 
     @@map("Users")
 }
 
 model Adm {
-    id         String       @id @default(auto()) @map("_id") @db.ObjectId
-    email      String       @unique
-    password   String
-    Restaurant Restaurant[]
+    id          String       @id @default(auto()) @map("_id") @db.ObjectId
+    email       String       @unique
+    password    String
+    restaurants Restaurant[]
 
     @@map("Adms")
 }
 
 model Cart {
     id       String    @id @default(auto()) @map("_id") @db.ObjectId
-    User     User[]
     products Product[]
+    User     User?     @relation(fields: [userId], references: [id])
+    userId   String?
 
     @@map("Carts")
 }
@@ -48,10 +48,10 @@ model Product {
     description  String
     type         String
     discount     String?
-    Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
-    restaurantId String?     @db.ObjectId
     Cart         Cart?       @relation(fields: [cartId], references: [id])
-    cartId       String?     @db.ObjectId
+    cartId       String?
+    Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
+    restaurantId String?
 
     @@map("Products")
 }
@@ -61,13 +61,12 @@ model Restaurant {
     name      String
     logo      String?
     cnpj      String    @unique
-    products  Product[]
-    adm       Adm       @relation(fields: [admId], references: [id])
-    admId     String    @db.ObjectId
+    Adm       Adm?      @relation(fields: [admId], references: [id])
+    admId     String?
+    product   Product[]
     address   Address   @relation(fields: [addressId], references: [id])
-    addressId String    @db.ObjectId
-    Order     Order?    @relation(fields: [orderId], references: [id])
-    orderId   String?   @db.ObjectId
+    addressId String
+    Order     Order[]
 
     @@map("Restaurants")
 }
@@ -81,23 +80,24 @@ model Address {
     street     String
     number     Int
     User       User?        @relation(fields: [userId], references: [id])
-    userId     String?      @db.ObjectId
-    Restaurant Restaurant[]
+    userId     String?
+    restaurant Restaurant[]
     Order      Order[]
 
     @@map("Address")
 }
 
 model Order {
-    id          String       @id @default(auto()) @map("_id") @db.ObjectId
-    total       BigInt
-    restaurants Restaurant[]
-    address     Address      @relation(fields: [addressId], references: [id])
-    addressId   String       @db.ObjectId
-    user        User         @relation(fields: [userId], references: [id])
-    userId      String       @db.ObjectId
-    latitude    String
-    longitude   String
+    id           String     @id @default(auto()) @map("_id") @db.ObjectId
+    total        BigInt
+    latitude     String
+    longitude    String
+    User         User?      @relation(fields: [userId], references: [id])
+    userId       String?
+    restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+    restaurantId String
+    address      Address    @relation(fields: [addressId], references: [id])
+    addressId    String
 
     @@map("Orders")
 }
