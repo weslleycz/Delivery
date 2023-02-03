@@ -93,6 +93,17 @@ class ProductHandler {
         }
     }
 
+    @Get("/list")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async listProduct(@Res() res: Next.NextApiResponse) {
+        try {
+            const products = await prismaClient.product.findMany();
+            return res.status(200).json(products);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
 }
 
 export default createHandler(ProductHandler);
