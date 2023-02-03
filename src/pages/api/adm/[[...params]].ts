@@ -48,9 +48,9 @@ class ADMHandler {
             }
         }
     }
-    
+
     @Post("/login")
-    public async login(
+    public async loginAdm(
         @Res() res: Next.NextApiResponse,
         @Body(ValidationPipe) body: LoginUserDTO
     ) {
@@ -80,6 +80,31 @@ class ADMHandler {
             } else {
                 throw new UnauthorizedException("User Not found!");
             }
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Put()
+    @JwtAuthGuard()
+    @isAdmin()
+    public async updateAdm(
+        @Res() res: Next.NextApiResponse,
+        @Req() req: Next.NextApiRequest,
+        @Body(ValidationPipe) body: UpdateAdmDTO
+    ) {
+        const jsonJWT = <string>req.headers.token;
+        const { data } = <JWT>JSON.parse(jsonJWT);
+        try {
+            await prismaClient.adm.update({
+                data: {
+                    ...body,
+                },
+                where: {
+                    id: data,
+                },
+            });
+            return res.status(200).json({ status: "update" });
         } catch (error) {
             return res.status(400).json(error);
         }
