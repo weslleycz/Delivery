@@ -48,7 +48,42 @@ class ADMHandler {
             }
         }
     }
+    
+    @Post("/login")
+    public async login(
+        @Res() res: Next.NextApiResponse,
+        @Body(ValidationPipe) body: LoginUserDTO
+    ) {
+        const { email, password } = body;
+        try {
+            const data = await prismaClient.adm.findUnique({
+                where: {
+                    email,
+                },
+            });
+            if (!data) {
+                throw new UnauthorizedException("User Not found!");
+            }
 
+            if (await compare(password, data.password)) {
+                if (process.env.TOKEN_KAY) {
+                    return res.status(200).json({
+                        token: sign(
+                            { data: data.id, isAdmin: true },
+                            process.env.TOKEN_KAY,
+                            {
+                                expiresIn: "24h",
+                            }
+                        ),
+                    });
+                }
+            } else {
+                throw new UnauthorizedException("User Not found!");
+            }
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
 }
 
 export default createHandler(ADMHandler);
