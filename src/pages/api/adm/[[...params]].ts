@@ -128,6 +128,25 @@ class ADMHandler {
             return res.status(400).json(error);
         }
     }
+
+    @Delete("/:id")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async deleteAdm(
+        @Param("id") id: string,
+        @Res() res: Next.NextApiResponse
+    ) {
+        try {
+            await prismaClient.adm.delete({
+                where: {
+                    id,
+                },
+            });
+            return res.status(200).json({ status: "deleted" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
 }
 
 export default createHandler(ADMHandler);
