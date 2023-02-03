@@ -6,7 +6,9 @@ import * as Next from "next";
 import {
     Body,
     createHandler,
+    Delete,
     Get,
+    Param,
     Post,
     Req,
     Res,
@@ -100,6 +102,28 @@ class ProductHandler {
         try {
             const products = await prismaClient.product.findMany();
             return res.status(200).json(products);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Delete("/:id")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async deleteProduct(
+        @Param("id") id: string,
+        @Res() res: Next.NextApiResponse
+    ) {
+        try {
+            await prismaClient.product.delete({
+                where: {
+                    id,
+                },
+            });
+            await stripe.products.update(id,{
+                active:false
+            });
+            return res.status(200).json({ status: "deleted" });
         } catch (error) {
             return res.status(400).json(error);
         }
