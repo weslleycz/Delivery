@@ -109,6 +109,25 @@ class ADMHandler {
             return res.status(400).json(error);
         }
     }
+
+    @Get()
+    @JwtAuthGuard()
+    @isAdmin()
+    public async listAdm(@Res() res: Next.NextApiResponse) {
+        try {
+            const adm = await prismaClient.adm.findMany({
+                select: {
+                    id: true,
+                    email: true,
+                    _count: true,
+                    restaurants: true,
+                },
+            });
+            return res.status(200).json(adm);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
 }
 
 export default createHandler(ADMHandler);
