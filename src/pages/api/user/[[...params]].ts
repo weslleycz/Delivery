@@ -1,4 +1,5 @@
 import { JwtAuthGuard } from "@/middlewares/jwtAuthGuard";
+import { JWT } from "@/types/JWT";
 import { CreateUserDTO, LoginUserDTO } from "@/validators/User.dto";
 import { compare, hash } from "bcrypt";
 import { sign } from "jsonwebtoken";
@@ -11,17 +12,18 @@ import {
     Param,
     Post,
     Put,
+    Req,
     Res,
     UnauthorizedException,
     ValidationPipe,
 } from "next-api-decorators";
+import { isAdmin } from "../../../middlewares/isAdmin";
 import { prismaClient } from "../../../services/prismaClient";
 import { Error } from "../../../types/Error";
 import { UpdateUserDTO } from "../../../validators/User.dto";
 
 class UserHandler {
     @Post()
-    @JwtAuthGuard()
     public async createUser(
         @Body(ValidationPipe) body: CreateUserDTO,
         @Res() res: Next.NextApiResponse
@@ -49,8 +51,44 @@ class UserHandler {
         }
     }
 
+    @Post("/login")
+    public async login(
+        @Res() res: Next.NextApiResponse,
+        @Body(ValidationPipe) body: LoginUserDTO
+    ) {
+        try {
+            const { email, password } = body;
+            const user = await prismaClient.user.findUnique({
+                where: {
+                    email,
+                },
+                select: {
+                    id: true,
+                    password: true,
+                },
+            });
+            if (!user) {
+                throw new UnauthorizedException("e-mail não cadastrado");
+            }
+            if (await compare(password, user.password)) {
+                if (process.env.TOKEN_KAY) {
+                    return res.status(200).json({
+                        token: sign({ data: user.id }, process.env.TOKEN_KAY, {
+                            expiresIn: "24h",
+                        }),
+                    });
+                }
+            } else {
+                throw new UnauthorizedException("Senha incorreta");
+            }
+        } catch (error) {
+            throw new UnauthorizedException("User Not found!");
+        }
+    }
+
     @Get()
     @JwtAuthGuard()
+    @isAdmin()
     public async listUser(@Res() res: Next.NextApiResponse) {
         try {
             const users = await prismaClient.user.findMany({
@@ -69,47 +107,9 @@ class UserHandler {
         }
     }
 
-    @Post("/login")
-    public async login(
-        @Res() res: Next.NextApiResponse,
-        @Body(ValidationPipe) body: LoginUserDTO
-    ) {
-        try {
-            const { email, password } = body;
-            const user = await prismaClient.user.findUnique({
-                where: {
-                    email,
-                },
-                select: {
-                    id: true,
-                    password: true,
-                },
-            });
-            if (!user) {
-                return res.status(400).json({
-                    message: "e-mail não cadastrado",
-                });
-            }
-            if (await compare(password, user.password)) {
-                if (process.env.TOKEN_KAY) {
-                    return res.status(200).json({
-                        token: sign({ data: user.id }, process.env.TOKEN_KAY, {
-                            expiresIn: "24h",
-                        }),
-                    });
-                }
-            } else {
-                return res.status(400).json({
-                    message: "Senha incorreta",
-                });
-            }
-        } catch (error) {
-            return res.status(400).json(error);
-        }
-    }
-
     @Delete("/:id")
     @JwtAuthGuard()
+    @isAdmin()
     public async deleteUser(
         @Param("id") id: string,
         @Res() res: Next.NextApiResponse
@@ -126,21 +126,22 @@ class UserHandler {
         }
     }
 
-    @Put("/:id")
+    @Put()
     @JwtAuthGuard()
     public async updateUser(
-        @Param("id") id: string,
         @Body(ValidationPipe) body: UpdateUserDTO,
-        @Res() res: Next.NextApiResponse
+        @Res() res: Next.NextApiResponse,
+        @Req() req: Next.NextApiRequest
     ) {
+        const jsonJWT = <string>req.headers.token;
+        const { data } = <JWT>JSON.parse(jsonJWT);
         try {
-            const data = body;
             await prismaClient.user.update({
-                where: {
-                    id,
-                },
                 data: {
-                    ...data,
+                    ...body,
+                },
+                where: {
+                    id: data,
                 },
             });
             return res.status(200).json({ status: "update" });
