@@ -28,6 +28,8 @@ model Adm {
     email       String       @unique
     password    String
     restaurants Restaurant[]
+    Address     Address?     @relation(fields: [addressId], references: [id])
+    addressId   String?      @db.ObjectId
 
     @@map("Adms")
 }
@@ -83,6 +85,7 @@ model Address {
     userId     String?
     restaurant Restaurant[]
     Order      Order[]
+    adms       Adm[]
 
     @@map("Address")
 }
