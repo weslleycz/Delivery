@@ -89,7 +89,12 @@ model Address {
 
 model Order {
     id           String     @id @default(auto()) @map("_id") @db.ObjectId
-    total        BigInt
+    frete        Int
+    total        Int
+    subtotal     Int
+    pay          Boolean
+    delivered    Boolean
+    payment      String
     latitude     String
     longitude    String
     User         User?      @relation(fields: [userId], references: [id])
