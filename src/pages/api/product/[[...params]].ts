@@ -155,6 +155,17 @@ class ProductHandler {
             return res.status(400).json(error);
         }
     }
+
+    @Get("/imagems/:id")
+    public async getImagens(
+        @Param("id") id: string,
+        @Res() res: Next.NextApiResponse
+    ) {
+        const product = await stripe.products.list({
+            ids: [id],
+        });
+        return res.status(200).json({ images: product.data[0].images });
+    }
 }
 
 export default createHandler(ProductHandler);

@@ -28,6 +28,8 @@ model Adm {
     email       String       @unique
     password    String
     restaurants Restaurant[]
+    Address     Address?     @relation(fields: [addressId], references: [id])
+    addressId   String?      @db.ObjectId
 
     @@map("Adms")
 }
@@ -83,13 +85,19 @@ model Address {
     userId     String?
     restaurant Restaurant[]
     Order      Order[]
+    adms       Adm[]
 
     @@map("Address")
 }
 
 model Order {
     id           String     @id @default(auto()) @map("_id") @db.ObjectId
-    total        BigInt
+    frete        Int
+    total        Int
+    subtotal     Int
+    pay          Boolean
+    delivered    Boolean
+    payment      String
     latitude     String
     longitude    String
     User         User?      @relation(fields: [userId], references: [id])

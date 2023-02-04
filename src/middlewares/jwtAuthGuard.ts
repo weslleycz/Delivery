@@ -17,7 +17,7 @@ export const JwtAuthGuard = createMiddlewareDecorator(
                 next();
             }
         } catch (error) {
-            return next(new UnauthorizedException());
+            return next(new UnauthorizedException("Authorization Required"));
         }
     }
 );
