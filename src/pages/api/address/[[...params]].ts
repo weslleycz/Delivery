@@ -17,7 +17,33 @@ class AddressHandler {
     @Post("/adm")
     @JwtAuthGuard()
     @isAdmin()
-    public async createRestaurant(
+    public async createRestaurantAdm(
+        @Res() res: Next.NextApiResponse,
+        @Req() req: Next.NextApiRequest,
+        @Body(ValidationPipe) body: CreateAddressDTO
+    ) {
+        try {
+            const token = getToken(req.headers.token as string);
+            const address = await prismaClient.address.create({
+                data: {
+                    adms: {
+                        connect: {
+                            id: token,
+                        },
+                    },
+                    ...body,
+                },
+            });
+            return res.status(200).json({id:address.id});
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Post("/user")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async createRestaurantUser(
         @Res() res: Next.NextApiResponse,
         @Req() req: Next.NextApiRequest,
         @Body(ValidationPipe) body: CreateAddressDTO
