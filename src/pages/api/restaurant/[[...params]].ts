@@ -2,20 +2,23 @@ import { isAdmin } from "@/middlewares/isAdmin";
 import { JwtAuthGuard } from "@/middlewares/jwtAuthGuard";
 import { getToken } from "@/services/getToken";
 import { prismaClient } from "@/services/prismaClient";
-import { CreateRestaurantDTO, UpdateRestaurantDTO } from "@/validators/Restaurant";
+import {
+    CreateRestaurantDTO,
+    UpdateRestaurantDTO,
+} from "@/validators/Restaurant";
 import * as Next from "next";
 import {
     Body,
     createHandler,
+    Delete,
     Get,
     Param,
     Post,
+    Put,
     Req,
     Res,
-    Delete,
     UnauthorizedException,
     ValidationPipe,
-    Put,
 } from "next-api-decorators";
 import { Error } from "../../../types/Error";
 
@@ -68,10 +71,10 @@ class RestaurantHandler {
     ) {
         try {
             const restaurant = await prismaClient.restaurant.findFirst({
-                where:{
-                    id
-                }
-            })
+                where: {
+                    id,
+                },
+            });
             return res.status(200).json(restaurant);
         } catch (error) {
             return res.status(400).json(error);
@@ -79,6 +82,8 @@ class RestaurantHandler {
     }
 
     @Delete("/:id")
+    @JwtAuthGuard()
+    @isAdmin()
     public async deleteRestaurant(
         @Param("id") id: string,
         @Res() res: Next.NextApiResponse,
@@ -86,10 +91,10 @@ class RestaurantHandler {
     ) {
         try {
             const restaurant = await prismaClient.restaurant.delete({
-                where:{
-                    id
-                }
-            })
+                where: {
+                    id,
+                },
+            });
             return res.status(200).json({ status: "deleted" });
         } catch (error) {
             return res.status(400).json(error);
@@ -106,19 +111,38 @@ class RestaurantHandler {
     ) {
         try {
             const restaurant = await prismaClient.restaurant.update({
-                data:{
-                    ...body
+                data: {
+                    ...body,
                 },
-                where:{
-                    id
-                }
-            })
+                where: {
+                    id,
+                },
+            });
             return res.status(200).json({ status: "update" });
         } catch (error) {
             return res.status(400).json(error);
         }
     }
 
+    @Get("/adm/list")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async getRestaurantAdm(
+        @Res() res: Next.NextApiResponse,
+        @Req() req: Next.NextApiRequest
+    ) {
+        try {
+            const token = getToken(req.headers.token as string);
+            const restaurants = await prismaClient.restaurant.findMany({
+                where: {
+                    admId: token,
+                },
+            });
+            return res.status(200).json(restaurants);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
 }
 
 export default createHandler(RestaurantHandler);
