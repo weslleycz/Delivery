@@ -96,6 +96,29 @@ class RestaurantHandler {
         }
     }
 
+    @Put("/:id")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async updateRestaurant(
+        @Param("id") id: string,
+        @Res() res: Next.NextApiResponse,
+        @Body(ValidationPipe) body: UpdateRestaurantDTO
+    ) {
+        try {
+            const restaurant = await prismaClient.restaurant.update({
+                data:{
+                    ...body
+                },
+                where:{
+                    id
+                }
+            })
+            return res.status(200).json({ status: "update" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
 }
 
 export default createHandler(RestaurantHandler);
