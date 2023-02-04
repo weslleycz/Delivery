@@ -51,6 +51,16 @@ class RestaurantHandler {
         }
     }
 
+    @Get()
+    public async litAllRestaurant(@Res() res: Next.NextApiResponse) {
+        try {
+            const restaurants = await prismaClient.restaurant.findMany();
+            return res.status(200).json(restaurants);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
 }
 
 export default createHandler(RestaurantHandler);
