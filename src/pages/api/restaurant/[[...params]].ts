@@ -61,6 +61,23 @@ class RestaurantHandler {
         }
     }
 
+    @Get("/:id")
+    public async selectRestaurant(
+        @Param("id") id: string,
+        @Res() res: Next.NextApiResponse
+    ) {
+        try {
+            const restaurant = await prismaClient.restaurant.findFirst({
+                where:{
+                    id
+                }
+            })
+            return res.status(200).json(restaurant);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
 }
 
 export default createHandler(RestaurantHandler);
