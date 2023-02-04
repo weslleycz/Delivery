@@ -31,3 +31,30 @@ export class CreateProductDTO {
     @IsArray()
     imagens!: string[];
 }
+
+export class UpdateProductDTO {
+    @IsOptional()
+    @IsString()
+    name!: string;
+
+    @IsOptional()
+    @IsNumber()
+    price!: number;
+
+    @IsOptional()
+    @IsString()
+    description!: string;
+
+    @IsOptional()
+    @IsString()
+    type!: string;
+
+    @IsOptional()
+    @IsString()
+    discount!: string;
+
+    @IsOptional()
+    @IsArray()
+    imagens!: string[];
+}
+

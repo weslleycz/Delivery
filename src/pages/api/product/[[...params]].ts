@@ -1,7 +1,7 @@
 import { isAdmin } from "@/middlewares/isAdmin";
 import { JwtAuthGuard } from "@/middlewares/jwtAuthGuard";
 import { prismaClient } from "@/services/prismaClient";
-import { CreateProductDTO } from "@/validators/Product";
+import { CreateProductDTO, UpdateProductDTO } from "@/validators/Product";
 import * as Next from "next";
 import {
     Body,
@@ -10,6 +10,7 @@ import {
     Get,
     Param,
     Post,
+    Put,
     Req,
     Res,
     ValidationPipe,
@@ -120,10 +121,36 @@ class ProductHandler {
                     id,
                 },
             });
-            await stripe.products.update(id,{
-                active:false
+            await stripe.products.update(id, {
+                active: false,
             });
             return res.status(200).json({ status: "deleted" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Put("/:id")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async updateProduct(
+        @Body(ValidationPipe) body: UpdateProductDTO,
+        @Res() res: Next.NextApiResponse,
+        @Param("id") id: string
+    ) {
+        try {
+            await prismaClient.product.update({
+                data: {
+                    ...body,
+                },
+                where: {
+                    id: id,
+                },
+            });
+            await stripe.products.update(id, {
+                ...body,
+            });
+            return res.status(200).json({ status: "update" });
         } catch (error) {
             return res.status(400).json(error);
         }
