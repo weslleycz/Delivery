@@ -24,7 +24,7 @@ import { LoginUserDTO } from "../../../validators/User.dto";
 
 class ADMHandler {
     @Post()
-    public async createUser(
+    public async createAdm(
         @Res() res: Next.NextApiResponse,
         @Body(ValidationPipe) body: CreateAdmDTO
     ) {

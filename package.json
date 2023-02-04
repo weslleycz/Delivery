@@ -24,7 +24,9 @@
     "dotenv": "^16.0.3",
     "eslint": "8.32.0",
     "eslint-config-next": "13.1.5",
+    "firebase": "^9.17.0",
     "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
     "next": "13.1.5",
     "next-api-decorators": "^2.0.1",
     "nodemailer": "^6.9.0",
@@ -34,11 +36,13 @@
     "react-query": "^3.39.3",
     "react-toastify": "^9.1.1",
     "sass": "^1.57.1",
+    "stripe": "^11.9.0",
     "swagger-ui-react": "^4.15.5"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.1",
+    "@types/multer": "^1.4.7",
     "@types/node": "^18.11.18",
     "brazilian-class-validator": "^0.1.6",
     "prisma": "^4.9.0",
