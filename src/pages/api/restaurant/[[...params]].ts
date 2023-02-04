@@ -78,6 +78,24 @@ class RestaurantHandler {
         }
     }
 
+    @Delete("/:id")
+    public async deleteRestaurant(
+        @Param("id") id: string,
+        @Res() res: Next.NextApiResponse,
+        @Body(ValidationPipe) body: UpdateRestaurantDTO
+    ) {
+        try {
+            const restaurant = await prismaClient.restaurant.delete({
+                where:{
+                    id
+                }
+            })
+            return res.status(200).json({ status: "deleted" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
 }
 
 export default createHandler(RestaurantHandler);
