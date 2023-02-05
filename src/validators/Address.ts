@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsString,IsNumber } from "class-validator";
-import {IsCEP} from "brazilian-class-validator"
+import { IsCEP } from "brazilian-class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateAddressDTO {
     @IsString()
@@ -26,5 +26,31 @@ export class CreateAddressDTO {
     @IsNumber()
     @IsNotEmpty({ message: "Esse campo e obrigatório" })
     number!: number;
+}
 
+export class UpdateAddressDTO {
+    @IsString()
+    @IsOptional()
+    state!: string;
+
+    @IsString()
+    @IsOptional()
+    city!: string;
+
+    @IsString()
+    @IsCEP({ message: "Número de CEP inválido" })
+    @IsOptional()
+    cep!: string;
+
+    @IsString()
+    @IsOptional()
+    district!: string;
+
+    @IsString()
+    @IsOptional()
+    street!: string;
+
+    @IsNumber()
+    @IsOptional()
+    number!: number;
 }

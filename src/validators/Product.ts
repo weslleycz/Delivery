@@ -27,6 +27,10 @@ export class CreateProductDTO {
     @IsString()
     discount!: string;
 
+    @IsNotEmpty({ message: "Esse campo e obrigatório" })
+    @IsString()
+    idRestaurant!: string;
+
     @IsOptional()
     @IsArray()
     imagens!: string[];
@@ -57,4 +61,3 @@ export class UpdateProductDTO {
     @IsArray()
     imagens!: string[];
 }
-

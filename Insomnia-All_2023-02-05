@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-02-04T22:17:17.476Z",
+    "__export_date": "2023-02-05T03:57:20.274Z",
     "__export_source": "insomnia.desktop.app:v2020.5.2",
     "resources": [
         {
@@ -1614,7 +1614,7 @@
         {
             "_id": "req_0861ea8637c74a38acad914b1683d569",
             "parentId": "fld_2138a4a40d6544de99dc93af83d35d13",
-            "modified": 1675312516629,
+            "modified": 1675551786699,
             "created": 1675311941200,
             "url": "{{ _.baseUR }}/api/user/login",
             "name": "login",
@@ -1622,7 +1622,7 @@
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n\t\"email\":\"teste@fffff.com\",\n\t\"password\":\"Weslley1997@\"\n}"
+                "text": "{\n\t\"email\":\"testgge@fffff.com\",\n\t\"password\":\"Weslley1997@\"\n}"
             },
             "parameters": [],
             "headers": [
@@ -1800,7 +1800,7 @@
         {
             "_id": "req_72404ea4d5f34260b3e94c0b06c568aa",
             "parentId": "fld_78e47d0252f7420293da82073444d291",
-            "modified": 1675479864937,
+            "modified": 1675563160759,
             "created": 1675395177321,
             "url": "{{ _.baseUR }}/api/product",
             "name": "create",
@@ -1808,7 +1808,7 @@
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n\t\"name\":\"hamburguer\",\n\t\"price\":1000,\n\t\"description\":\"ggggggggggggggggggggggggggggg\",\n\t\"type\":\"ghghghghg\",\n\t\"imagens\":[\n\t\t\"https://exame.com/wp-content/uploads/2020/05/Vinil-Burger.jpg?quality=70&strip=info\"\n\t]\n}"
+                "text": "{\n\t\"name\":\"hamburguer\",\n\t\"price\":1000,\n\t\"description\":\"ggggggggggggggggggggggggggggg\",\n\t\"type\":\"ghghghghg\",\n\t\"idRestaurant\":\"63df1089c23ffd13500e5e81\",\n\t\"imagens\":[\n\t\t\"https://exame.com/wp-content/uploads/2020/05/Vinil-Burger.jpg?quality=70&strip=info\"\n\t]\n}"
             },
             "parameters": [],
             "headers": [
@@ -1896,9 +1896,9 @@
         {
             "_id": "req_a1dbdbba1d43431a81006fcf18382f1a",
             "parentId": "fld_78e47d0252f7420293da82073444d291",
-            "modified": 1675477431048,
+            "modified": 1675568259827,
             "created": 1675447746406,
-            "url": "{{ _.baseUR }}/api/product/63dd6082d96160709fc350a1",
+            "url": "{{ _.baseUR }}/api/product/63df2008cce7705b0bf172a9",
             "name": "delete",
             "description": "",
             "method": "DELETE",
@@ -1962,6 +1962,29 @@
             "headers": [],
             "authentication": {},
             "metaSortKey": -1675478178404,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_beadd879320e4478aa82a761683da708",
+            "parentId": "fld_78e47d0252f7420293da82073444d291",
+            "modified": 1675563908359,
+            "created": 1675563717586,
+            "url": "{{ _.baseUR }}/api/product/select/63df11a7c23ffd13500e5e85",
+            "name": "select",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [],
+            "authentication": {},
+            "metaSortKey": -1675563717587,
             "isPrivate": false,
             "settingStoreCookies": true,
             "settingSendCookies": true,
@@ -2119,10 +2142,10 @@
         {
             "_id": "req_116218c2faa24b68abddec1bca2651f2",
             "parentId": "fld_7c72ebfd7d2340dcb7ef2471aed37141",
-            "modified": 1675548794250,
+            "modified": 1675550892086,
             "created": 1675548539715,
             "url": "{{ _.baseUR }}/api/restaurant/adm/list",
-            "name": "getRestaurantAdm",
+            "name": "get restaurant adm",
             "description": "",
             "method": "GET",
             "body": {},
@@ -2142,10 +2165,10 @@
         {
             "_id": "req_7c4216141daa4d7fb3a3d89f0b4a611e",
             "parentId": "fld_37999c09c17d42dca29b722e58da775c",
-            "modified": 1675486770693,
+            "modified": 1675551473298,
             "created": 1675484230502,
             "url": "{{ _.baseUR }}/api/address/adm",
-            "name": "create",
+            "name": "create adm",
             "description": "",
             "method": "POST",
             "body": {
@@ -2184,6 +2207,116 @@
             "_type": "request_group"
         },
         {
+            "_id": "req_10373fc5a550474c8dffa2e420d5b8b1",
+            "parentId": "fld_37999c09c17d42dca29b722e58da775c",
+            "modified": 1675560642145,
+            "created": 1675551483842,
+            "url": "{{ _.baseUR }}/api/address/user",
+            "name": "create user",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"state\":\"Paraíba\",\n\t\"city\":\"Cajazeiras\",\n\t\"cep\":\"58900000\",\n\t\"district\":\"Centro\",\n\t\"street\":\"Fausto Rolim\",\n\t\"number\":412\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_99113d56bf4542fba37d680df2c0dbeb"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1675481974869,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_62f4aec5b8854cd0a262429c422a2c7f",
+            "parentId": "fld_37999c09c17d42dca29b722e58da775c",
+            "modified": 1675562616054,
+            "created": 1675552954705,
+            "url": "{{ _.baseUR }}/api/address/63df0d2ccdde06805ab7175b",
+            "name": "delete",
+            "description": "",
+            "method": "DELETE",
+            "body": {},
+            "parameters": [],
+            "headers": [],
+            "authentication": {},
+            "metaSortKey": -1675552954705,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_93138271fbdf472ea3599cbe70290070",
+            "parentId": "fld_37999c09c17d42dca29b722e58da775c",
+            "modified": 1675556914967,
+            "created": 1675556914967,
+            "url": "{{ _.baseUR }}/api/address",
+            "name": "get user",
+            "description": "",
+            "method": "GET",
+            "body": {},
+            "parameters": [],
+            "headers": [],
+            "authentication": {},
+            "metaSortKey": -1675550747210,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_39d988321a1d4e2992a203d9dc3a104d",
+            "parentId": "fld_37999c09c17d42dca29b722e58da775c",
+            "modified": 1675557536567,
+            "created": 1675557103421,
+            "url": "{{ _.baseUR }}/api/address/63dee8cde76a217a2f16b8a5",
+            "name": "update",
+            "description": "",
+            "method": "PUT",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"state\":\"Paraíba\",\n\t\"city\":\"Cajazeiras\",\n\t\"cep\":\"58900000\",\n\t\"district\":\"Centro\",\n\t\"street\":\"Fausto Rolim\",\n\t\"number\":412\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_42d3e3afe91b48cab3c18dae4cf07b72"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1675551850957.5,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
             "_id": "env_967d30207bd4ebf105ef960f3df7f4829286ad72",
             "parentId": "wrk_ae83c2c1432f4ff8ba6b151224462b07",
             "modified": 1671053458486,
@@ -2214,7 +2347,7 @@
         {
             "_id": "spc_bd5e0cc3e86c419ea20191e52809fb91",
             "parentId": "wrk_ae83c2c1432f4ff8ba6b151224462b07",
-            "modified": 1675547528293,
+            "modified": 1675550854054,
             "created": 1671053232920,
             "fileName": "Insomnia Designer",
             "contents": "",
@@ -2311,14 +2444,14 @@
         {
             "_id": "env_8a4b891e67b2a9a01c92331cb7e4b1111c8729c6",
             "parentId": "wrk_a87d9506a4074586a3f2ca10d109b8e1",
-            "modified": 1675487948339,
+            "modified": 1675562789686,
             "created": 1675282772765,
             "name": "Base Environment",
             "data": {
                 "baseUR": "http://localhost:3000",
                 "GLOBAL_HEADERS": {
                     "Accept": "application/json",
-                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjNkZGVhYjFhMDZiMDZjNjczOGM1ZmIwIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjc1NDg3OTIzLCJleHAiOjE2NzU1NzQzMjN9.lZ_ORrMmq81EuB5RIjMP2P-3UZgNmkJ_nd6zJ4dJdAA",
+                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjNkZjBmMGVjMjNmZmQxMzUwMGU1ZTdkIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjc1NTYyNzY5LCJleHAiOjE2NzU2NDkxNjl9.hyg2s6eueDYnrnvQW3Wiy4nmBnd3EbKZA6D6faNt41I",
                     "Content-Type": "multipart/form-data"
                 }
             },

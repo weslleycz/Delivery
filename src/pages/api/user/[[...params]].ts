@@ -82,7 +82,7 @@ class UserHandler {
                 throw new UnauthorizedException("Senha incorreta");
             }
         } catch (error) {
-            throw new UnauthorizedException("User Not found!");
+            throw new UnauthorizedException("Usuário não cadastrado");
         }
     }
 

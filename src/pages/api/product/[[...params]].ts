@@ -30,7 +30,15 @@ class ProductHandler {
         @Res() res: Next.NextApiResponse
     ) {
         try {
-            const { description, name, price, type, discount, imagens } = body;
+            const {
+                description,
+                name,
+                price,
+                type,
+                discount,
+                imagens,
+                idRestaurant,
+            } = body;
             const product = await prismaClient.product.create({
                 data: {
                     description,
@@ -38,6 +46,11 @@ class ProductHandler {
                     price,
                     type,
                     discount,
+                    Restaurant: {
+                        connect: {
+                            id: idRestaurant,
+                        },
+                    },
                 },
             });
             await stripe.products.create({
@@ -165,6 +178,23 @@ class ProductHandler {
             ids: [id],
         });
         return res.status(200).json({ images: product.data[0].images });
+    }
+
+    @Get("/select/:id")
+    public async setProduct(
+        @Res() res: Next.NextApiResponse,
+        @Param("id") id: string
+    ) {
+        try {
+            const product = await prismaClient.product.findFirst({
+                where:{
+                    id
+                }
+            })
+            return res.status(200).json(product);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
     }
 }
 
