@@ -7,7 +7,9 @@ import * as Next from "next";
 import {
     Body,
     createHandler,
+    Delete,
     Get,
+    Param,
     Post,
     Req,
     Res,
@@ -80,6 +82,24 @@ class AddressHandler {
                 },
             });
             return res.status(200).json(address);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Delete("/:id")
+    @JwtAuthGuard()
+    public async deleteAddress(
+        @Res() res: Next.NextApiResponse,
+        @Param("id") id: string
+    ) {
+        try {
+            await prismaClient.address.delete({
+                where: {
+                    id,
+                },
+            });
+            return res.status(200).json({ status: "deleted" });
         } catch (error) {
             return res.status(400).json(error);
         }
