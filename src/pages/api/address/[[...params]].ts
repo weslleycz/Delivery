@@ -43,10 +43,10 @@ class AddressHandler {
 
                 const address = await prismaClient.address.create({
                     data: {
-                        adms:{
-                            connect:{
-                                id:token
-                            }
+                        adms: {
+                            connect: {
+                                id: token,
+                            },
                         },
                         cep,
                         city,
