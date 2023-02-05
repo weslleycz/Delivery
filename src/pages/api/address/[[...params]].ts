@@ -2,7 +2,7 @@ import { isAdmin } from "@/middlewares/isAdmin";
 import { JwtAuthGuard } from "@/middlewares/jwtAuthGuard";
 import { getToken } from "@/services/getToken";
 import { prismaClient } from "@/services/prismaClient";
-import { CreateAddressDTO } from "@/validators/Address";
+import { CreateAddressDTO, UpdateAddressDTO } from "@/validators/Address";
 import * as Next from "next";
 import {
     Body,
@@ -11,6 +11,7 @@ import {
     Get,
     Param,
     Post,
+    Put,
     Req,
     Res,
     ValidationPipe,
@@ -100,6 +101,28 @@ class AddressHandler {
                 },
             });
             return res.status(200).json({ status: "deleted" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Put("/:id")
+    @JwtAuthGuard()
+    public async updateAddress(
+        @Res() res: Next.NextApiResponse,
+        @Body(ValidationPipe) body: UpdateAddressDTO,
+        @Param("id") id: string
+    ) {
+        try {
+            await prismaClient.address.update({
+                where: {
+                    id,
+                },
+                data: {
+                    ...body,
+                },
+            });
+            return res.status(200).json({ status: "update" });
         } catch (error) {
             return res.status(400).json(error);
         }
