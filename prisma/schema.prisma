@@ -81,8 +81,8 @@ model Address {
     district   String
     street     String
     number     Int
-    latitude   String
-    longitude  String
+    latitude   String?
+    longitude  String?
     User       User?        @relation(fields: [userId], references: [id])
     userId     String?
     restaurant Restaurant[]

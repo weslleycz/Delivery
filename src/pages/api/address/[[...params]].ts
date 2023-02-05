@@ -1,7 +1,9 @@
 import { isAdmin } from "@/middlewares/isAdmin";
 import { JwtAuthGuard } from "@/middlewares/jwtAuthGuard";
 import { getToken } from "@/services/getToken";
+import { geocoder } from "@/services/nodeGeocoder";
 import { prismaClient } from "@/services/prismaClient";
+import { ILocalization } from "@/types/ILocalization";
 import { CreateAddressDTO, UpdateAddressDTO } from "@/validators/Address";
 import * as Next from "next";
 import {
@@ -28,17 +30,38 @@ class AddressHandler {
     ) {
         try {
             const token = getToken(req.headers.token as string);
-            const address = await prismaClient.address.create({
-                data: {
-                    adms: {
-                        connect: {
-                            id: token,
+            const { cep, city, district, number, state, street } = body;
+            const localizationBuscar = await geocoder.geocode(
+                `${city}, ${district},
+                ${city},
+                ${state}, ${cep}, Brasil`
+            );
+            const localization = <ILocalization>localizationBuscar[0];
+            if (localization !== undefined) {
+                const latitude = localization.latitude.toString();
+                const longitude = localization.longitude.toString();
+
+                const address = await prismaClient.address.create({
+                    data: {
+                        adms:{
+                            connect:{
+                                id:token
+                            }
                         },
+                        cep,
+                        city,
+                        district,
+                        number,
+                        state,
+                        street,
+                        latitude,
+                        longitude,
                     },
-                    ...body,
-                },
-            });
-            return res.status(200).json({ id: address.id });
+                });
+                return res.status(200).json({ id: address.id });
+            } else {
+                return res.status(400).json({ error: "Endereço não é válido" });
+            }
         } catch (error) {
             return res.status(400).json(error);
         }
@@ -53,17 +76,38 @@ class AddressHandler {
     ) {
         try {
             const token = getToken(req.headers.token as string);
-            const address = await prismaClient.address.create({
-                data: {
-                    User: {
-                        connect: {
-                            id: token,
+            const { cep, city, district, number, state, street } = body;
+            const localizationBuscar = await geocoder.geocode(
+                `${city}, ${district},
+                ${city},
+                ${state}, ${cep}, Brasil`
+            );
+            const localization = <ILocalization>localizationBuscar[0];
+            if (localization !== undefined) {
+                const latitude = localization.latitude.toString();
+                const longitude = localization.longitude.toString();
+
+                const address = await prismaClient.address.create({
+                    data: {
+                        User: {
+                            connect: {
+                                id: token,
+                            },
                         },
+                        cep,
+                        city,
+                        district,
+                        number,
+                        state,
+                        street,
+                        latitude,
+                        longitude,
                     },
-                    ...body,
-                },
-            });
-            return res.status(200).json({ id: address.id });
+                });
+                return res.status(200).json({ id: address.id });
+            } else {
+                return res.status(400).json({ error: "Endereço não é válido" });
+            }
         } catch (error) {
             return res.status(400).json(error);
         }
