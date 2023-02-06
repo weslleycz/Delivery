@@ -62,6 +62,7 @@ model Restaurant {
     id        String    @id @default(auto()) @map("_id") @db.ObjectId
     name      String
     logo      String?
+    color     String?
     cnpj      String    @unique
     Adm       Adm?      @relation(fields: [admId], references: [id])
     admId     String?
@@ -93,21 +94,24 @@ model Address {
 }
 
 model Order {
-    id           String     @id @default(auto()) @map("_id") @db.ObjectId
-    frete        Int
-    total        Int
-    subtotal     Int
-    pay          Boolean
-    delivered    Boolean
-    payment      String
-    latitude     String
-    longitude    String
-    User         User?      @relation(fields: [userId], references: [id])
-    userId       String?
-    restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-    restaurantId String
-    address      Address    @relation(fields: [addressId], references: [id])
-    addressId    String
+    id            String     @id @default(auto()) @map("_id") @db.ObjectId
+    frete         Int
+    total         Int
+    subtotal      Int
+    pay           Boolean
+    delivered     Boolean
+    payment       String
+    latitude      String
+    longitude     String
+    paymentLinkId String?     @unique
+    mensagem      String?
+    paymentLink   String?
+    User          User?      @relation(fields: [userId], references: [id])
+    userId        String?
+    restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
+    restaurantId  String
+    address       Address    @relation(fields: [addressId], references: [id])
+    addressId     String
 
     @@map("Orders")
 }

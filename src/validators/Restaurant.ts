@@ -10,6 +10,10 @@ export class CreateRestaurantDTO {
     @IsString()
     logo!: string;
 
+    @IsOptional()
+    @IsString()
+    color!: string;
+
     @IsNotEmpty({ message: "Esse campo e obrigatório" })
     @IsCNPJ({ message: "Número de CNPJ inválido" })
     @IsString()
