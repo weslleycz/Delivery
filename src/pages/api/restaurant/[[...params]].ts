@@ -32,7 +32,7 @@ class RestaurantHandler {
         @Body(ValidationPipe) body: CreateRestaurantDTO
     ) {
         try {
-            const { cnpj, idAddress, logo, name } = body;
+            const { cnpj, idAddress, logo, name,color } = body;
             const token = getToken(req.headers.token as string);
             const restaurant = await prismaClient.restaurant.create({
                 data: {
@@ -41,6 +41,7 @@ class RestaurantHandler {
                     addressId: idAddress,
                     admId: token,
                     logo,
+                    color
                 },
             });
             return res.status(200).json({ status: "created" });
