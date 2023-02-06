@@ -355,7 +355,109 @@ class OrderHandler {
         }
     }
 
-    
+    @Delete("/user/:id")
+    @JwtAuthGuard()
+    public async deleteOrderUser(
+        @Req() req: Next.NextApiRequest,
+        @Res() res: Next.NextApiResponse,
+        @Param("id") id: string
+    ) {
+        try {
+            const order = await prismaClient.order.update({
+                data: {
+                    status: "Cancelado",
+                },
+                where: {
+                    id,
+                },
+            });
+
+            const user = await prismaClient.user.findFirst({
+                where: {
+                    id: order.userId?.toString(),
+                },
+            });
+
+            const restaurant = await prismaClient.restaurant.findFirst({
+                where: {
+                    id: order.restaurantId?.toString(),
+                },
+            });
+
+            const logo = <string>restaurant?.logo?.toString();
+            const color = <string>restaurant?.color?.toString();
+            const formName = <string>restaurant?.name;
+
+            const mailData = {
+                from: `suporte@gurudelivery.com`,
+                to: user?.email,
+                cc: `suporte@gurudelivery.com`,
+                subject: `Pedido cancelado 🥺`,
+                html: emailGenerator({
+                    link: `${req.rawHeaders[1]}`,
+                    logo,
+                    name: user?.name as string,
+                    text: "Se isso foi um erro efetue a compra novamente.",
+                    title: "Voltar para o site",
+                    color: color,
+                    intro: `Pedido ${order.id} cancelado com sucesso.`,
+                    formName
+                }),
+            };
+
+            if (order.payment !== "Money") {
+                await stripe.paymentLinks.update(
+                    order.paymentLinkId as string,
+                    {
+                        active: false,
+                    }
+                );
+                await prismaClient.order.update({
+                    data: {
+                        paymentLink: null,
+                    },
+                    where: {
+                        id,
+                    },
+                });
+            }
+
+            transporter.sendMail(mailData, function (err, info) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+
+            transporter.sendMail(
+                {
+                    from: `suporte@gurudelivery.com`,
+                    to: user?.email,
+                    cc: user?.email,
+                    subject: `Pedido cancelado ${order.id}`,
+                    html: emailGenerator({
+                        link: `${req.rawHeaders[1]}`,
+                        logo,
+                        name: restaurant?.name as string,
+                        text: "Volte para o seu dashboard para acompanhar os pedidos.",
+                        title: "Voltar para o dashboard",
+                        color: color,
+                        intro: `Pedido ${order.id} foi cancelado pelo o cliente ${user?.name},
+                        portador do cpf ${user?.cpf}.`,
+                        formName
+                    }),
+                },
+                function (err, info) {
+                    if (err) {
+                        console.log(err);
+                    }
+                }
+            );
+
+            return res.status(200).json({ status: "deleted" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
 }
 
 export default createHandler(OrderHandler);
