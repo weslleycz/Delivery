@@ -1,3 +1,4 @@
+import { isAdmin } from "@/middlewares/isAdmin";
 import { JwtAuthGuard } from "@/middlewares/jwtAuthGuard";
 import { emailGenerator } from "@/services/emailGenerator";
 import { getToken } from "@/services/getToken";
@@ -7,6 +8,8 @@ import * as Next from "next";
 import {
     Body,
     createHandler,
+    Get,
+    Param,
     Post,
     Req,
     Res,
@@ -87,7 +90,7 @@ class OrderHandler {
                             },
                         },
                         mensagem: mensagem,
-                        status:"Aguardando o envio"
+                        status: "Aguardando o envio",
                     },
                 });
 
@@ -139,7 +142,7 @@ class OrderHandler {
                         };
                     })
                 );
-                
+
                 const paymentLink = await stripe.paymentLinks.create({
                     line_items: listProducts,
                     payment_method_types: ["card"],
@@ -174,8 +177,7 @@ class OrderHandler {
                         mensagem: mensagem,
                         paymentLink: paymentLink.url,
                         paymentLinkId: paymentLink.id,
-                        status:"Aguardando o pagamento"
-                        
+                        status: "Aguardando o pagamento",
                     },
                 });
 
@@ -220,6 +222,26 @@ class OrderHandler {
             return res.status(400).json(error);
         }
     }
+
+    @Get("/user")
+    @JwtAuthGuard()
+    public async getOrderUser(
+        @Req() req: Next.NextApiRequest,
+        @Res() res: Next.NextApiResponse
+    ) {
+        try {
+            const token = getToken(req.headers.token as string);
+            const order = await prismaClient.order.findMany({
+                where: {
+                    userId: token,
+                },
+            });
+            return res.status(200).json(order);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
 }
 
 export default createHandler(OrderHandler);
