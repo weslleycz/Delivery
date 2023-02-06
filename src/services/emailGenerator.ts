@@ -7,6 +7,8 @@ type IEmailBody = {
     text: string;
     name: string | null | undefined;
     color:string
+    intro:string,
+    formName:string
 };
 
 export const emailGenerator = ({
@@ -15,12 +17,14 @@ export const emailGenerator = ({
     logo,
     text,
     name,
-    color
+    color,
+    intro,
+    formName
 }: IEmailBody) => {
     const mailGenerator = new Mailgen({
         theme: "default",
         product: {
-            name: name as string,
+            name: formName as string,
             link: link,
             logo: logo,
         },
@@ -29,7 +33,7 @@ export const emailGenerator = ({
     const bodyEmail = {
         body: {
             name: name as string,
-            intro: "Compra realizada com sucesso.",
+            intro:  intro,
             action: {
                 instructions: text,
                 button: {
