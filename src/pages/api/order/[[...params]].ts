@@ -242,6 +242,31 @@ class OrderHandler {
         }
     }
 
+    @Get("/restaurant/:id")
+@JwtAuthGuard()
+@isAdmin()
+public async getOrderRestaurant(
+    @Req() req: Next.NextApiRequest,
+    @Res() res: Next.NextApiResponse,
+    @Param("id") id: string
+) {
+    try {
+        const order = await prismaClient.order.findMany({
+            where: {
+                OR: [
+                    { pay: true, restaurantId: id },
+                    { payment: "Money", restaurantId: id },
+                ],
+                NOT:[
+                    {status:"Cancelado"}
+                ]
+            },
+        });
+        return res.status(200).json(order);
+    } catch (error) {
+        return res.status(400).json(error);
+    }
+}
 }
 
 export default createHandler(OrderHandler);
