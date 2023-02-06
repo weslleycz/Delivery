@@ -87,6 +87,7 @@ class OrderHandler {
                             },
                         },
                         mensagem: mensagem,
+                        status:"Aguardando o envio"
                     },
                 });
 
@@ -138,7 +139,7 @@ class OrderHandler {
                         };
                     })
                 );
-
+                
                 const paymentLink = await stripe.paymentLinks.create({
                     line_items: listProducts,
                     payment_method_types: ["card"],
@@ -173,6 +174,8 @@ class OrderHandler {
                         mensagem: mensagem,
                         paymentLink: paymentLink.url,
                         paymentLinkId: paymentLink.id,
+                        status:"Aguardando o pagamento"
+                        
                     },
                 });
 
