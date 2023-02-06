@@ -8,6 +8,7 @@ import * as Next from "next";
 import {
     Body,
     createHandler,
+    Delete,
     Get,
     Param,
     Post,
@@ -108,6 +109,7 @@ class OrderHandler {
 
                 const logo = <string>restaurant?.logo;
                 const color = <string>restaurant?.color;
+                const formName = <string>restaurant?.name;
 
                 const mailData = {
                     from: `${restaurant?.name}@gurudelivery.com`,
@@ -121,6 +123,8 @@ class OrderHandler {
                         text: "No link abaixo você pode acompanhar o seu pedido.",
                         title: "Acompanhar pedido",
                         color: color,
+                        intro: "Compra realizada com sucesso.",
+                        formName:formName
                     }),
                 };
                 transporter.sendMail(mailData, function (err, info) {
@@ -195,6 +199,7 @@ class OrderHandler {
 
                 const logo = <string>restaurant?.logo;
                 const color = <string>restaurant?.color;
+                const formName = <string>restaurant?.name;
 
                 const mailData = {
                     from: `${restaurant?.name}@gurudelivery.com`,
@@ -204,10 +209,13 @@ class OrderHandler {
                     html: emailGenerator({
                         link: paymentLink.url,
                         logo: logo,
-                        name: restaurant?.name as string,
+                        name: user?.name as string,
                         text: "Agora basta efetuar o pagamento para podermos enviar o seu pedido",
                         title: "Efetuar pagamento",
                         color: color,
+                        intro: "Compra realizada com sucesso.",
+                        formName
+
                     }),
                 };
                 transporter.sendMail(mailData, function (err, info) {
@@ -243,30 +251,111 @@ class OrderHandler {
     }
 
     @Get("/restaurant/:id")
-@JwtAuthGuard()
-@isAdmin()
-public async getOrderRestaurant(
-    @Req() req: Next.NextApiRequest,
-    @Res() res: Next.NextApiResponse,
-    @Param("id") id: string
-) {
-    try {
-        const order = await prismaClient.order.findMany({
-            where: {
-                OR: [
-                    { pay: true, restaurantId: id },
-                    { payment: "Money", restaurantId: id },
-                ],
-                NOT:[
-                    {status:"Cancelado"}
-                ]
-            },
-        });
-        return res.status(200).json(order);
-    } catch (error) {
-        return res.status(400).json(error);
+    @JwtAuthGuard()
+    @isAdmin()
+    public async getOrderRestaurant(
+        @Req() req: Next.NextApiRequest,
+        @Res() res: Next.NextApiResponse,
+        @Param("id") id: string
+    ) {
+        try {
+            const order = await prismaClient.order.findMany({
+                where: {
+                    OR: [
+                        { pay: true, restaurantId: id },
+                        { payment: "Money", restaurantId: id },
+                    ],
+                    NOT: [{ status: "Cancelado" }],
+                },
+            });
+
+            return res.status(200).json(order);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
     }
-}
+
+    @Delete("/restaurant/:id")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async deleteOrderAdm(
+        @Req() req: Next.NextApiRequest,
+        @Res() res: Next.NextApiResponse,
+        @Param("id") id: string
+    ) {
+        try {
+            const order = await prismaClient.order.update({
+                data: {
+                    status: "Cancelado",
+                },
+                where: {
+                    id,
+                },
+            });
+
+            const user = await prismaClient.user.findFirst({
+                where: {
+                    id: order.userId?.toString(),
+                },
+            });
+
+            const restaurant = await prismaClient.restaurant.findFirst({
+                where: {
+                    id: order.restaurantId?.toString(),
+                },
+            });
+
+            const logo = <string>restaurant?.logo?.toString();
+            const color = <string>restaurant?.color?.toString();
+            const formName = <string>restaurant?.name;
+
+            const mailData = {
+                from: `suporte@gurudelivery.com`,
+                to: user?.email,
+                cc: user?.email,
+                subject: `Pedido cancelado 🥺`,
+                html: emailGenerator({
+                    link: `${req.rawHeaders[1]}`,
+                    logo,
+                    name: restaurant?.name as string,
+                    text: "Tente comprar novamente se o produto ainda estiver disponível.",
+                    title: "Voltar para o site",
+                    color: color,
+                    intro: `Pedido ${order.id} foi cancelado pelo o restaurante.`,
+                    formName
+                }),
+            };
+
+            if (order.payment !== "Money") {
+                await stripe.paymentLinks.update(
+                    order.paymentLinkId as string,
+                    {
+                        active: false,
+                    }
+                );
+                await prismaClient.order.update({
+                    data: {
+                        paymentLink: null,
+                    },
+                    where: {
+                        id,
+                    },
+                });
+            }
+
+            transporter.sendMail(mailData, function (err, info) {
+                if (err) {
+                    console.log(err);
+                }
+            });
+
+            return res.status(200).json({ status: "deleted" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    
 }
 
 export default createHandler(OrderHandler);
