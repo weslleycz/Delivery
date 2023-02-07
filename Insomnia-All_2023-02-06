@@ -1,7 +1,7 @@
 {
     "_type": "export",
     "__export_format": 4,
-    "__export_date": "2023-02-07T21:02:37.268Z",
+    "__export_date": "2023-02-06T20:45:19.734Z",
     "__export_source": "insomnia.desktop.app:v2020.5.2",
     "resources": [
         {
@@ -1800,7 +1800,7 @@
         {
             "_id": "req_72404ea4d5f34260b3e94c0b06c568aa",
             "parentId": "fld_78e47d0252f7420293da82073444d291",
-            "modified": 1675799280131,
+            "modified": 1675704213949,
             "created": 1675395177321,
             "url": "{{ _.baseUR }}/api/product",
             "name": "create",
@@ -1808,7 +1808,7 @@
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n\t\"name\":\"hamburguer\",\n\t\"price\":1000,\n\t\"description\":\"Pão australiano, blend 150g, recheado c/ bacon e queijo, cebola, queijo farrofa especial, molho, tomate e alface.\",\n\t\"type\":\"hamburguer\",\n\t\"idRestaurant\":\"63e2a1110e59424350f6512d\",\n\t\"imagens\":[\n\t\t\"https://exame.com/wp-content/uploads/2020/05/Vinil-Burger.jpg?quality=70&strip=info\"\n\t]\n}"
+                "text": "{\n\t\"name\":\"hamburguer\",\n\t\"price\":1000,\n\t\"description\":\"Pão australiano, blend 150g, recheado c/ bacon e queijo, cebola, queijo farrofa especial, molho, tomate e alface.\",\n\t\"type\":\"hamburguer\",\n\t\"idRestaurant\":\"63e13774dd7fd5863446ad01\",\n\t\"imagens\":[\n\t\t\"https://exame.com/wp-content/uploads/2020/05/Vinil-Burger.jpg?quality=70&strip=info\"\n\t]\n}"
             },
             "parameters": [],
             "headers": [
@@ -1850,9 +1850,9 @@
         {
             "_id": "req_e44cbb3850584f4d9e5373c3b14a7616",
             "parentId": "fld_78e47d0252f7420293da82073444d291",
-            "modified": 1675799327489,
+            "modified": 1675446153403,
             "created": 1675443222616,
-            "url": "{{ _.baseUR }}/api/product/63e2a1110e59424350f6512d/?page=1",
+            "url": "{{ _.baseUR }}/api/product?page=1",
             "name": "pagination",
             "description": "",
             "method": "GET",
@@ -1873,9 +1873,9 @@
         {
             "_id": "req_4f5a3b15b6804f008a772d967f15ab34",
             "parentId": "fld_78e47d0252f7420293da82073444d291",
-            "modified": 1675799157058,
+            "modified": 1675447053065,
             "created": 1675447038046,
-            "url": "{{ _.baseUR }}/api/product",
+            "url": "{{ _.baseUR }}/api/product/list",
             "name": "list",
             "description": "",
             "method": "GET",
@@ -1997,7 +1997,7 @@
         {
             "_id": "req_92db979468594cc4afb8a17de9cca10f",
             "parentId": "fld_7c72ebfd7d2340dcb7ef2471aed37141",
-            "modified": 1675723121177,
+            "modified": 1675640391042,
             "created": 1675479719235,
             "url": "{{ _.baseUR }}/api/restaurant",
             "name": "create",
@@ -2005,7 +2005,7 @@
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n\t\"name\":\"gfggggg\",\n\t\"cnpj\":\"32.111.263/0001-64\",\n\t\"idAddress\":\"63e18160434da2f4e4e5acc8\",\n\t\"logo\":\"https://img.elo7.com.br/product/zoom/2E974B6/logotipo-personalizada-restaurante-logo-restaurante.jpg\",\n\t\"color\":\"#993399\"\n}"
+                "text": "{\n\t\"name\":\"gfggggg\",\n\t\"cnpj\":\"32.111.263/0001-64\",\n\t\"idAddress\":\"63ddeae6a06b06c6738c5fb2\",\n\t\"logo\":\"https://img.elo7.com.br/product/zoom/2E974B6/logotipo-personalizada-restaurante-logo-restaurante.jpg\",\n\t\"color\":\"#993399\"\n}"
             },
             "parameters": [],
             "headers": [
@@ -2064,9 +2064,9 @@
         {
             "_id": "req_aa5574b6c7dd4bb6831b12dd90fb34f0",
             "parentId": "fld_7c72ebfd7d2340dcb7ef2471aed37141",
-            "modified": 1675791107741,
+            "modified": 1675545893555,
             "created": 1675545061390,
-            "url": "{{ _.baseUR }}/api/restaurant/63e18173434da2f4e4e5acca",
+            "url": "{{ _.baseUR }}/api/restaurant/63ddeb01a06b06c6738c5fb4",
             "name": "select",
             "description": "",
             "method": "GET",
@@ -2319,7 +2319,7 @@
         {
             "_id": "req_0ddc1c77161c4686b8164b383726a4be",
             "parentId": "fld_ccf65fb92de248d482b1b9357158750b",
-            "modified": 1675799969187,
+            "modified": 1675711338555,
             "created": 1675618043958,
             "url": "{{ _.baseUR }}/api/order",
             "name": "create",
@@ -2327,7 +2327,7 @@
             "method": "POST",
             "body": {
                 "mimeType": "application/json",
-                "text": "{\n\t\"caymentMethod\":\"Card\",\n\t\"productsCard\":[\n\t\t{\"id\":\"63e2aaf30e59424350f65145\",\n\t\t \"quantity\":1}\n\t],\n\t\"addressId\":\"63e2ad580e59424350f6514e\",\n\t\"idRestaurant\":\"63e2a1110e59424350f6512d\"\n}"
+                "text": "{\n\t\"caymentMethod\":\"Money\",\n\t\"productsCard\":[\n\t\t{\"id\":\"63e1379cdd7fd5863446ad03\",\n\t\t \"quantity\":1}\n\t],\n\t\"addressId\":\"63e1382bdd7fd5863446ad06\",\n\t\"idRestaurant\":\"63e13774dd7fd5863446ad01\"\n}"
             },
             "parameters": [],
             "headers": [
@@ -2386,9 +2386,9 @@
         {
             "_id": "req_d87798cf103544d88605d099398a3f39",
             "parentId": "fld_ccf65fb92de248d482b1b9357158750b",
-            "modified": 1675799824599,
+            "modified": 1675710801598,
             "created": 1675710053639,
-            "url": "{{ _.baseUR }}/api/order/restaurant/63e2a1110e59424350f6512d",
+            "url": "{{ _.baseUR }}/api/order/restaurant/63e13774dd7fd5863446ad01",
             "name": "getOrderRestaurant",
             "description": "",
             "method": "GET",
@@ -2453,29 +2453,6 @@
             "_type": "request"
         },
         {
-            "_id": "req_fff61ea714f64ba5a9b38dadde8bd688",
-            "parentId": "fld_ccf65fb92de248d482b1b9357158750b",
-            "modified": 1675800272979,
-            "created": 1675798587413,
-            "url": "{{ _.baseUR }}/api/order/send/63e2ada80e59424350f65152",
-            "name": "send",
-            "description": "",
-            "method": "PUT",
-            "body": {},
-            "parameters": [],
-            "headers": [],
-            "authentication": {},
-            "metaSortKey": -1675798587413,
-            "isPrivate": false,
-            "settingStoreCookies": true,
-            "settingSendCookies": true,
-            "settingDisableRenderRequestBody": false,
-            "settingEncodeUrl": true,
-            "settingRebuildPath": true,
-            "settingFollowRedirects": "global",
-            "_type": "request"
-        },
-        {
             "_id": "env_967d30207bd4ebf105ef960f3df7f4829286ad72",
             "parentId": "wrk_ae83c2c1432f4ff8ba6b151224462b07",
             "modified": 1671053458486,
@@ -2506,7 +2483,7 @@
         {
             "_id": "spc_bd5e0cc3e86c419ea20191e52809fb91",
             "parentId": "wrk_ae83c2c1432f4ff8ba6b151224462b07",
-            "modified": 1675803302772,
+            "modified": 1675700380212,
             "created": 1671053232920,
             "fileName": "Insomnia Designer",
             "contents": "",
@@ -2603,14 +2580,14 @@
         {
             "_id": "env_8a4b891e67b2a9a01c92331cb7e4b1111c8729c6",
             "parentId": "wrk_a87d9506a4074586a3f2ca10d109b8e1",
-            "modified": 1675800247421,
+            "modified": 1675716176901,
             "created": 1675282772765,
             "name": "Base Environment",
             "data": {
                 "baseUR": "http://localhost:3000",
                 "GLOBAL_HEADERS": {
                     "Accept": "application/json",
-                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjNlMjk0ODQyYjEzMzViZTRhYWE2YzAxIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjc1NzkzNTk3LCJleHAiOjE2NzU4Nzk5OTd9.IBim5LZUYz7fsKsok4pwl2MCqhOs95lBL5BM0O7Atqg",
+                    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoiNjNlMTM3NTlkZDdmZDU4NjM0NDZhY2ZmIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjc1NzA0MTU1LCJleHAiOjE2NzU3OTA1NTV9.Ae4LlGSVWMBqTWAP-Epq1818-RKKjlZFHgDjHQ0fhmE",
                     "Content-Type": "multipart/form-data"
                 }
             },
