@@ -12,6 +12,7 @@ import {
     Get,
     Param,
     Post,
+    Put,
     Req,
     Res,
     ValidationPipe,
@@ -124,7 +125,7 @@ class OrderHandler {
                         title: "Acompanhar pedido",
                         color: color,
                         intro: "Compra realizada com sucesso.",
-                        formName:formName
+                        formName: formName,
                     }),
                 };
                 transporter.sendMail(mailData, function (err, info) {
@@ -214,8 +215,7 @@ class OrderHandler {
                         title: "Efetuar pagamento",
                         color: color,
                         intro: "Compra realizada com sucesso.",
-                        formName
-
+                        formName,
                     }),
                 };
                 transporter.sendMail(mailData, function (err, info) {
@@ -265,7 +265,7 @@ class OrderHandler {
                         { pay: true, restaurantId: id },
                         { payment: "Money", restaurantId: id },
                     ],
-                    NOT: [{ status: "Cancelado" }],
+                    NOT: [{ status: "Cancelado" }, { status: "Entregue" }],
                 },
             });
 
@@ -322,7 +322,7 @@ class OrderHandler {
                     title: "Voltar para o site",
                     color: color,
                     intro: `Pedido ${order.id} foi cancelado pelo o restaurante.`,
-                    formName
+                    formName,
                 }),
             };
 
@@ -401,7 +401,7 @@ class OrderHandler {
                     title: "Voltar para o site",
                     color: color,
                     intro: `Pedido ${order.id} cancelado com sucesso.`,
-                    formName
+                    formName,
                 }),
             };
 
@@ -443,7 +443,7 @@ class OrderHandler {
                         color: color,
                         intro: `Pedido ${order.id} foi cancelado pelo o cliente ${user?.name},
                         portador do cpf ${user?.cpf}.`,
-                        formName
+                        formName,
                     }),
                 },
                 function (err, info) {
@@ -454,6 +454,28 @@ class OrderHandler {
             );
 
             return res.status(200).json({ status: "deleted" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Put("/send/:id")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async sendOrder(
+        @Param("id") id: string,
+        @Res() res: Next.NextApiResponse
+    ) {
+        try {
+            await prismaClient.order.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    status: "Entregue",
+                },
+            });
+            return res.status(200).json({ status: "confirmed" });
         } catch (error) {
             return res.status(400).json(error);
         }

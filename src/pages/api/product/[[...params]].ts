@@ -70,16 +70,20 @@ class ProductHandler {
         }
     }
 
-    @Get()
+    @Get("/:id")
     public async paginationProduct(
         @Res() res: Next.NextApiResponse,
-        @Req() req: Next.NextApiRequest
+        @Req() req: Next.NextApiRequest,
+        @Param("id") restaurantId: string,
     ) {
         try {
             const { page } = <Query>req.query;
             const cursor: number = +page;
             if (cursor === 1 || cursor === 0) {
                 const products = await prismaClient.product.findMany({
+                    where:{
+                        restaurantId
+                    },
                     take: 12,
                     orderBy: {
                         id: "asc",
@@ -109,10 +113,11 @@ class ProductHandler {
         }
     }
 
-    @Get("/list")
+    @Get()
     @JwtAuthGuard()
     @isAdmin()
     public async listProduct(@Res() res: Next.NextApiResponse) {
+        console.log(1234);
         try {
             const products = await prismaClient.product.findMany();
             return res.status(200).json(products);
