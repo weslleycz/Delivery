@@ -31,7 +31,7 @@ export const config = {
     
         if (event.type === "checkout.session.completed") {
             const intent = event.data.object as StripeSession;
-           await prismaClient.order.update({
+           const order = await prismaClient.order.update({
             where:{
                 paymentLinkId:intent.payment_link
             },
@@ -40,7 +40,6 @@ export const config = {
                 status:"Aguardando o envio"
             }
            })
-
           } else {
             //console.warn(event.type);
           }
