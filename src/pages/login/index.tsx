@@ -1,16 +1,19 @@
-import React, { useState } from "react";
+"use client";
+
 import { theme } from "@/theme";
 import { ThemeProvider } from "@emotion/react";
-import Head from "next/head";
-import { Formik } from "formik";
 import createValidator from "class-validator-formik";
-import { LoginUserDTO } from "../../validators/User.dto";
-import { api } from "../../services/apí";
 import { setCookie } from "cookies-next";
+import { Formik } from "formik";
 import moment from "moment";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import {Notify,notifyError} from "../../components/Notify"
+import { useState } from "react";
+import { Notify, notifyError } from "../../components/Notify";
+import { api } from "../../services/apí";
+import { LoginUserDTO } from "../../validators/User.dto";
 
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
     Button,
     Container,
@@ -22,35 +25,25 @@ import {
     OutlinedInput,
     Typography,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import style from "./styles.module.scss";
-import { toast, ToastContainer } from "react-toastify";
 
-export default function login() {
-
+export default function Login() {
     type AxiosError = {
-        response: {data:{message:string}}
-    }
+        response: { data: { message: string } };
+    };
 
     type IForm = {
-        resetForm: any, 
-        setErrors: any
-    }
-
+        resetForm: any;
+        setErrors: any;
+    };
     const router = useRouter();
-
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const handleMouseDownPassword = (event:any) => {
+    const handleMouseDownPassword = (event: any) => {
         event.preventDefault();
     };
-
-    const loginHandler = async (values:LoginUserDTO,{ resetForm, setErrors }:IForm) => {
-        
-    }
-
 
     return (
         <>
@@ -68,29 +61,28 @@ export default function login() {
                     <Formik
                         validate={createValidator(LoginUserDTO)}
                         initialValues={{ email: "", password: "" }}
-                        onSubmit={async (values, { resetForm, setErrors })=>{
-                            const { email, password } = values
-                            try{
-                                const result = await api.post("/user/login",{
+                        onSubmit={async (values, { resetForm, setErrors }) => {
+                            const { email, password } = values;
+                            try {
+                                const result = await api.post("/user/login", {
                                     email,
-                                    password
-                                })
+                                    password,
+                                });
                                 setCookie("jwt", result.data.token, {
                                     expires: new Date(
                                         moment().add(24, "hours").format()
                                     ),
-                                })
-                                router.push("/")
-                            }catch(error){
-                                const errorData = error as AxiosError 
-                                console.log(errorData.response.data.message)
+                                });
+                                router.push("/");
+                            } catch (error) {
+                                const errorData = error as AxiosError;
+                                console.log(errorData.response.data.message);
                                 setErrors({
-                                    email: errorData.response.data.message
-                                }) 
-                                notifyError(errorData.response.data.message)
+                                    email: errorData.response.data.message,
+                                });
+                                notifyError(errorData.response.data.message);
                             }
-                        } 
-                        }
+                        }}
                     >
                         {({
                             values,
@@ -202,6 +194,7 @@ export default function login() {
                                         border: "0.1rem solid #FB9400",
                                         width: "100%",
                                         margin: "1rem 0",
+                                        background: "#FB9400",
                                     }}
                                 />
                                 <Typography variant="body1" gutterBottom>
