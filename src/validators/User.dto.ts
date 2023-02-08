@@ -82,6 +82,7 @@ export class UpdateUserDTO {
 export class LoginUserDTO {
     @IsString()
     @IsNotEmpty({ message: "Esse campo e obrigatório" })
+    @IsEmail({}, { message: "Este não é um e-mail" })
     email!: string;
 
     @IsString()
