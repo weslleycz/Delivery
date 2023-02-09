@@ -1,7 +1,5 @@
-import React from "react";
-
-import { theme } from "@/theme";
 import { ThemeProvider } from "@emotion/react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import createValidator from "class-validator-formik";
 import { Formik } from "formik";
 import Head from "next/head";
@@ -9,13 +7,12 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Notify, notifyError, notifySuccess } from "../../components/Notify";
 import { api } from "../../services/apí";
+import { theme } from "../../theme";
 import { CreateUserDTO } from "../../validators/User.dto";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 import {
     Button,
     Container,
-    Divider,
     IconButton,
     InputAdornment,
     InputLabel,
@@ -25,12 +22,10 @@ import {
 } from "@mui/material";
 import style from "../login/styles.module.scss";
 
-export default function SignUp(){
-
+export default function SignUp() {
     type AxiosCreateUserError = {
         response: { data: { message: string } };
     };
-
 
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false);
@@ -43,13 +38,14 @@ export default function SignUp(){
 
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
+    const handleClickShowConfirmPassword = () =>
+        setShowConfirmPassword((show) => !show);
 
     const handleMouseDownConfirmPassword = (event: any) => {
         event.preventDefault();
     };
 
-    return(
+    return (
         <>
             <Head>
                 <meta name="theme-color" content="#fb9400" />
@@ -65,24 +61,35 @@ export default function SignUp(){
                     </div>
                     <Formik
                         validate={createValidator(CreateUserDTO)}
-                        initialValues={{ email: "", password: "", passwordConfirm: "", cpf:"", name: "" }}
+                        initialValues={{
+                            email: "",
+                            password: "",
+                            passwordConfirm: "",
+                            cpf: "",
+                            name: "",
+                        }}
                         onSubmit={async (values, { resetForm, setErrors }) => {
-                            const { email, password, passwordConfirm,cpf,name } = values;
-                            try{
-                                await api.post("/user",{
+                            const {
+                                email,
+                                password,
+                                passwordConfirm,
+                                cpf,
+                                name,
+                            } = values;
+                            try {
+                                await api.post("/user", {
                                     email,
                                     password,
                                     passwordConfirm,
                                     cpf,
-                                    name
-                                })
-                                notifySuccess("Usuário Criado com Sucesso!")
-                                setTimeout(()=>{
-                                    router.push("/login")
-                                }, 1000)
-
-                            }catch(error){
-                                const errorData = error as AxiosCreateUserError
+                                    name,
+                                });
+                                notifySuccess("Usuário Criado com Sucesso!");
+                                setTimeout(() => {
+                                    router.push("/login");
+                                }, 1000);
+                            } catch (error) {
+                                const errorData = error as AxiosCreateUserError;
                                 setErrors({
                                     email: errorData.response.data.message,
                                 });
@@ -189,7 +196,11 @@ export default function SignUp(){
 
                                 <OutlinedInput
                                     id="outlined-adornment-password"
-                                    type={showConfirmPassword ? "text" : "password"}
+                                    type={
+                                        showConfirmPassword
+                                            ? "text"
+                                            : "password"
+                                    }
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
@@ -219,7 +230,8 @@ export default function SignUp(){
                                     autoComplete="current-passwordConfirm"
                                     sx={{ margin: " 0 0 0.5rem 0" }}
                                 />
-                                {errors.passwordConfirm && touched.passwordConfirm ? (
+                                {errors.passwordConfirm &&
+                                touched.passwordConfirm ? (
                                     <>
                                         <Typography
                                             color={"error"}
@@ -247,7 +259,6 @@ export default function SignUp(){
                                     value={values.cpf}
                                     onChange={handleChange("cpf")}
                                     sx={{ margin: " 0 0 0.5rem 0" }}
-                                    type={"number"}
                                 />
                                 {errors.cpf && touched.cpf ? (
                                     <>
@@ -261,7 +272,6 @@ export default function SignUp(){
                                 ) : (
                                     <></>
                                 )}
-
 
                                 <InputLabel
                                     htmlFor="outlined-adornment-password"
@@ -318,5 +328,5 @@ export default function SignUp(){
             </Container>
             <Notify />
         </>
-    )
+    );
 }

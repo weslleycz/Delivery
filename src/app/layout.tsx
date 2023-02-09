@@ -1,8 +1,5 @@
 "use client";
-import { theme } from "@/theme";
-import { ThemeProvider } from "@emotion/react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import "./globals.scss";
 
 const queryClient = new QueryClient();
 
@@ -20,7 +17,8 @@ export default function RootLayout({
             <head />
             <body>
                 <QueryClientProvider client={queryClient}>
-                    <ThemeProvider theme={theme}>{children}</ThemeProvider>
+                    olklllll
+                    {children}
                 </QueryClientProvider>
             </body>
         </html>
