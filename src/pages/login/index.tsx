@@ -48,6 +48,7 @@ export default function Login() {
     return (
         <>
             <Head>
+                <meta name="theme-color" content="#fb9400" />
                 <title>Página de Login</title>
             </Head>
             <Container maxWidth="xs" className={style["container-all"]}>
@@ -199,7 +200,7 @@ export default function Login() {
                                 />
                                 <Typography variant="body1" gutterBottom>
                                     Não tem conta?{" "}
-                                    <Link href="/">Cadastrar-se</Link>
+                                    <Link href="/signup">Cadastrar-se</Link>
                                 </Typography>
                             </>
                         )}

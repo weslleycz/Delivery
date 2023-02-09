@@ -43,7 +43,7 @@ class UserHandler {
             const e = <Error>error;
             if (e.code === "P2002") {
                 throw new UnauthorizedException(
-                    `${e.meta.target[0]} já está vinculado`
+                    `Usuário já está vinculado`
                 );
             } else {
                 return res.status(400).json(error);
