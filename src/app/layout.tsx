@@ -17,7 +17,6 @@ export default function RootLayout({
             <head />
             <body>
                 <QueryClientProvider client={queryClient}>
-                    olklllll
                     {children}
                 </QueryClientProvider>
             </body>

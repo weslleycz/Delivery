@@ -5,26 +5,8 @@ import { ListRestaurants } from "@/components/ListRestaurants";
 import Head from "next/head";
 import { prismaClient } from "../services/prismaClient";
 
-export async function getStaticProps() {
-    const restaurants = await prismaClient.restaurant.findMany();
-    return {
-        props: {
-            restaurants,
-        },
-    };
-}
 
-type Props = {
-    restaurants: [
-        {
-            id: string;
-            name: string;
-            logo: string;
-        }
-    ];
-};
-
-export default function Home({ restaurants }: Props) {
+export default function Home() {
     return (
         <>
             <Head>
@@ -32,7 +14,7 @@ export default function Home({ restaurants }: Props) {
                 <title>Página home</title>
             </Head>
             <Hero />
-            <ListRestaurants restaurants={restaurants} />
+            <ListRestaurants />
         </>
     );
 }

@@ -11,8 +11,8 @@ export type Pros = {
 export const CardRestaurant = ({ id, name, logo }: Pros) => {
     return (
         <>
-            <Link href={`/restaurant/${id}`}>
-                <Box key={id} className={style.container}>
+            <Link key={id} href={`/restaurant/${id}`}>
+                <Box className={style.container}>
                     <Stack direction="row" spacing={2}>
                         <Avatar sx={{ height: 100, width: 100 }} src={logo} />
                         <Box>
