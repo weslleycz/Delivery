@@ -1,8 +1,11 @@
+/* eslint-disable @next/next/no-title-in-document-head */
 import { Button } from "@mui/material";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Container } from "../../components/Container";
-import { api } from "../../services/apí";
+import { Container } from "../../../components/Container";
+import { Menu } from "../../../components/Menu";
+import { api } from "../../../services/apí";
 
 type IRestaurant = {
     id: string;
@@ -13,6 +16,7 @@ type IRestaurant = {
     admId: string;
     addressId: string;
 };
+
 
 export default function HomeRestaurant() {
     const router = useRouter();
@@ -33,7 +37,13 @@ export default function HomeRestaurant() {
     });
     return data != null ? (
         <>
+            <Head>
+                <meta name="theme-color" content={data.color} />
+                <link rel="icon" href={data.logo} />
+                <title>{data.name}</title>
+            </Head>
             <Container color={data.color}>
+                <Menu color={data.color} name={data.name} id={data.id} logo={data.logo} />
                 <Button variant="contained">Contained</Button>
             </Container>
         </>

@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@emotion/react";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import createValidator from "class-validator-formik";
 import { Formik } from "formik";
 import Head from "next/head";
@@ -7,12 +8,13 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Notify, notifyError, notifySuccess } from "../../components/Notify";
 import { api } from "../../services/apí";
-import { theme } from "../../theme";
 import { CreateUserDTO } from "../../validators/User.dto";
 
 import {
+    Box,
     Button,
     Container,
+    createTheme,
     IconButton,
     InputAdornment,
     InputLabel,
@@ -45,18 +47,42 @@ export default function SignUp() {
         event.preventDefault();
     };
 
+    const { query } = useRouter();
+
     return (
         <>
             <Head>
-                <meta name="theme-color" content="#fb9400" />
+                <meta name="theme-color" content={"#" + query.color} />
+                <link rel="icon" href={query.logo as string} />
                 <title>Cadastrar-se</title>
             </Head>
-            <Container maxWidth="xs" className={style["container-all"]}>
-                <ThemeProvider theme={theme}>
+            <Container sx={{marginBlock:5}} maxWidth="xs" className={style["container-all"]}>
+                <ThemeProvider
+                    theme={createTheme({
+                        palette: {
+                            primary: {
+                                main: "#" + query.color,
+                                contrastText: "#FFFFFF",
+                            },
+                        },
+                    })}
+                >
+                    <Box
+                        sx={{
+                            justifyContent: "center",
+                            display: "flex",
+                            alignItems: "center",
+                            marginTop:1
+                        }}
+                    >
+                        <img
+                            src={query.logo as string}
+                            alt="Logo"
+                            width={100}
+                            height={100}
+                        />
+                    </Box>
                     <div className={style.logo}>
-                        <h1>
-                            B7 <span className={style.span}>•</span> Delivery
-                        </h1>
                         <p>Realizar um Cadastro no App.</p>
                     </div>
                     <Formik
@@ -86,7 +112,9 @@ export default function SignUp() {
                                 });
                                 notifySuccess("Usuário Criado com Sucesso!");
                                 setTimeout(() => {
-                                    router.push("/login");
+                                    router.push(
+                                        `/login?color=${query.color}&logo=${query.logo}&id=${query.id}`
+                                    );
                                 }, 1000);
                             } catch (error) {
                                 const errorData = error as AxiosCreateUserError;
@@ -160,9 +188,9 @@ export default function SignUp() {
                                                 edge="end"
                                             >
                                                 {showPassword ? (
-                                                    <VisibilityOff />
+                                                    <VisibilityOffIcon />
                                                 ) : (
-                                                    <Visibility />
+                                                    <RemoveRedEyeIcon />
                                                 )}
                                             </IconButton>
                                         </InputAdornment>
@@ -214,9 +242,9 @@ export default function SignUp() {
                                                 edge="end"
                                             >
                                                 {showConfirmPassword ? (
-                                                    <VisibilityOff />
+                                                    <VisibilityOffIcon />
                                                 ) : (
-                                                    <Visibility />
+                                                    <RemoveRedEyeIcon />
                                                 )}
                                             </IconButton>
                                         </InputAdornment>
@@ -319,7 +347,11 @@ export default function SignUp() {
 
                                 <Typography variant="body1" gutterBottom>
                                     Fazer Login?{" "}
-                                    <Link href="/login">Clique aqui!</Link>
+                                    <Link
+                                        href={`/login?color=${query.color}&logo=${query.logo}&id=${query.id}`}
+                                    >
+                                        Clique aqui!
+                                    </Link>
                                 </Typography>
                             </>
                         )}
