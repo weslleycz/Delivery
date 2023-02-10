@@ -1,4 +1,4 @@
-@import "../../theme";
+@import "../../theme/";
 
 
 .container-all{
@@ -11,10 +11,6 @@
 
 .logo{
     text-align: center;
-}
-
-.span{
-    color: $primary-900;
 }
 
 .titleInput{

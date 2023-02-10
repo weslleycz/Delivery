@@ -1,6 +1,5 @@
 "use client";
 
-import { theme } from "@/theme";
 import { ThemeProvider } from "@emotion/react";
 import createValidator from "class-validator-formik";
 import { setCookie } from "cookies-next";
@@ -12,8 +11,10 @@ import { useState } from "react";
 import { Notify, notifyError } from "../../components/Notify";
 import { api } from "../../services/apí";
 import { LoginUserDTO } from "../../validators/User.dto";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { theme } from "@/theme";
 
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
     Button,
     Container,
@@ -26,17 +27,25 @@ import {
     Typography,
 } from "@mui/material";
 import style from "./styles.module.scss";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+
+export const getStaticProps = () => {
+    return {
+      props: {
+      
+      }
+    }
+  }
+
 
 export default function Login() {
+
     type AxiosError = {
         response: { data: { message: string } };
     };
 
-    type IForm = {
-        resetForm: any;
-        setErrors: any;
-    };
     const router = useRouter();
+
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -44,6 +53,7 @@ export default function Login() {
     const handleMouseDownPassword = (event: any) => {
         event.preventDefault();
     };
+
 
     return (
         <>
@@ -53,7 +63,7 @@ export default function Login() {
             </Head>
             <Container maxWidth="xs" className={style["container-all"]}>
                 <ThemeProvider theme={theme}>
-                    <div className={style.logo}>
+                    <div>
                         <h1>
                             B7 <span className={style.span}>•</span> Delivery
                         </h1>
@@ -148,9 +158,9 @@ export default function Login() {
                                                 edge="end"
                                             >
                                                 {showPassword ? (
-                                                    <VisibilityOff />
+                                                   <RemoveRedEyeIcon/>
                                                 ) : (
-                                                    <Visibility />
+                                                   <VisibilityOffIcon/>
                                                 )}
                                             </IconButton>
                                         </InputAdornment>
