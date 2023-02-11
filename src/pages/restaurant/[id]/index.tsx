@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-title-in-document-head */
 import { HeroRestaurant } from "@/components/HeroRestaurant";
+import { ProductListHome } from "@/components/ProductListHome";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -49,6 +50,7 @@ export default function HomeRestaurant() {
                     logo={data.logo}
                 />
                 <HeroRestaurant color={data.color} />
+                <ProductListHome/>
             </Container>
         </>
     ) : (
