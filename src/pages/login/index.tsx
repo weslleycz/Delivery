@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { theme } from "@/theme";
 import { ThemeProvider } from "@emotion/react";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import createValidator from "class-validator-formik";
 import { setCookie } from "cookies-next";
 import { Formik } from "formik";
@@ -13,10 +15,11 @@ import { Notify, notifyError } from "../../components/Notify";
 import { api } from "../../services/apí";
 import { LoginUserDTO } from "../../validators/User.dto";
 
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
+    Box,
     Button,
     Container,
+    createTheme,
     Divider,
     IconButton,
     InputAdornment,
@@ -32,11 +35,8 @@ export default function Login() {
         response: { data: { message: string } };
     };
 
-    type IForm = {
-        resetForm: any;
-        setErrors: any;
-    };
     const router = useRouter();
+
     const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -45,20 +45,41 @@ export default function Login() {
         event.preventDefault();
     };
 
+    const { query } = useRouter();
+
     return (
         <>
             <Head>
-                <meta name="theme-color" content="#fb9400" />
+                <meta name="theme-color" content={"#" + query.color} />
+                <link rel="icon" href={query.logo as string} />
                 <title>Página de Login</title>
             </Head>
             <Container maxWidth="xs" className={style["container-all"]}>
-                <ThemeProvider theme={theme}>
-                    <div className={style.logo}>
-                        <h1>
-                            B7 <span className={style.span}>•</span> Delivery
-                        </h1>
-                        <p>Use suas credenciais para realizar o login.</p>
-                    </div>
+                <ThemeProvider
+                    theme={createTheme({
+                        palette: {
+                            primary: {
+                                main: "#" + query.color,
+                                contrastText: "#FFFFFF",
+                            },
+                        },
+                    })}
+                >
+                    <Box
+                        sx={{
+                            justifyContent: "center",
+                            display: "flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        <img
+                            src={query.logo as string}
+                            alt="Logo"
+                            width={100}
+                            height={100}
+                        />
+                    </Box>
+                    <p>Use suas credenciais para realizar o login.</p>
                     <Formik
                         validate={createValidator(LoginUserDTO)}
                         initialValues={{ email: "", password: "" }}
@@ -69,12 +90,12 @@ export default function Login() {
                                     email,
                                     password,
                                 });
-                                setCookie("jwt", result.data.token, {
+                                setCookie("@token", result.data.token, {
                                     expires: new Date(
                                         moment().add(24, "hours").format()
                                     ),
                                 });
-                                router.push("/");
+                                router.push(`/restaurant/${query.id}`);
                             } catch (error) {
                                 const errorData = error as AxiosError;
                                 console.log(errorData.response.data.message);
@@ -148,9 +169,9 @@ export default function Login() {
                                                 edge="end"
                                             >
                                                 {showPassword ? (
-                                                    <VisibilityOff />
+                                                    <RemoveRedEyeIcon />
                                                 ) : (
-                                                    <Visibility />
+                                                    <VisibilityOffIcon />
                                                 )}
                                             </IconButton>
                                         </InputAdornment>
@@ -192,15 +213,21 @@ export default function Login() {
                                 </Typography>
                                 <Divider
                                     sx={{
-                                        border: "0.1rem solid #FB9400",
+                                        border: `0.1rem solid ${
+                                            "#" + query.color
+                                        }`,
                                         width: "100%",
                                         margin: "1rem 0",
-                                        background: "#FB9400",
+                                        background: "#" + query.color,
                                     }}
                                 />
                                 <Typography variant="body1" gutterBottom>
                                     Não tem conta?{" "}
-                                    <Link href="/signup">Cadastrar-se</Link>
+                                    <Link
+                                        href={`/signup?color=${query.color}&logo=${query.logo}&id=${query.id}`}
+                                    >
+                                        Cadastrar-se
+                                    </Link>
                                 </Typography>
                             </>
                         )}

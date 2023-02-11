@@ -74,15 +74,15 @@ class ProductHandler {
     public async paginationProduct(
         @Res() res: Next.NextApiResponse,
         @Req() req: Next.NextApiRequest,
-        @Param("id") restaurantId: string,
+        @Param("id") restaurantId: string
     ) {
         try {
             const { page } = <Query>req.query;
             const cursor: number = +page;
             if (cursor === 1 || cursor === 0) {
                 const products = await prismaClient.product.findMany({
-                    where:{
-                        restaurantId
+                    where: {
+                        restaurantId,
                     },
                     take: 12,
                     orderBy: {
@@ -182,7 +182,7 @@ class ProductHandler {
         const product = await stripe.products.list({
             ids: [id],
         });
-        return res.status(200).json({ images: product.data[0].images });
+        return res.status(200).json(product.data[0].images[0]);
     }
 
     @Get("/select/:id")
@@ -192,10 +192,10 @@ class ProductHandler {
     ) {
         try {
             const product = await prismaClient.product.findFirst({
-                where:{
-                    id
-                }
-            })
+                where: {
+                    id,
+                },
+            });
             return res.status(200).json(product);
         } catch (error) {
             return res.status(400).json(error);

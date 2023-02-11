@@ -1,8 +1,12 @@
-import { Button } from "@mui/material";
+/* eslint-disable @next/next/no-title-in-document-head */
+import { HeroRestaurant } from "@/components/HeroRestaurant";
+import { ProductListHome } from "@/components/ProductListHome";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Container } from "../../components/Container";
-import { api } from "../../services/apí";
+import { Container } from "../../../components/Container";
+import { Menu } from "../../../components/Menu";
+import { api } from "../../../services/apí";
 
 type IRestaurant = {
     id: string;
@@ -30,11 +34,23 @@ export default function HomeRestaurant() {
                 }
             }
         })();
-    });
+    }, [id]);
     return data != null ? (
         <>
+            <Head>
+                <meta name="theme-color" content={data.color} />
+                <link rel="icon" href={data.logo} />
+                <title>{data.name}</title>
+            </Head>
             <Container color={data.color}>
-                <Button variant="contained">Contained</Button>
+                <Menu
+                    color={data.color}
+                    name={data.name}
+                    id={data.id}
+                    logo={data.logo}
+                />
+                <HeroRestaurant color={data.color} />
+                <ProductListHome/>
             </Container>
         </>
     ) : (
