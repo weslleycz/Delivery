@@ -23,6 +23,7 @@ import {
     Typography,
 } from "@mui/material";
 import style from "../login/styles.module.scss";
+import { CreateAdmDTO } from "@/validators/Adm.dto";
 
 export default function SignUp() {
     type AxiosCreateUserError = {
@@ -80,7 +81,7 @@ export default function SignUp() {
                         }}
                     >
                         <img
-                            src={query.logo as string}
+                            src={"/favicon.ico"}
                             alt="Logo"
                             width={100}
                             height={100}
@@ -90,7 +91,7 @@ export default function SignUp() {
                         <p>Realizar um Cadastro no App.</p>
                     </div>
                     <Formik
-                        validate={createValidator(CreateUserDTO)}
+                        validate={createValidator(CreateAdmDTO)}
                         initialValues={{
                             email: "",
                             password: "",
@@ -111,9 +112,9 @@ export default function SignUp() {
                                 notifySuccess("Usuário Criado com Sucesso!");
                                 setTimeout(() => {
                                     router.push(
-                                        "login",
+                                        "/login",
                                     );
-                                }, 1000);
+                                }, 500);
                             } catch (error) {
                                 const errorData = error as AxiosCreateUserError;
                                 setErrors({

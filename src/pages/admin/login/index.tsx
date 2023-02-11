@@ -32,7 +32,7 @@ import style from "./styles.module.scss";
 
 export default function Login() {
     type AxiosError = {
-        response: { data: { message: string } };
+        response: { data: { name: string } };
     };
 
     const router = useRouter();
@@ -73,7 +73,7 @@ export default function Login() {
                         }}
                     >
                         <img
-                            src={query.logo as string}
+                            src={"/favicon.ico"}
                             alt="Logo"
                             width={100}
                             height={100}
@@ -90,19 +90,18 @@ export default function Login() {
                                     email,
                                     password,
                                 });
-                                setCookie("jwt", result.data.token, {
+                                setCookie("@tokenAdmin", result.data.token, {
                                     expires: new Date(
                                         moment().add(24, "hours").format()
                                     ),
                                 });
-                                router.push(`/restaurant/${query.id}`);
+                                router.push(`/admin/dashboard`);
                             } catch (error) {
                                 const errorData = error as AxiosError;
-                                console.log(errorData.response.data.message);
                                 setErrors({
-                                    email: errorData.response.data.message,
+                                    email: "Usuário não cadastrado",
                                 });
-                                notifyError(errorData.response.data.message);
+                                notifyError("Usuário não cadastrado");
                             }
                         }}
                     >
