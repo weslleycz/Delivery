@@ -90,7 +90,7 @@ export default function Login() {
                                     email,
                                     password,
                                 });
-                                setCookie("jwt", result.data.token, {
+                                setCookie("@token", result.data.token, {
                                     expires: new Date(
                                         moment().add(24, "hours").format()
                                     ),

@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-title-in-document-head */
-import { Button } from "@mui/material";
+import { HeroRestaurant } from "@/components/HeroRestaurant";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -17,7 +17,6 @@ type IRestaurant = {
     addressId: string;
 };
 
-
 export default function HomeRestaurant() {
     const router = useRouter();
     const { id } = router.query;
@@ -34,7 +33,7 @@ export default function HomeRestaurant() {
                 }
             }
         })();
-    });
+    }, [id]);
     return data != null ? (
         <>
             <Head>
@@ -43,8 +42,13 @@ export default function HomeRestaurant() {
                 <title>{data.name}</title>
             </Head>
             <Container color={data.color}>
-                <Menu color={data.color} name={data.name} id={data.id} logo={data.logo} />
-                <Button variant="contained">Contained</Button>
+                <Menu
+                    color={data.color}
+                    name={data.name}
+                    id={data.id}
+                    logo={data.logo}
+                />
+                <HeroRestaurant color={data.color} />
             </Container>
         </>
     ) : (

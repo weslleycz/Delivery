@@ -1,5 +1,16 @@
 /* eslint-disable @next/next/no-img-element */
-import { Box, Button, Container, Link, Stack } from "@mui/material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import {
+    Box,
+    Button,
+    Container,
+    Link,
+    Stack,
+    useMediaQuery,
+} from "@mui/material";
+import Badge from "@mui/material/Badge";
+import { getCookie } from "cookies-next";
+import { useEffect, useState } from "react";
 import style from "./styles.module.scss";
 
 type IRestaurant = {
@@ -10,7 +21,16 @@ type IRestaurant = {
 };
 
 export const Menu = ({ id, logo, name, color }: IRestaurant) => {
-    return (
+    const [token, setToken] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        let tokenGet = getCookie("@token");
+        setToken(tokenGet as string);
+    }, []);
+
+    const matches = useMediaQuery("(min-width:600px)");
+
+    return matches ? (
         <>
             <Box className={style.conteiner}>
                 <Stack direction="row" className={style.cont}>
@@ -41,24 +61,126 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                         </Stack>
                     </Container>
                     <Stack direction="row" spacing={3}>
-                        <Link
-                            href={`/login?color=${color.substring(
-                                1
-                            )}&logo=${logo}&id=${id}`}
-                        >
-                            <Button color="primary" variant="text">
-                                Entrar
-                            </Button>
-                        </Link>
-                        <Link
-                            href={`/signup?color=${color.substring(
-                                1
-                            )}&logo=${logo}&id=${id}`}
-                        >
-                            <Button size="small" variant="contained">
-                                cadastre-se
-                            </Button>
-                        </Link>
+                        {token != undefined ? (
+                            <>
+                                <Badge
+                                    sx={{ right: 40 }}
+                                    badgeContent={4}
+                                    color="primary"
+                                >
+                                    <ShoppingCartIcon color="action" />
+                                </Badge>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    href={`/login?color=${color.substring(
+                                        1
+                                    )}&logo=${logo}&id=${id}`}
+                                >
+                                    <Button color="primary" variant="text">
+                                        Entrar
+                                    </Button>
+                                </Link>
+                                <Link
+                                    href={`/signup?color=${color.substring(
+                                        1
+                                    )}&logo=${logo}&id=${id}`}
+                                >
+                                    <Button size="small" variant="contained">
+                                        cadastre-se
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
+                    </Stack>
+                    <Box></Box>
+                </Stack>
+            </Box>
+        </>
+    ) : (
+        <>
+            {" "}
+            <Box p={5} width={800} className={style.conteiner}>
+                <Stack direction="row" className={style.cont}>
+                    <Link href={`/restaurant/${id}`}>
+                        <img src={logo} alt="Logo" width={70} height={70} />
+                    </Link>
+                    <Container maxWidth="xs">
+                        <Stack direction="row" spacing={3}>
+                            <Link href={`/restaurant/${id}`}>
+                                <Button
+                                    size="large"
+                                    color="primary"
+                                    variant="text"
+                                >
+                                    Início
+                                </Button>
+                            </Link>
+
+                            <Link
+                                href={`/restaurant/${name}?id=${id}/products`}
+                            >
+                                <Button
+                                    size="large"
+                                    color="primary"
+                                    variant="text"
+                                >
+                                    Produtos
+                                </Button>
+                            </Link>
+
+                            <Link href="/login">
+                                <Button
+                                    size="large"
+                                    color="primary"
+                                    variant="text"
+                                >
+                                    Contato
+                                </Button>
+                            </Link>
+                        </Stack>
+                    </Container>
+                    <Stack direction="row" spacing={3}>
+                        {token != undefined ? (
+                            <>
+                                <Badge
+                                    sx={{ right: 40 }}
+                                    badgeContent={4}
+                                    color="primary"
+                                >
+                                    <ShoppingCartIcon
+                                        width={150}
+                                        color="action"
+                                    />
+                                </Badge>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    href={`/login?color=${color.substring(
+                                        1
+                                    )}&logo=${logo}&id=${id}`}
+                                >
+                                    <Button
+                                        color="primary"
+                                        size="medium"
+                                        variant="text"
+                                    >
+                                        Entrar
+                                    </Button>
+                                </Link>
+                                <Link
+                                    href={`/signup?color=${color.substring(
+                                        1
+                                    )}&logo=${logo}&id=${id}`}
+                                >
+                                    <Button size="large" variant="contained">
+                                        cadastre-se
+                                    </Button>
+                                </Link>
+                            </>
+                        )}
                     </Stack>
                 </Stack>
             </Box>
