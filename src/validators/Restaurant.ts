@@ -10,8 +10,8 @@ export class CreateRestaurantDTO {
     @IsString()
     logo!: string;
 
-    @IsOptional()
     @IsString()
+    @IsNotEmpty({ message: "Esse campo e obrigatório" })
     color!: string;
 
     @IsNotEmpty({ message: "Esse campo e obrigatório" })
