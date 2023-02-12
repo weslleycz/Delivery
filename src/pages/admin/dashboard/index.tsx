@@ -3,7 +3,6 @@ import { MenuAdmin } from "@/components/MenuAdmin";
 import { ThemeProvider } from "@emotion/react";
 import { Box, Grid } from "@mui/material";
 import Head from "next/head";
-import "react-color-palette/lib/css/styles.css";
 import { theme } from "../../../theme";
 
 export default function Dashboard() {
