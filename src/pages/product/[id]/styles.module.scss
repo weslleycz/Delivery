@@ -1,0 +1,30 @@
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 2rem;
+
+    .containerGrid{
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(7.7px);
+        -webkit-backdrop-filter: blur(7.7px);
+        padding: 2rem;
+    }
+
+    .image{
+        border-radius: 16px;
+    }
+
+    h3{
+        font-weight: bold;
+        margin: 1rem 0;
+    }
+
+    .button{
+        margin-top: 1rem;
+    }
+    
+}
