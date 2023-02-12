@@ -47,6 +47,7 @@
     "sass": "^1.57.1",
     "stripe": "^11.9.0",
     "swagger-ui-react": "^4.15.5",
+    "use-indexeddb": "^2.0.2",
     "web-push": "^3.5.0"
   },
   "devDependencies": {
