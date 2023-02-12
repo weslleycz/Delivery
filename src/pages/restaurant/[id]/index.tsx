@@ -50,7 +50,7 @@ export default function HomeRestaurant() {
                     logo={data.logo}
                 />
                 <HeroRestaurant color={data.color} />
-                <ProductListHome/>
+                <ProductListHome idRest={data.id}/>
             </Container>
         </>
     ) : (
