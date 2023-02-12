@@ -105,7 +105,7 @@ export default function ListProducts(){
                 
                 {isFetching ? <span> Loading...</span> : null}{' '}
             </div>
-            <Pagination className={styles.pagination} count={data.totalPages} page={pages} onChange={(event: React.ChangeEvent<unknown>, value: number) => {
+            <Pagination className={styles.pagination} count={1} page={pages} onChange={(event: React.ChangeEvent<unknown>, value: number) => {
                 setPages(value);
             }}/>
         </ThemeProvider>
