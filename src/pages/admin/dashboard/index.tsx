@@ -1,7 +1,10 @@
+import { ListRestaurants } from "@/components/ListRestaurants";
+import { ListRestaurantsAdm } from "@/components/ListRestaurantsAdm";
 import { MenuAdmin } from "@/components/MenuAdmin";
 import { ThemeProvider } from "@emotion/react";
 import { Box, Grid } from "@mui/material";
 import Head from "next/head";
+import "react-color-palette/lib/css/styles.css";
 import { theme } from "../../../theme";
 
 export default function Dashboard() {
@@ -19,7 +22,7 @@ export default function Dashboard() {
                             <MenuAdmin />
                         </Grid>
                         <Grid xs={6} md={8}>
-
+                            <ListRestaurantsAdm/>
                         </Grid>
                     </Grid>
                 </Box>

@@ -1,14 +1,30 @@
-import { CircularProgress, Container, Grid, Typography } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import {
+    Box,
+    CircularProgress,
+    Container,
+    Grid,
+    Typography,
+} from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { getCookie } from "cookies-next";
 import { useQuery } from "react-query";
 import { api } from "../../services/apí";
-import { CardRestaurant, Pros } from "../CardRestaurant";
+import { Pros } from "../CardRestaurant";
+import { CardRestaurantAdm } from "../CardRestaurantAdm";
+import style from "./styles.module.scss";
 
-export const ListRestaurants = () => {
+export const ListRestaurantsAdm = () => {
     const matches = useMediaQuery("(min-width:600px)");
 
+    const token = getCookie("@tokenAdmin");
+    
     const fetchUsers = async () => {
-        const res = await api.get("/restaurant");
+        const res = await api.get("/restaurant/adm/list",{
+            headers:{
+                Authorization:token
+            }
+        });
         return res.data;
     };
 
@@ -17,7 +33,7 @@ export const ListRestaurants = () => {
     return (
         <>
             {matches ? (
-                <Container sx={{ marginBottom: 8, marginTop: 8 }} maxWidth="md">
+                <Container sx={{ m:7 }}>
                     <Typography fontWeight={"bold"} variant="h6" gutterBottom>
                         Restaurantes
                     </Typography>
@@ -33,9 +49,13 @@ export const ListRestaurants = () => {
                                 {data.map((restaurant: Pros) => {
                                     return (
                                         <>
-                                            <Grid item xs={6}>
+                                            <Grid
+                                                alignItems={"center"}
+                                                item
+                                                xs={6}
+                                            >
                                                 {
-                                                    <CardRestaurant
+                                                    <CardRestaurantAdm
                                                         id={restaurant.id}
                                                         name={restaurant.name}
                                                         logo={restaurant.logo}
@@ -45,12 +65,25 @@ export const ListRestaurants = () => {
                                         </>
                                     );
                                 })}
+                                <Grid
+                                    textAlign={"center"}
+                                    justifyContent={"center"}
+                                    item
+                                    xs={6}
+                                >
+                                    <Box className={style.container}>
+                                        <AddCircleOutlineIcon
+                                         sx={{
+                                            fontSize:90
+                                         }} />
+                                    </Box>
+                                </Grid>
                             </>
                         )}
                     </Grid>
                 </Container>
             ) : (
-                <Container sx={{ margin: 1 }} maxWidth="sm">
+                <Container sx={{ margin: 1 }}>
                     <Typography fontWeight={"bold"} variant="h6" gutterBottom>
                         Restaurantes
                     </Typography>
@@ -61,7 +94,7 @@ export const ListRestaurants = () => {
                             {data.map((restaurant: Pros) => {
                                 return (
                                     <>
-                                        <CardRestaurant
+                                        <CardRestaurantAdm
                                             id={restaurant.id}
                                             name={restaurant.name}
                                             logo={restaurant.logo}
