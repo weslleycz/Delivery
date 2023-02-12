@@ -45,9 +45,9 @@ export const ProductListHome = ({idRest}:Props) => {
             {isLoading ? (
                 <div>Loading...</div>
             ) : (
-                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{marginBottom:5}}>   
+                <Grid container spacing={0.2} sx={{marginBottom:5}}>   
                 {data.products.map((product:Products) => (
-                     <Grid item xs={1} sx={{marginLeft: 10}}>
+                     <Grid item sx={{marginLeft: 10}}>
                         <CardProducts key={product.id} idProd={product.id} name={product.name} price={product.price} type={product.type} idRest={idRest}/>
                     </Grid>
                 ))}
