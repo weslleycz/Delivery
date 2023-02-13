@@ -46,7 +46,7 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                             </Link>
 
                             <Link
-                                href={`/restaurant/${name}?id=${id}/products`}
+                                href={`/restaurant/products/${id}?color=${color}`}
                             >
                                 <Button color="primary" variant="text">
                                     Produtos
