@@ -39,7 +39,7 @@ type IRestaurant = {
 
 export async function getStaticPaths() {
     return {
-        paths: [{ params: { id: "1" } }, { params: { id: "2" } }],
+        paths: [],
         fallback: true,
     };
 }
@@ -57,14 +57,19 @@ export async function getStaticProps({ params }: StaticParams) {
         },
     });
 
-    const image = await stripe.products.list({
-        ids: [params.id],
-    });
+    const image = await prismaClient.product.findFirst({
+        where:{
+            id:params.id
+        },
+        select:{
+            img:true
+        }
+    })
 
     
 
     return {
-        props: { product,image:image.data[0].images[0] },
+        props: { product,image:image?.img },
         // Re-generate the post at most once per second
         // if a request comes in
         revalidate: 600,
