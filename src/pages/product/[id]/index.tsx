@@ -58,18 +58,18 @@ export async function getStaticProps({ params }: StaticParams) {
     });
 
     const image = await prismaClient.product.findFirst({
-        where:{
-            id:params.id
+        where: {
+            id: params.id
         },
-        select:{
-            img:true
+        select: {
+            img: true
         }
     })
 
-    
+
 
     return {
-        props: { product,image:image?.img },
+        props: { product, image: image?.img },
         // Re-generate the post at most once per second
         // if a request comes in
         revalidate: 600,
@@ -78,10 +78,10 @@ export async function getStaticProps({ params }: StaticParams) {
 
 type IProps = {
     product: Products;
-    image:string;
+    image: string;
 };
 
-export default function Product({ product,image }: IProps) {
+export default function Product({ product, image }: IProps) {
     const router = useRouter();
     // const [product, setProduct] = useState<Products>();
     const [quantidade, setQuantidade] = useState(1);
@@ -127,8 +127,7 @@ export default function Product({ product,image }: IProps) {
                     notifySuccess("Item adicionado ao Carrinho");
                 } else {
                     router.push(
-                        `/login?color=${rest.color.substring(1)}&logo=${
-                            rest.logo
+                        `/login?color=${rest.color.substring(1)}&logo=${rest.logo
                         }&id=${rest.id}`
                     );
                 }
@@ -165,18 +164,18 @@ export default function Product({ product,image }: IProps) {
                 <Box className={style.container}>
                     <Grid container spacing={2} className={style.containerGrid}>
                         <Grid item xs={6} md={4}>
-                            <Box sx={{padding:17}}>
-                            <img
-                                src={image}
-                                alt={product?.description}
-                                width={400}
-                                height={400}
-                                className={style.image}
-                            />
+                            <Box sx={{ padding: 17 }}>
+                                <img
+                                    src={image}
+                                    alt={product?.description}
+                                    width={400}
+                                    height={400}
+                                    className={style.image}
+                                />
                             </Box>
                         </Grid>
                         <Grid item xs={9} md={6} sx={{ alignSelf: "center" }}>
-                            <Box sx={{padding:20}}>
+                            <Box sx={{ padding: 20 }}>
                                 <h3>{product?.name}</h3>
                                 <h5>{product?.description}</h5>
                                 <h3>

@@ -258,7 +258,7 @@ export default function SignUp() {
                                     sx={{ margin: " 0 0 0.5rem 0" }}
                                 />
                                 {errors.passwordConfirm &&
-                                touched.passwordConfirm ? (
+                                    touched.passwordConfirm ? (
                                     <>
                                         <Typography
                                             color={"error"}

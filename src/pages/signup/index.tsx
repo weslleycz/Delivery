@@ -56,7 +56,7 @@ export default function SignUp() {
                 <link rel="icon" href={query.logo as string} />
                 <title>Cadastrar-se</title>
             </Head>
-            <Container sx={{marginBlock:5}} maxWidth="xs" className={style["container-all"]}>
+            <Container sx={{ marginBlock: 5 }} maxWidth="xs" className={style["container-all"]}>
                 <ThemeProvider
                     theme={createTheme({
                         palette: {
@@ -72,7 +72,7 @@ export default function SignUp() {
                             justifyContent: "center",
                             display: "flex",
                             alignItems: "center",
-                            marginTop:1
+                            marginTop: 1
                         }}
                     >
                         <img
@@ -188,7 +188,7 @@ export default function SignUp() {
                                                 edge="end"
                                             >
                                                 {showPassword ? (
-                                                  <RemoveRedEyeIcon />
+                                                    <RemoveRedEyeIcon />
                                                 ) : (
                                                     <VisibilityOffIcon />
                                                 )}
@@ -259,7 +259,7 @@ export default function SignUp() {
                                     sx={{ margin: " 0 0 0.5rem 0" }}
                                 />
                                 {errors.passwordConfirm &&
-                                touched.passwordConfirm ? (
+                                    touched.passwordConfirm ? (
                                     <>
                                         <Typography
                                             color={"error"}
