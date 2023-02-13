@@ -46,6 +46,7 @@ class ProductHandler {
                     price,
                     type,
                     discount,
+                    img:imagens[0],
                     Restaurant: {
                         connect: {
                             id: idRestaurant,
@@ -117,7 +118,6 @@ class ProductHandler {
     @JwtAuthGuard()
     @isAdmin()
     public async listProduct(@Res() res: Next.NextApiResponse) {
-        console.log(1234);
         try {
             const products = await prismaClient.product.findMany();
             return res.status(200).json(products);
@@ -179,10 +179,16 @@ class ProductHandler {
         @Param("id") id: string,
         @Res() res: Next.NextApiResponse
     ) {
-        const product = await stripe.products.list({
-            ids: [id],
-        });
-        return res.status(200).json(product.data[0].images[0]);
+        const product = await prismaClient.product.findFirst({
+            where:{
+               id 
+            },
+            select:{
+               img:true
+
+            }
+        })
+        return res.status(200).json(product?.img);
     }
 
     @Get("/select/:id")

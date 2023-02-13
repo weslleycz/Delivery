@@ -49,6 +49,7 @@ model Product {
     price        Int
     description  String
     type         String
+    img          String?
     discount     String?
     Cart         Cart?       @relation(fields: [cartId], references: [id])
     cartId       String?

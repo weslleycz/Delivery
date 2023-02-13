@@ -11,6 +11,7 @@ import {
 import Badge from "@mui/material/Badge";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
+import { useIndexedDBStore } from "use-indexeddb";
 import style from "./styles.module.scss";
 
 type IRestaurant = {
@@ -22,10 +23,13 @@ type IRestaurant = {
 
 export const Menu = ({ id, logo, name, color }: IRestaurant) => {
     const [token, setToken] = useState<string | undefined>(undefined);
+    const [valor, setValor] = useState(0);
+    const { getAll } = useIndexedDBStore("products");
 
     useEffect(() => {
         let tokenGet = getCookie("@token");
         setToken(tokenGet as string);
+        getAll().then(console.log).catch(console.error);
     }, []);
 
     const matches = useMediaQuery("(min-width:600px)");
@@ -146,7 +150,7 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                             <>
                                 <Badge
                                     sx={{ right: 40 }}
-                                    badgeContent={4}
+                                    badgeContent={valor}
                                     color="primary"
                                 >
                                     <ShoppingCartIcon
