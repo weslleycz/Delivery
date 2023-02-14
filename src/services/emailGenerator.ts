@@ -6,9 +6,9 @@ type IEmailBody = {
     logo: string;
     text: string;
     name: string | null | undefined;
-    color:string
-    intro:string,
-    formName:string
+    color: string
+    intro: string,
+    formName: string
 };
 
 export const emailGenerator = ({
@@ -33,12 +33,12 @@ export const emailGenerator = ({
     const bodyEmail = {
         body: {
             name: name as string,
-            intro:  intro,
+            intro: intro,
             action: {
                 instructions: text,
                 button: {
                     color: color,
-                    text:  title,
+                    text: title,
                     link: link,
                 },
             },

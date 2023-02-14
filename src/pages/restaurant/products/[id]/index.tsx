@@ -66,7 +66,7 @@ export default function ListProducts() {
             <Head>
                 <meta name="theme-color" content={rest.color} />
                 <link rel="icon" href={rest.logo} />
-                <title>Produtos</title>
+                <title>Produtos do Restaurante</title>
             </Head>
             <ThemeProvider
                 theme={createTheme({
