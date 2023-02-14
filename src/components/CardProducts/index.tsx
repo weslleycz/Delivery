@@ -2,7 +2,6 @@ import { api } from "@/services/apí";
 import { Skeleton, Stack } from "@mui/material";
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
-import { useState } from "react";
 import { useQuery } from "react-query";
 import style from "./styles.module.scss";
 
@@ -19,9 +18,10 @@ export function CardProducts({ idProd, name, price, type, idRest }: Products) {
         const result = await api.get(`/product/imagems/${idProd}`);
         return result.data;
     };
+    {
+    }
 
     const { isLoading, isError, data, error } = useQuery("movies", fetchImage);
-
 
     return (
         <Link href={`/product/${idProd}?idRest=${idRest}`}>

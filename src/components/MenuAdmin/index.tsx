@@ -7,7 +7,11 @@ import Image from "next/image";
 import style from "./styles.module.scss";
 import { useRouter } from "next/router";
 
-export const MenuAdmin = () => {
+type Props={
+    setPage:(valor:string)=>void;
+}
+
+export const MenuAdmin = ({setPage}:Props) => {
 
     const router = useRouter();
 
@@ -31,6 +35,7 @@ export const MenuAdmin = () => {
                     <ListItem component="div" disablePadding>
                         <Button
                             size="large"
+                            onClick={()=>setPage("restaurants")}
                             startIcon={<GridViewIcon />}
                         >
                             <strong>Restaurantes</strong>
@@ -39,6 +44,7 @@ export const MenuAdmin = () => {
                     <ListItem component="div" disablePadding>
                         <Button
                             size="large"
+                            onClick={()=>setPage("order")}
                             startIcon={<DeliveryDiningIcon />}
                         >
                             <strong>Pedidos</strong>

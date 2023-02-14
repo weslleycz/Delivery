@@ -4,6 +4,8 @@ import { emailGenerator } from "@/services/emailGenerator";
 import { getToken } from "@/services/getToken";
 import { stripe } from "@/services/stripe";
 import { CreateOrderDTO } from "@/validators/Order.dto";
+import { v4 as uuidv4 } from 'uuid';
+import { Prisma } from "@prisma/client";
 import * as Next from "next";
 import {
     Body,
@@ -61,6 +63,10 @@ class OrderHandler {
                 },
             });
 
+            const productsList =<Prisma.ProductWhereUniqueInput> products.map((valor) => {
+                return { id: valor.id}
+            });
+
             const subtotal = products.reduce((acc, obj) => {
                 return acc + obj.price;
             }, 0);
@@ -68,6 +74,7 @@ class OrderHandler {
             if (caymentMethod === "Money") {
                 const order = await prismaClient.order.create({
                     data: {
+                        paymentLinkId:uuidv4().toString(),
                         pay: false,
                         delivered: false,
                         frete: 0,
@@ -82,6 +89,9 @@ class OrderHandler {
                             connect: {
                                 id: address?.id,
                             },
+                        },
+                        products: {
+                            connect: productsList,
                         },
                         payment: caymentMethod,
                         subtotal,
@@ -275,6 +285,52 @@ class OrderHandler {
         }
     }
 
+    @Get("/adm")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async getOrderAdm(
+        @Req() req: Next.NextApiRequest,
+        @Res() res: Next.NextApiResponse
+    ) {
+        try {
+            const token = getToken(req.headers.token as string);
+
+            const restaurants = await prismaClient.restaurant.findMany({
+                where: {
+                    admId: token,
+                },
+                select: {
+                    id: true,
+                },
+            });
+
+            const restaurantsList = restaurants.map((valor) => valor.id);
+
+            const order = await prismaClient.order.findMany({
+                where: {
+                    OR: [
+                        {
+                            pay: true,
+                            restaurantId: { in: restaurantsList },
+                        },
+                        {
+                            payment: "Money",
+                            restaurantId: { in: restaurantsList },
+                        },
+                    ],
+                    NOT: [{ status: "Cancelado" }, { status: "Entregue" }],
+                },
+                include:{
+                    products:true
+                }
+            });
+
+            return res.status(200).json(order);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
     @Delete("/restaurant/:id")
     @JwtAuthGuard()
     @isAdmin()
@@ -459,7 +515,7 @@ class OrderHandler {
         }
     }
 
-    @Put("/send/:id")
+    @Get("/send/:id")
     @JwtAuthGuard()
     @isAdmin()
     public async sendOrder(

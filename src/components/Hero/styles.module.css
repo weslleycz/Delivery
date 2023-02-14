@@ -1,0 +1,24 @@
+.container {
+  justify-content: center;
+  text-align: center;
+  padding: 18%;
+  background-repeat: repeat-y;
+  background-size: cover;
+  background-image: url("../../../public/background-hero.svg");
+  @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300&display=swap");
+  margin-bottom: 2%;
+}
+.container * {
+  margin: 0;
+  padding: 0;
+}
+@media (max-width: 720px) {
+  .container {
+    background-image: url("../../../public/background-hero-opacity.svg");
+  }
+}
+@media (max-width: 1080px) {
+  .container html {
+    font-size: 93.75%;
+  }
+}/*# sourceMappingURL=styles.module.css.map */

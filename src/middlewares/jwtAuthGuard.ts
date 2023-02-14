@@ -14,6 +14,7 @@ export const JwtAuthGuard = createMiddlewareDecorator(
                 req.headers.token = JSON.stringify(
                     verify(token, process.env.TOKEN_KAY)
                 );
+                
                 next();
             }
         } catch (error) {

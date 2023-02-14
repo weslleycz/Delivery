@@ -55,6 +55,8 @@ model Product {
     cartId       String?
     Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
     restaurantId String?
+    Order        Order?      @relation(fields: [orderId], references: [id])
+    orderId      String?     @db.ObjectId
 
     @@map("Products")
 }
@@ -105,6 +107,7 @@ model Order {
     latitude          String
     longitude         String
     status            String
+    products          Product[]
     current_latitude  String?
     current_longitude String?
     paymentLinkId     String?    @unique

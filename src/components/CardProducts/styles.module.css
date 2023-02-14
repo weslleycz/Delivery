@@ -1,0 +1,32 @@
+.containerCard {
+  padding: 1.5rem;
+  width: 130px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(7.7px);
+  -webkit-backdrop-filter: blur(7.7px);
+  transition: 0.3s all ease;
+}
+.containerCard h4 {
+  font-weight: bold;
+  text-align: center;
+}
+.containerCard p {
+  font-size: 10pt;
+  color: gray;
+  text-align: center;
+}
+.containerCard h5 {
+  text-align: center;
+  font-weight: bold;
+}
+
+.containerCard:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.image {
+  border-radius: 16px;
+}/*# sourceMappingURL=styles.module.css.map */

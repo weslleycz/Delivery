@@ -1,0 +1,22 @@
+.container-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 90vh;
+  height: auto;
+}
+.container-all .logo {
+  text-align: center;
+}
+.container-all .titleInput {
+  width: 100%;
+  text-align: start;
+}
+.container-all button {
+  margin: 2rem 0;
+}
+.container-all h6 {
+  width: 100%;
+  text-align: start;
+}/*# sourceMappingURL=styles.module.css.map */

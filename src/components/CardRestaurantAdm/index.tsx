@@ -10,7 +10,7 @@ export type Pros = {
 export const CardRestaurantAdm = ({ id, name, logo }: Pros) => {
     return (
         <>
-            <Box className={style.container}>
+            <Box key={id} className={style.container}>
                 <Stack direction="row" spacing={2}>
                     <Avatar sx={{ height: 100, width: 100 }} src={logo} />
                     <Box>
