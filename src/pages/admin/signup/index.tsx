@@ -8,8 +8,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Notify, notifyError, notifySuccess } from "../../../components/Notify";
 import { api } from "../../../services/apí";
-import { CreateUserDTO } from "../../../validators/User.dto";
 
+import { CreateAdmDTO } from "@/validators/Adm.dto";
 import {
     Box,
     Button,
@@ -23,7 +23,6 @@ import {
     Typography,
 } from "@mui/material";
 import style from "../login/styles.module.scss";
-import { CreateAdmDTO } from "@/validators/Adm.dto";
 
 export default function SignUp() {
     type AxiosCreateUserError = {
@@ -98,11 +97,7 @@ export default function SignUp() {
                             passwordConfirm: "",
                         }}
                         onSubmit={async (values, { resetForm, setErrors }) => {
-                            const {
-                                email,
-                                password,
-                                passwordConfirm,
-                            } = values;
+                            const { email, password, passwordConfirm } = values;
                             try {
                                 await api.post("/adm", {
                                     email,
@@ -111,9 +106,7 @@ export default function SignUp() {
                                 });
                                 notifySuccess("Usuário Criado com Sucesso!");
                                 setTimeout(() => {
-                                    router.push(
-                                        "/login",
-                                    );
+                                    router.push("/login");
                                 }, 500);
                             } catch (error) {
                                 const errorData = error as AxiosCreateUserError;
@@ -258,7 +251,7 @@ export default function SignUp() {
                                     sx={{ margin: " 0 0 0.5rem 0" }}
                                 />
                                 {errors.passwordConfirm &&
-                                    touched.passwordConfirm ? (
+                                touched.passwordConfirm ? (
                                     <>
                                         <Typography
                                             color={"error"}
@@ -284,11 +277,7 @@ export default function SignUp() {
 
                                 <Typography variant="body1" gutterBottom>
                                     Fazer Login?{" "}
-                                    <Link
-                                        href={"login"}
-                                    >
-                                        Clique aqui!
-                                    </Link>
+                                    <Link href={"login"}>Clique aqui!</Link>
                                 </Typography>
                             </>
                         )}

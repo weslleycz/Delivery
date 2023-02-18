@@ -15,7 +15,6 @@ import Button from "@mui/material/Button";
 import Head from "next/head";
 import { Menu } from "../../../components/Menu";
 import style from "./styles.module.scss";
-import { stripe } from "../../../services/stripe";
 
 type Products = {
     id: string;
@@ -59,19 +58,15 @@ export async function getStaticProps({ params }: StaticParams) {
 
     const image = await prismaClient.product.findFirst({
         where: {
-            id: params.id
+            id: params.id,
         },
         select: {
-            img: true
-        }
-    })
-
-
+            img: true,
+        },
+    });
 
     return {
         props: { product, image: image?.img },
-        // Re-generate the post at most once per second
-        // if a request comes in
         revalidate: 600,
     };
 }
@@ -81,9 +76,11 @@ type IProps = {
     image: string;
 };
 
+
+
 export default function Product({ product, image }: IProps) {
     const router = useRouter();
-    // const [product, setProduct] = useState<Products>();
+    const [axiosIsLoading, setAxiosIsLoading] = useState(true);
     const [quantidade, setQuantidade] = useState(1);
     const { add } = useIndexedDBStore("products");
     const [rest, setRest] = useState<IRestaurant>({
@@ -100,18 +97,11 @@ export default function Product({ product, image }: IProps) {
     useEffect(() => {
         (async () => {
             if (router.query.id != undefined) {
-                // const product = await api.get(
-                //     `/product/select/${router.query.id}`
-                // );
-                // const image = await api.get(
-                //     `/product/imagems/${router.query.id}`
-                // );
                 const rest = await api.get(
                     `/restaurant/${router.query.idRest}`
                 );
-                // setProduct(product.data);
-                // setImage(image.data);
                 setRest(rest.data);
+                setAxiosIsLoading(false);
             }
         })();
         setupIndexedDB(idbConfig)
@@ -127,7 +117,8 @@ export default function Product({ product, image }: IProps) {
                     notifySuccess("Item adicionado ao Carrinho");
                 } else {
                     router.push(
-                        `/login?color=${rest.color.substring(1)}&logo=${rest.logo
+                        `/login?color=${rest.color.substring(1)}&logo=${
+                            rest.logo
                         }&id=${rest.id}`
                     );
                 }
@@ -144,7 +135,8 @@ export default function Product({ product, image }: IProps) {
                 <link rel="icon" href={rest.logo} />
                 <title>{product?.name}</title>
             </Head>
-            <ThemeProvider
+            {axiosIsLoading?(<></>):(<>
+                <ThemeProvider
                 theme={createTheme({
                     palette: {
                         primary: {
@@ -213,6 +205,7 @@ export default function Product({ product, image }: IProps) {
                     </Grid>
                 </Box>
             </ThemeProvider>
+            </>)}
             <Notify />
         </>
     );

@@ -1,8 +1,8 @@
-import { CardProducts } from "@/components/CardProducts";
 import { Menu } from "@/components/Menu";
+import { ProductItens } from "@/components/ProductItens";
 import { api } from "@/services/apí";
 import { ThemeProvider } from "@emotion/react";
-import { createTheme, Skeleton, Stack } from "@mui/material";
+import { createTheme, Grid } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -25,13 +25,22 @@ type Products = {
     price: number;
     id: string;
     type: string;
-    restaurantId: string;
+    img: string;
 };
+
+export async function getServerSideProps({}) {
+    return {
+        props: {},
+    };
+}
 
 export default function ListProducts() {
     const router = useRouter();
     const { id } = router.query;
     const [pages, setPages] = useState(1);
+    const [totalPags, setTotalPags] = useState(1);
+    const [axiosIsLoading, setAxiosIsLoading] = useState(true);
+
     const [rest, setRest] = useState<IRestaurant>({
         id: "",
         name: "",
@@ -44,7 +53,9 @@ export default function ListProducts() {
 
     const fetchProducts = async (page = pages) => {
         const result = await api.get(`/product/${id}?page=${page}`);
-        return result.data;
+        setPages(result.data.page);
+        setTotalPags(result.data.totalPages);
+        return result.data.products as Products[];
     };
 
     const { isLoading, isError, error, data, isFetching, isPreviousData } =
@@ -57,6 +68,7 @@ export default function ListProducts() {
             if (router.query.id != undefined) {
                 const rest = await api.get(`/restaurant/${router.query.id}`);
                 setRest(rest.data);
+                setAxiosIsLoading(false);
             }
         })();
     }, [router.query]);
@@ -78,61 +90,54 @@ export default function ListProducts() {
                     },
                 })}
             >
-                <Menu
-                    color={rest.color}
-                    name={rest.name}
-                    id={rest.id}
-                    logo={rest.logo}
-                />
-                <div>
-                    {isLoading ? (
-                        <div className={styles.container}>
-                            <Stack spacing={1}>
-                                {/* For variant="text", adjust the height via font-size */}
-                                <Skeleton
-                                    variant="text"
-                                    sx={{ fontSize: "1rem" }}
-                                />
-
-                                {/* For other variants, adjust the size with `width` and `height` */}
-                                <Skeleton
-                                    variant="rectangular"
-                                    width={130}
-                                    height={60}
-                                />
-                                <Skeleton
-                                    variant="rounded"
-                                    width={130}
-                                    height={60}
-                                />
-                            </Stack>
-                        </div>
-                    ) : (
-                        <div className={styles.container}>
-                            {data.products.map((product: Products) => (
-                                <CardProducts
-                                    idProd={product.id}
-                                    idRest={product.restaurantId}
-                                    name={product.name}
-                                    type={product.type}
-                                    price={product.price}
-                                    key={product.id}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </div>
-                <Pagination
-                    className={styles.pagination}
-                    count={1}
-                    page={pages}
-                    onChange={(
-                        event: React.ChangeEvent<unknown>,
-                        value: number
-                    ) => {
-                        setPages(value);
-                    }}
-                />
+                {axiosIsLoading ? (
+                    <></>
+                ) : (
+                    <>
+                        <Menu
+                            color={rest.color}
+                            name={rest.name}
+                            id={rest.id}
+                            logo={rest.logo}
+                        />
+                        <Grid
+                            container
+                            spacing={0.2}
+                            sx={{ marginBottom: 5, marginTop: 5 }}
+                        >
+                            {data?.map((product) => {
+                                return (
+                                    <>
+                                        <ProductItens
+                                            product={{
+                                                idProd: product.id,
+                                                idRest: router.query
+                                                    .id as string,
+                                                name: product.name,
+                                                price: product.price,
+                                                type: product.type,
+                                                img: product.img,
+                                                restaurantId: router.query
+                                                    .id as string,
+                                            }}
+                                        />
+                                    </>
+                                );
+                            })}
+                        </Grid>
+                        <Pagination
+                            className={styles.pagination}
+                            count={totalPags}
+                            page={pages}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                value: number
+                            ) => {
+                                setPages(value);
+                            }}
+                        />
+                    </>
+                )}
             </ThemeProvider>
         </>
     );

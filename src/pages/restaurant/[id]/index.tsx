@@ -18,6 +18,12 @@ type IRestaurant = {
     addressId: string;
 };
 
+export async function getServerSideProps({ }) {
+    return {
+      props: {},
+    }
+  }
+
 export default function HomeRestaurant() {
     const router = useRouter();
     const { id } = router.query;

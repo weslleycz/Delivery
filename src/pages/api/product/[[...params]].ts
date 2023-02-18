@@ -79,6 +79,7 @@ class ProductHandler {
     ) {
         try {
             const { page } = <Query>req.query;
+            console.log(page);
             const cursor: number = +page;
             if (cursor === 1 || cursor === 0) {
                 const products = await prismaClient.product.findMany({
@@ -98,7 +99,7 @@ class ProductHandler {
             } else {
                 const products = await prismaClient.product.findMany({
                     take: 12,
-                    skip: cursor * 12,
+                    skip:cursor * 12/Number(page),
                     orderBy: {
                         id: "asc",
                     },
