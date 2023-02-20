@@ -137,20 +137,6 @@ table {
     border-spacing: 0;
 }
 
-html,
-body {
-    ::-webkit-scrollbar-track {
-        background-color: rgb(255, 255, 255);
-    }
-    ::-webkit-scrollbar {
-        width: 6px;
-        background-color: rgb(255, 255, 255);
-    }
-    ::-webkit-scrollbar-thumb {
-        background: $primary-900;
-        border-radius: 10%;
-    }
-}
 
 img {
     -webkit-touch-callout: none;

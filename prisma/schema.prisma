@@ -119,6 +119,7 @@ model Order {
     restaurantId      String
     address           Address    @relation(fields: [addressId], references: [id])
     addressId         String
+    productsCard      String 
 
     @@map("Orders")
 }

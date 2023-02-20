@@ -1,11 +1,30 @@
 import { api } from "@/services/apí";
-import DeleteIcon from "@mui/icons-material/Delete";
-import SendIcon from "@mui/icons-material/Send";
-import { Box, Button, Chip, ListItemText, Stack } from "@mui/material";
+import { Box, Divider, Grid, ListItem, ListItemText } from "@mui/material";
 import { getCookie } from "cookies-next";
 import { LatLngExpression } from "leaflet";
-import React from "react";
+import Image from "next/image";
 import { Notify, notifyError, notifySuccess } from "../Notify";
+
+type User = {
+    id: string;
+    email: string;
+    password: string;
+    cpf: string;
+    name: string;
+};
+
+type address = {
+    id: string;
+    state: string;
+    city: string;
+    cep: string;
+    district: string;
+    street: string;
+    number: number;
+    latitude: string;
+    longitude: string;
+    userId: string;
+};
 
 type IOrder = {
     id: string;
@@ -26,6 +45,8 @@ type IOrder = {
     userId: string;
     restaurantId: string;
     addressId: string;
+    User: User;
+    address: address;
     products: [
         {
             id: string;
@@ -45,11 +66,18 @@ type IOrder = {
 type Props = {
     setPage: (valor: string) => void;
     setPosition: (valor: LatLngExpression) => void;
+    setOrder: (valor: any) => void;
     order: IOrder;
     refetch: any;
 };
 
-export const OrderIten = ({ setPage, order, setPosition, refetch }: Props) => {
+export const OrderIten = ({
+    setPage,
+    order,
+    setPosition,
+    refetch,
+    setOrder,
+}: Props) => {
     const token = getCookie("@tokenAdmin");
 
     const handleCancel = async () => {
@@ -65,7 +93,6 @@ export const OrderIten = ({ setPage, order, setPosition, refetch }: Props) => {
             notifyError("Ocorreu um erro inesperado");
         }
     };
-
 
     const handleConfirme = async () => {
         try {
@@ -87,75 +114,44 @@ export const OrderIten = ({ setPage, order, setPosition, refetch }: Props) => {
             <Box
                 sx={{
                     p: 2,
-                    // cursor: "pointer",
                 }}
             >
-                <Stack direction="row" spacing={1}>
-                    <Chip
-                        onClick={() => {
-                            setPage("orderIten");
-                            setPosition([
-                                Number(order.latitude),
-                                Number(order.longitude),
-                            ]);
-                        }}
-                        label={"Endereço"}
-                        color="info"
-                    />
-                    <Chip
-                        label={
-                            order.payment === "Money" ? "Dinheiro" : "Cartão"
-                        }
-                        color="secondary"
-                    />
-                </Stack>
-
                 <Notify />
-                <ListItemText
-                    sx={{ fontWeight: "bold",fontSize:60 }}
-                    primary={(order.total / 100).toLocaleString("pt-br", {
-                        style: "currency",
-                        currency: "BRL",
-                    })}
-                    
-                    secondary={
-                        <React.Fragment>
-                            {
-                                <ul>
-                                    {order.products.map((product) => (
-                                        <li key={product.id + product.id}>
-                                            1- {product.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            }
-                        </React.Fragment>
-                    }
-                />
-                <Stack
-                    sx={{
-                        marginTop: 2,
+                <ListItem
+                    button
+                    onClick={() => {
+                        setOrder(order);
+                        setPage("Order");
                     }}
-                    direction="row"
-                    spacing={2}
                 >
-                    <Button
-                        variant="contained"
-                        color="success"
-                        onClick={()=>handleConfirme()}
-                        endIcon={<SendIcon />}
-                    >
-                        Confirmar entrega
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={() => handleCancel()}
-                        startIcon={<DeleteIcon />}
-                    >
-                        Cancelar pedido
-                    </Button>
-                </Stack>
+                    <ListItemText
+                        sx={{ fontWeight: "bold", fontSize: 60 }}
+                        primary={
+                            <Grid container spacing={1}>
+                                <Grid item xs={6} md={8}>
+                                    {order.User.name}
+                                </Grid>
+                                <Grid item xs={6} md={4}>
+                                    <Box sx={{ marginLeft: 20 }}>
+                                        <Image
+                                            src={
+                                                order.payment === "Money"
+                                                    ? "/money.png"
+                                                    : "/Card.png"
+                                            }
+                                            alt="Picture of the author"
+                                            width={35}
+                                            height={35}
+                                        />
+                                    </Box>
+                                </Grid>
+                            </Grid>
+                        }
+                        secondary={`Rua ${order.address.street} - ${order.address.district} 
+                    ${order.address.number}`}
+                    />
+                </ListItem>
+                <Divider light />
             </Box>
         </>
     );

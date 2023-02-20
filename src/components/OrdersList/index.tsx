@@ -5,7 +5,29 @@ import dynamic from "next/dynamic";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { api } from "../../services/apí";
+import { Order } from "../Order";
 import { OrderIten } from "../OrderIten";
+
+type User = {
+    id: string;
+    email: string;
+    password: string;
+    cpf: string;
+    name: string;
+};
+
+type address = {
+    id: string;
+    state: string;
+    city: string;
+    cep: string;
+    district: string;
+    street: string;
+    number: number;
+    latitude: string;
+    longitude: string;
+    userId: string;
+};
 
 type IOrder = {
     id: string;
@@ -26,6 +48,8 @@ type IOrder = {
     userId: string;
     restaurantId: string;
     addressId: string;
+    User: User;
+    address: address;
     products: [
         {
             id: string;
@@ -46,10 +70,15 @@ export const OrdersList = () => {
     const MapWithNoSSR = dynamic(() => import("../Map"), {
         ssr: false,
     });
-    const [position,setPosition]=useState<LatLngExpression>([-6.8923694, -38.5592505])
+    const [position, setPosition] = useState<LatLngExpression>([
+        -6.8923694, -38.5592505,
+    ]);
+
+    const [order, setOrder] = useState<IOrder>();
+
     const token = getCookie("@tokenAdmin");
 
-    const { isLoading, data,refetch } = useQuery(
+    const { isLoading, data, refetch } = useQuery(
         "orders",
         async () => {
             const { data } = await api.get("/order/adm", {
@@ -82,7 +111,8 @@ export const OrdersList = () => {
                                 ) : (
                                     <>
                                         {data?.map((order) => (
-                                            <OrderIten 
+                                            <OrderIten
+                                                setOrder={setOrder}
                                                 refetch={refetch}
                                                 setPosition={setPosition}
                                                 key={order.id}
@@ -97,7 +127,12 @@ export const OrdersList = () => {
                     </Paper>
                 </Container>
             ) : (
-                <MapWithNoSSR setPage={setPage} position={position} />
+                // <MapWithNoSSR setPage={setPage} position={position} />
+                <>
+                    <List>
+                        <Order setPage={setPage} order={order} />
+                    </List>
+                </>
             )}
         </>
     );

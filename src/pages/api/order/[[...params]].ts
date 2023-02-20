@@ -4,7 +4,6 @@ import { emailGenerator } from "@/services/emailGenerator";
 import { getToken } from "@/services/getToken";
 import { stripe } from "@/services/stripe";
 import { CreateOrderDTO } from "@/validators/Order.dto";
-import { v4 as uuidv4 } from 'uuid';
 import { Prisma } from "@prisma/client";
 import * as Next from "next";
 import {
@@ -14,11 +13,11 @@ import {
     Get,
     Param,
     Post,
-    Put,
     Req,
     Res,
     ValidationPipe,
 } from "next-api-decorators";
+import { v4 as uuidv4 } from "uuid";
 import { transporter } from "../../../services/nodemailer";
 import { prismaClient } from "../../../services/prismaClient";
 
@@ -63,18 +62,21 @@ class OrderHandler {
                 },
             });
 
-            const productsList =<Prisma.ProductWhereUniqueInput> products.map((valor) => {
-                return { id: valor.id}
-            });
+            const productsList = <Prisma.ProductWhereUniqueInput>products.map(
+                (valor) => {
+                    return { id: valor.id };
+                }
+            );
 
             const subtotal = products.reduce((acc, obj) => {
                 return acc + obj.price;
             }, 0);
 
             if (caymentMethod === "Money") {
+                
                 const order = await prismaClient.order.create({
                     data: {
-                        paymentLinkId:uuidv4().toString(),
+                        paymentLinkId: uuidv4().toString(),
                         pay: false,
                         delivered: false,
                         frete: 0,
@@ -103,6 +105,7 @@ class OrderHandler {
                         },
                         mensagem: mensagem,
                         status: "Aguardando o envio",
+                        productsCard: ""
                     },
                 });
 
@@ -193,6 +196,9 @@ class OrderHandler {
                         paymentLink: paymentLink.url,
                         paymentLinkId: paymentLink.id,
                         status: "Aguardando o pagamento",
+                        productsCard: JSON.stringify(
+                            Object.assign({}, [...productsCard])
+                        ),
                     },
                 });
 
@@ -320,9 +326,11 @@ class OrderHandler {
                     ],
                     NOT: [{ status: "Cancelado" }, { status: "Entregue" }],
                 },
-                include:{
-                    products:true
-                }
+                include: {
+                    products: true,
+                    User: true,
+                    address: true,
+                },
             });
 
             return res.status(200).json(order);
