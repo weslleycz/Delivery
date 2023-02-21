@@ -5,6 +5,13 @@ import { getToken } from "@/services/getToken";
 import { stripe } from "@/services/stripe";
 import { CreateOrderDTO } from "@/validators/Order.dto";
 import { Prisma } from "@prisma/client";
+import {
+    deleteField,
+    doc,
+    getDoc,
+    setDoc,
+    updateDoc,
+} from "firebase/firestore";
 import * as Next from "next";
 import {
     Body,
@@ -18,6 +25,7 @@ import {
     ValidationPipe,
 } from "next-api-decorators";
 import { v4 as uuidv4 } from "uuid";
+import { firestore } from "../../../services/firebase";
 import { transporter } from "../../../services/nodemailer";
 import { prismaClient } from "../../../services/prismaClient";
 
@@ -73,7 +81,6 @@ class OrderHandler {
             }, 0);
 
             if (caymentMethod === "Money") {
-                
                 const order = await prismaClient.order.create({
                     data: {
                         paymentLinkId: uuidv4().toString(),
@@ -105,8 +112,12 @@ class OrderHandler {
                         },
                         mensagem: mensagem,
                         status: "Aguardando o envio",
-                        productsCard: ""
+                        productsCard: "",
                     },
+                });
+
+                await setDoc(doc(firestore, "orders", order.id), {
+                    card: products,
                 });
 
                 const restaurant = await prismaClient.restaurant.findFirst({
@@ -119,6 +130,17 @@ class OrderHandler {
                     where: {
                         id: token,
                     },
+                });
+
+               productsCard.map((iten) => {
+                    const data = products.findIndex((product) => {
+                        return product.id === iten.id;
+                    })
+                    products[data].quantity = iten.quantity as number;
+                });
+                
+                await setDoc(doc(firestore, "orders", order.id), {
+                    card: products,
                 });
 
                 const logo = <string>restaurant?.logo;
@@ -312,7 +334,7 @@ class OrderHandler {
 
             const restaurantsList = restaurants.map((valor) => valor.id);
 
-            const order = await prismaClient.order.findMany({
+            const orders = await prismaClient.order.findMany({
                 where: {
                     OR: [
                         {
@@ -333,7 +355,7 @@ class OrderHandler {
                 },
             });
 
-            return res.status(200).json(order);
+            return res.status(200).json(orders);
         } catch (error) {
             return res.status(400).json(error);
         }
@@ -412,7 +434,10 @@ class OrderHandler {
                     console.log(err);
                 }
             });
-
+            const docRef = doc(firestore, "orders", id);
+            await updateDoc(docRef, {
+                capital: deleteField(),
+            });
             return res.status(200).json({ status: "deleted" });
         } catch (error) {
             return res.status(400).json(error);
@@ -517,10 +542,27 @@ class OrderHandler {
                 }
             );
 
+            const docRef = doc(firestore, "orders", id);
+            await updateDoc(docRef, {
+                capital: deleteField(),
+            });
             return res.status(200).json({ status: "deleted" });
         } catch (error) {
             return res.status(400).json(error);
         }
+    }
+
+    @Get("/card/:id")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async getOrderCard(
+        @Res() res: Next.NextApiResponse,
+        @Param("id") id: string
+    ) {
+        const docRef = doc(firestore, "orders", id);
+        const docSnap = await getDoc(docRef);
+        const products = docSnap.data() as any;
+        return res.status(200).json(products.card);
     }
 
     @Get("/send/:id")
@@ -538,6 +580,10 @@ class OrderHandler {
                 data: {
                     status: "Entregue",
                 },
+            });
+            const docRef = doc(firestore, "orders", id);
+            await updateDoc(docRef, {
+                capital: deleteField(),
             });
             return res.status(200).json({ status: "confirmed" });
         } catch (error) {

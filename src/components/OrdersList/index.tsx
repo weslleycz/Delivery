@@ -126,11 +126,19 @@ export const OrdersList = () => {
                         </List>
                     </Paper>
                 </Container>
+            ) : page === "Map" ? (
+                <>
+                    <MapWithNoSSR setPage={setPage} position={position} />
+                </>
             ) : (
-                // <MapWithNoSSR setPage={setPage} position={position} />
                 <>
                     <List>
-                        <Order setPage={setPage} order={order} />
+                        <Order
+                            refetch={refetch}
+                            setPosition={setPosition}
+                            setPage={setPage}
+                            order={order}
+                        />
                     </List>
                 </>
             )}

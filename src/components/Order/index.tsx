@@ -1,13 +1,19 @@
+import { api } from "@/services/apí";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import {
     Box,
+    Button,
     Container,
     Divider,
     Grid,
     ListItem,
     ListItemText,
     Paper,
+    Stack,
 } from "@mui/material";
+import { getCookie } from "cookies-next";
+import { useQuery } from "react-query";
+import { Notify, notifyError, notifySuccess } from "../Notify";
 
 type User = {
     id: string;
@@ -51,28 +57,78 @@ type IOrder = {
     addressId: string;
     User: User;
     address: address;
-    products: [
-        {
-            id: string;
-            name: string;
-            price: number;
-            description: string;
-            type: string;
-            img: string;
-            discount: string;
-            cartId: string;
-            restaurantId: string;
-            orderId: string;
-        }
-    ];
+    products: products;
 };
+
+type products = [
+    {
+        id: string;
+        name: string;
+        price: number;
+        description: string;
+        type: string;
+        img: string;
+        discount: string;
+        cartId: string;
+        restaurantId: string;
+        orderId: string;
+        quantity: number;
+    }
+];
 
 type Props = {
     order: IOrder | undefined;
     setPage: (valor: string) => void;
+    setPosition: any;
+    refetch: any;
 };
 
-export const Order = ({ order, setPage }: Props) => {
+export const Order = ({ order, setPage, setPosition, refetch }: Props) => {
+    const token = getCookie("@tokenAdmin");
+
+    const { isLoading, isError, data, error } = useQuery(
+        "products",
+        async () => {
+            const list = await api.get(`/order/card/${order?.id}`, {
+                headers: {
+                    Authorization: token,
+                },
+            });
+            return list.data as products;
+        }
+    );
+
+    const handleCancel = async (order: IOrder | undefined) => {
+        try {
+            await api.delete(`/order/restaurant/${order?.id}`, {
+                headers: {
+                    Authorization: token,
+                },
+            });
+            notifySuccess("Pedido cancelado com sucesso");
+            refetch();
+            setPage("order");
+        } catch (error) {
+            notifyError("Ocorreu um erro inesperado");
+        }
+    };
+
+    const handleConfirme = async (order: IOrder | undefined) => {
+        try {
+            notifySuccess("Pedido entregue");
+            await api.get(`/order/send/${order?.id}`, {
+                headers: {
+                    authorization: token,
+                },
+            });
+            refetch();
+            setPage("order");
+        } catch (error) {
+            console.log(error);
+            notifyError("Ocorreu um erro inesperado");
+        }
+    };
+
     return (
         <>
             <Container sx={{ m: 7 }}>
@@ -83,19 +139,38 @@ export const Order = ({ order, setPage }: Props) => {
                 <Paper style={{ maxHeight: 400, overflow: "auto" }}>
                     <ListItem>
                         <ListItemText
-                            primary={order?.User.name}
+                            primary={`👨🏻‍🦱 ${order?.User.name}`}
                             secondary={`Pedido ${order?.id}`}
                         />
                     </ListItem>
                     <Divider light />
-                    {order?.products.map((product) => {
+                    <ListItem
+                        onClick={() => {
+                            setPosition([
+                                Number(order?.address.latitude),
+                                Number(order?.address.longitude),
+                            ]);
+                            setPage("Map");
+                        }}
+                        sx={{ cursor: "pointer" }}
+                    >
+                        <ListItemText
+                            primary={"📌 Endereço"}
+                            secondary={`${order?.address.city}, 
+                            ${order?.address.street},
+                            nº ${order?.address.number}.
+                            `}
+                        />
+                    </ListItem>
+                    <Divider light />
+                    {data?.map((product) => {
                         return (
                             <>
                                 <Grid container spacing={2}>
                                     <Grid item xs={8}>
                                         <ListItem>
                                             <ListItemText
-                                                secondary={`1x ${product.name}`}
+                                                secondary={`${product.quantity}x ${product.name}`}
                                             />
                                         </ListItem>
                                     </Grid>
@@ -148,7 +223,29 @@ export const Order = ({ order, setPage }: Props) => {
                             </Grid>
                         </Grid>
                     </ListItem>
+                    <Divider light />
+                    <ListItem sx={{ padding: 5 }}>
+                        <Box>
+                            <Stack spacing={2} direction="row">
+                                <Button
+                                    onClick={() => handleConfirme(order)}
+                                    color="success"
+                                    variant="contained"
+                                >
+                                    Confirmar entrega{" "}
+                                </Button>
+                                <Button
+                                    onClick={() => handleCancel(order)}
+                                    color="error"
+                                    variant="contained"
+                                >
+                                    Cancelar pedido
+                                </Button>
+                            </Stack>
+                        </Box>
+                    </ListItem>
                 </Paper>
+                <Notify />
             </Container>
         </>
     );

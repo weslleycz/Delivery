@@ -17,7 +17,7 @@ const Map = ({ position, setPage }: Pros) => {
             <Container sx={{ m: 7 }}>
                 <ChevronLeftIcon
                     sx={{ cursor: "pointer" }}
-                    onClick={() => setPage("order")}
+                    onClick={() => setPage("")}
                 />
                 <MapContainer
                     style={{ height: "70vh" }}

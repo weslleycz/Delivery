@@ -78,37 +78,6 @@ export const OrderIten = ({
     refetch,
     setOrder,
 }: Props) => {
-    const token = getCookie("@tokenAdmin");
-
-    const handleCancel = async () => {
-        try {
-            await api.delete(`/order/restaurant/${order.id}`, {
-                headers: {
-                    Authorization: token,
-                },
-            });
-            notifySuccess("Pedido cancelado com sucesso");
-            refetch();
-        } catch (error) {
-            notifyError("Ocorreu um erro inesperado");
-        }
-    };
-
-    const handleConfirme = async () => {
-        try {
-            await api.get(`/order/send/${order.id}`, {
-                headers: {
-                    authorization: token,
-                },
-            });
-            notifySuccess("Pedido entregue");
-            refetch();
-        } catch (error) {
-            console.log(error);
-            notifyError("Ocorreu um erro inesperado");
-        }
-    };
-
     return (
         <>
             <Box
@@ -157,4 +126,3 @@ export const OrderIten = ({
     );
 };
 
-//
