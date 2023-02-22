@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@africasokoni/react-use-cart": "^1.15.1",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
@@ -40,7 +41,9 @@
     "node-geocoder": "^4.2.0",
     "nodemailer": "^6.9.1",
     "path-to-regexp": "^6.2.1",
+    "ra-data-json-server": "^4.8.1",
     "react": "^18.2.0",
+    "react-admin": "^4.8.1",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.0",
     "react-query": "^3.39.3",

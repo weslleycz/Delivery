@@ -7,10 +7,11 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Notify, notifyError, notifySuccess } from "../../components/Notify";
-import { api } from "../../services/apí";
-import { CreateUserDTO } from "../../validators/User.dto";
 
+import { api } from "../../../services/apí";
+import { CreateUserDTO } from "../../../validators/User.dto";
+
+import { Notify, notifyError, notifySuccess } from "@/components/Notify";
 import {
     Box,
     Button,
@@ -118,7 +119,7 @@ export default function SignUp() {
                                 notifySuccess("Usuário Criado com Sucesso!");
                                 setTimeout(() => {
                                     router.push(
-                                        `/login?color=${query.color}&logo=${query.logo}&id=${query.id}`
+                                        `/restaurant/login?color=${query.color}&logo=${query.logo}&id=${query.id}`
                                     );
                                 }, 1000);
                             } catch (error) {
@@ -353,7 +354,7 @@ export default function SignUp() {
                                 <Typography variant="body1" gutterBottom>
                                     Fazer Login?{" "}
                                     <Link
-                                        href={`/login?color=${query.color}&logo=${query.logo}&id=${query.id}`}
+                                        href={`/restaurant/login?color=${query.color}&logo=${query.logo}&id=${query.id}`}
                                     >
                                         Clique aqui!
                                     </Link>

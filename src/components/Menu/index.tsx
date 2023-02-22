@@ -79,7 +79,7 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                         ) : (
                             <>
                                 <Link
-                                    href={`/login?color=${color.substring(
+                                    href={`/restaurant/login?color=${color.substring(
                                         1
                                     )}&logo=${logo}&id=${id}`}
                                 >
@@ -88,7 +88,7 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                                     </Button>
                                 </Link>
                                 <Link
-                                    href={`/signup?color=${color.substring(
+                                    href={`/restaurant/signup?color=${color.substring(
                                         1
                                     )}&logo=${logo}&id=${id}`}
                                 >
@@ -135,7 +135,7 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                                 </Button>
                             </Link>
 
-                            <Link href="/login">
+                            <Link href="/restaurant/login">
                                 <Button
                                     size="large"
                                     color="primary"
@@ -163,7 +163,7 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                         ) : (
                             <>
                                 <Link
-                                    href={`/login?color=${color.substring(
+                                    href={`/restaurant/login?color=${color.substring(
                                         1
                                     )}&logo=${logo}&id=${id}`}
                                 >
@@ -176,7 +176,7 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                                     </Button>
                                 </Link>
                                 <Link
-                                    href={`/signup?color=${color.substring(
+                                    href={`/restaurant/signup?color=${color.substring(
                                         1
                                     )}&logo=${logo}&id=${id}`}
                                 >

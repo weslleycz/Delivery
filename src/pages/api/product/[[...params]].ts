@@ -79,7 +79,6 @@ class ProductHandler {
     ) {
         try {
             const { page } = <Query>req.query;
-            console.log(page);
             const cursor: number = +page;
             if (cursor === 1 || cursor === 0) {
                 const products = await prismaClient.product.findMany({

@@ -23,6 +23,7 @@ import {
     Typography,
 } from "@mui/material";
 import style from "../login/styles.module.scss";
+import { theme } from "@/theme";
 
 export default function SignUp() {
     type AxiosCreateUserError = {
@@ -62,14 +63,7 @@ export default function SignUp() {
                 className={style["container-all"]}
             >
                 <ThemeProvider
-                    theme={createTheme({
-                        palette: {
-                            primary: {
-                                main: "#FB9400",
-                                contrastText: "#FFFFFF",
-                            },
-                        },
-                    })}
+                    theme={theme}
                 >
                     <Box
                         sx={{

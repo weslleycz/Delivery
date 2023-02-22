@@ -40,9 +40,10 @@ const styleM = {
 
 type Props = {
     setPage: any;
+    setRestaurant: any;
 };
 
-export const ListRestaurantsAdm = ({ setPage }: Props) => {
+export const ListRestaurantsAdm = ({ setPage, setRestaurant }: Props) => {
     const matches = useMediaQuery("(min-width:600px)");
 
     const [open, setOpen] = useState(false);
@@ -116,9 +117,10 @@ export const ListRestaurantsAdm = ({ setPage }: Props) => {
                                     return (
                                         <>
                                             <Grid
-                                                onClick={() =>
-                                                    setPage("Product")
-                                                }
+                                                onClick={() => {
+                                                    setPage("Product");
+                                                    setRestaurant(restaurant);
+                                                }}
                                                 alignItems={"center"}
                                                 item
                                                 xs={6}
@@ -472,7 +474,7 @@ export const ListRestaurantsAdm = ({ setPage }: Props) => {
                                                         )}
                                                         initialValues={{
                                                             name: "",
-                                                            color: "#fb9400",
+                                                            color: "#f5f2ff",
                                                             cnpj: "",
                                                         }}
                                                         onSubmit={async (

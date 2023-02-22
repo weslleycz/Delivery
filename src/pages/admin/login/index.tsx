@@ -29,6 +29,7 @@ import {
     Typography,
 } from "@mui/material";
 import style from "./styles.module.scss";
+import { theme } from "@/theme";
 
 export default function Login() {
     type AxiosError = {
@@ -56,14 +57,7 @@ export default function Login() {
             </Head>
             <Container maxWidth="xs" className={style["container-all"]}>
                 <ThemeProvider
-                    theme={createTheme({
-                        palette: {
-                            primary: {
-                                main: "#FB9400",
-                                contrastText: "#FFFFFF",
-                            },
-                        },
-                    })}
+                    theme={theme}
                 >
                     <Box
                         sx={{

@@ -1,6 +1,5 @@
 "use client";
 
-import { Hero } from "@/components/Hero";
 import { ListRestaurants } from "@/components/ListRestaurants";
 import Head from "next/head";
 
@@ -13,7 +12,6 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
                 <title>Página home</title>
             </Head>
-            <Hero />
             <ListRestaurants />
         </>
     );

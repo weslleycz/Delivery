@@ -1,18 +1,17 @@
+import DeliveryDiningIcon from "@mui/icons-material/DeliveryDining";
 import GridViewIcon from "@mui/icons-material/GridView";
-import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining';
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Box, Button, List, ListItem } from "@mui/material";
 import { deleteCookie } from "cookies-next";
 import Image from "next/image";
-import style from "./styles.module.scss";
 import { useRouter } from "next/router";
+import style from "./styles.module.scss";
 
-type Props={
-    setPage:(valor:string)=>void;
-}
+type Props = {
+    setPage: (valor: string) => void;
+};
 
-export const MenuAdmin = ({setPage}:Props) => {
-
+export const MenuAdmin = ({ setPage }: Props) => {
     const router = useRouter();
 
     const handleLogoff = () => {
@@ -35,7 +34,7 @@ export const MenuAdmin = ({setPage}:Props) => {
                     <ListItem component="div" disablePadding>
                         <Button
                             size="large"
-                            onClick={()=>setPage("restaurants")}
+                            onClick={() => setPage("restaurants")}
                             startIcon={<GridViewIcon />}
                         >
                             <strong>Restaurantes</strong>
@@ -44,14 +43,14 @@ export const MenuAdmin = ({setPage}:Props) => {
                     <ListItem component="div" disablePadding>
                         <Button
                             size="large"
-                            onClick={()=>setPage("order")}
+                            onClick={() => setPage("order")}
                             startIcon={<DeliveryDiningIcon />}
                         >
                             <strong>Pedidos</strong>
                         </Button>
                     </ListItem>
                     <ListItem
-                        sx={{ marginTop: 40 }}
+                        sx={{ marginTop: 32 }}
                         component="div"
                         disablePadding
                     >

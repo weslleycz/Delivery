@@ -17,9 +17,6 @@ export const Hero = () => {
                         <br />
                         nunca foi tão fácil
                     </Typography>
-                    <Typography color={"#383838"} variant="h6" gutterBottom>
-                        😋 Descubra os melhores restaurantes
-                    </Typography>
                 </Box>
             </ThemeProvider>
         </>

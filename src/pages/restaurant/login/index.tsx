@@ -12,10 +12,10 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Notify, notifyError } from "../../components/Notify";
-import { api } from "../../services/apí";
-import { LoginUserDTO } from "../../validators/User.dto";
+import { Notify, notifyError } from "../../../components/Notify";
+import { api } from "../../../services/apí";
 
+import { LoginUserDTO } from "@/validators/User.dto";
 import {
     Box,
     Button,
@@ -228,7 +228,7 @@ export default function Login() {
                                 <Typography variant="body1" gutterBottom>
                                     Não tem conta?{" "}
                                     <Link
-                                        href={`/signup?color=${query.color}&logo=${query.logo}&id=${query.id}`}
+                                        href={`/restaurant/signup?color=${query.color}&logo=${query.logo}&id=${query.id}`}
                                     >
                                         Cadastrar-se
                                     </Link>
