@@ -9,6 +9,7 @@ import { setCookie } from "cookies-next";
 import { Formik } from "formik";
 import moment from "moment";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Notify, notifyError } from "../../components/Notify";
@@ -47,6 +48,8 @@ export default function Login() {
 
     const { query } = useRouter();
 
+    console.log(query.logo);
+
     return (
         <>
             <Head>
@@ -72,9 +75,10 @@ export default function Login() {
                             alignItems: "center",
                         }}
                     >
-                        <img
-                            src={query.logo as string}
+                        <Image
+                            src={"/logo.svg"}
                             alt="Logo"
+                            color="#ff0000"
                             width={100}
                             height={100}
                         />
@@ -213,8 +217,9 @@ export default function Login() {
                                 </Typography>
                                 <Divider
                                     sx={{
-                                        border: `0.1rem solid ${"#" + query.color
-                                            }`,
+                                        border: `0.1rem solid ${
+                                            "#" + query.color
+                                        }`,
                                         width: "100%",
                                         margin: "1rem 0",
                                         background: "#" + query.color,

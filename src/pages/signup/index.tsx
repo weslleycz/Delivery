@@ -4,6 +4,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import createValidator from "class-validator-formik";
 import { Formik } from "formik";
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Notify, notifyError, notifySuccess } from "../../components/Notify";
@@ -56,7 +57,11 @@ export default function SignUp() {
                 <link rel="icon" href={query.logo as string} />
                 <title>Cadastrar-se</title>
             </Head>
-            <Container sx={{ marginBlock: 5 }} maxWidth="xs" className={style["container-all"]}>
+            <Container
+                sx={{ marginBlock: 5 }}
+                maxWidth="xs"
+                className={style["container-all"]}
+            >
                 <ThemeProvider
                     theme={createTheme({
                         palette: {
@@ -72,11 +77,11 @@ export default function SignUp() {
                             justifyContent: "center",
                             display: "flex",
                             alignItems: "center",
-                            marginTop: 1
+                            marginTop: 1,
                         }}
                     >
-                        <img
-                            src={query.logo as string}
+                        <Image
+                            src={"/logo.svg"}
                             alt="Logo"
                             width={100}
                             height={100}
@@ -259,7 +264,7 @@ export default function SignUp() {
                                     sx={{ margin: " 0 0 0.5rem 0" }}
                                 />
                                 {errors.passwordConfirm &&
-                                    touched.passwordConfirm ? (
+                                touched.passwordConfirm ? (
                                     <>
                                         <Typography
                                             color={"error"}

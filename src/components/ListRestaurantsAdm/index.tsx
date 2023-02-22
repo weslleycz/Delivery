@@ -17,7 +17,6 @@ import createValidator from "class-validator-formik";
 import { getCookie } from "cookies-next";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Formik } from "formik";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { api } from "../../services/apí";
@@ -39,7 +38,11 @@ const styleM = {
     pb: 3,
 };
 
-export const ListRestaurantsAdm = () => {
+type Props = {
+    setPage: any;
+};
+
+export const ListRestaurantsAdm = ({ setPage }: Props) => {
     const matches = useMediaQuery("(min-width:600px)");
 
     const [open, setOpen] = useState(false);
@@ -54,7 +57,6 @@ export const ListRestaurantsAdm = () => {
     const [isForm, setIsForm] = useState(true);
     const [percent, setPercent] = useState(0);
     const [logo, setLogo] = useState<string>();
-    const router = useRouter();
 
     const handleImageAsFile = (e: any) => {
         const image = e.target.files[0];
@@ -81,8 +83,6 @@ export const ListRestaurantsAdm = () => {
     const token = getCookie("@tokenAdmin");
 
     const fetchUsers = async () => {
-
-
         const res = await api.get("/restaurant/adm/list", {
             headers: {
                 Authorization: token,
@@ -91,7 +91,10 @@ export const ListRestaurantsAdm = () => {
         return res.data;
     };
 
-    const { data, status, isLoading,refetch} = useQuery("restaurants", fetchUsers);
+    const { data, status, isLoading, refetch } = useQuery(
+        "restaurants",
+        fetchUsers
+    );
 
     return (
         <>
@@ -113,6 +116,9 @@ export const ListRestaurantsAdm = () => {
                                     return (
                                         <>
                                             <Grid
+                                                onClick={() =>
+                                                    setPage("Product")
+                                                }
                                                 alignItems={"center"}
                                                 item
                                                 xs={6}
@@ -460,236 +466,236 @@ export const ListRestaurantsAdm = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                    <Formik
-                                        validate={createValidator(
-                                            CreateRestaurantDTO
-                                        )}
-                                        initialValues={{
-                                            name: "",
-                                            color: "#fb9400",
-                                            cnpj: "",
-                                        }}
-                                        onSubmit={async (
-                                            values,
-                                            {
-                                                resetForm,
-                                                setErrors,
-                                            }
-                                        ) => {
-                                            const token =
-                                                getCookie(
-                                                    "@tokenAdmin"
-                                                );
-                                            const dataAddress =
-                                                await api.post(
-                                                    "/address/adm",
-                                                    address,
-                                                    {
-                                                        headers:
+                                                    <Formik
+                                                        validate={createValidator(
+                                                            CreateRestaurantDTO
+                                                        )}
+                                                        initialValues={{
+                                                            name: "",
+                                                            color: "#fb9400",
+                                                            cnpj: "",
+                                                        }}
+                                                        onSubmit={async (
+                                                            values,
                                                             {
-                                                                authorization:
-                                                                    token,
-                                                            },
-                                                    }
-                                                );
-                                            notifyInfo(
-                                                "Criando restaurante"
-                                            );
-                                            try {
-                                                await api.post(
-                                                    "/restaurant",
-                                                    {
-                                                        name: values.name,
-                                                        cnpj: values.cnpj,
-                                                        idAddress:
-                                                            dataAddress
-                                                                .data
-                                                                .id,
-                                                        logo: logo,
-                                                        color: values.color,
-                                                    },
-                                                    {
-                                                        headers:
-                                                            {
-                                                                authorization:
-                                                                    token,
-                                                            },
-                                                    }
-                                                );
-                                                notifySuccess(
-                                                    "Criado com sucesso"
-                                                );
-                                                refetch();
-                                                handleClose();
-                                            } catch (error) {
-                                                notifyError(
-                                                    "Ocorreu um erro inesperado"
-                                                );
-                                            }
-                                        }}
-                                    >
-                                        {({
-                                            values,
-                                            touched,
-                                            errors,
-                                            handleChange,
-                                            handleBlur,
-                                            handleSubmit,
-                                        }) => (
-                                            <>
-                                                <Grid
-                                                    container
-                                                    spacing={2}
-                                                >
-                                                    <Grid
-                                                        item
-                                                        xs={12}
-                                                    >
-                                                        <TextField
-                                                            required
-                                                            fullWidth
-                                                            label="Nome"
-                                                            autoFocus
-                                                            onBlur={handleBlur(
-                                                                "name"
-                                                            )}
-                                                            value={
-                                                                values.name
+                                                                resetForm,
+                                                                setErrors,
                                                             }
-                                                            onChange={handleChange(
-                                                                "name"
-                                                            )}
-                                                        />
-                                                        {errors.name &&
-                                                        touched.name ? (
-                                                            <>
-                                                                <Typography
-                                                                    color={
-                                                                        "error"
-                                                                    }
-                                                                    variant="subtitle2"
-                                                                >
+                                                        ) => {
+                                                            const token =
+                                                                getCookie(
+                                                                    "@tokenAdmin"
+                                                                );
+                                                            const dataAddress =
+                                                                await api.post(
+                                                                    "/address/adm",
+                                                                    address,
                                                                     {
-                                                                        errors.name
+                                                                        headers:
+                                                                            {
+                                                                                authorization:
+                                                                                    token,
+                                                                            },
                                                                     }
-                                                                </Typography>
-                                                            </>
-                                                        ) : (
+                                                                );
+                                                            notifyInfo(
+                                                                "Criando restaurante"
+                                                            );
+                                                            try {
+                                                                await api.post(
+                                                                    "/restaurant",
+                                                                    {
+                                                                        name: values.name,
+                                                                        cnpj: values.cnpj,
+                                                                        idAddress:
+                                                                            dataAddress
+                                                                                .data
+                                                                                .id,
+                                                                        logo: logo,
+                                                                        color: values.color,
+                                                                    },
+                                                                    {
+                                                                        headers:
+                                                                            {
+                                                                                authorization:
+                                                                                    token,
+                                                                            },
+                                                                    }
+                                                                );
+                                                                notifySuccess(
+                                                                    "Criado com sucesso"
+                                                                );
+                                                                refetch();
+                                                                handleClose();
+                                                            } catch (error) {
+                                                                notifyError(
+                                                                    "Ocorreu um erro inesperado"
+                                                                );
+                                                            }
+                                                        }}
+                                                    >
+                                                        {({
+                                                            values,
+                                                            touched,
+                                                            errors,
+                                                            handleChange,
+                                                            handleBlur,
+                                                            handleSubmit,
+                                                        }) => (
                                                             <>
+                                                                <Grid
+                                                                    container
+                                                                    spacing={2}
+                                                                >
+                                                                    <Grid
+                                                                        item
+                                                                        xs={12}
+                                                                    >
+                                                                        <TextField
+                                                                            required
+                                                                            fullWidth
+                                                                            label="Nome"
+                                                                            autoFocus
+                                                                            onBlur={handleBlur(
+                                                                                "name"
+                                                                            )}
+                                                                            value={
+                                                                                values.name
+                                                                            }
+                                                                            onChange={handleChange(
+                                                                                "name"
+                                                                            )}
+                                                                        />
+                                                                        {errors.name &&
+                                                                        touched.name ? (
+                                                                            <>
+                                                                                <Typography
+                                                                                    color={
+                                                                                        "error"
+                                                                                    }
+                                                                                    variant="subtitle2"
+                                                                                >
+                                                                                    {
+                                                                                        errors.name
+                                                                                    }
+                                                                                </Typography>
+                                                                            </>
+                                                                        ) : (
+                                                                            <>
 
+                                                                            </>
+                                                                        )}
+                                                                    </Grid>
+                                                                    <Grid
+                                                                        item
+                                                                        xs={12}
+                                                                    >
+                                                                        <TextField
+                                                                            required
+                                                                            fullWidth
+                                                                            label="CNPJ"
+                                                                            type="text"
+                                                                            onBlur={handleBlur(
+                                                                                "cnpj"
+                                                                            )}
+                                                                            value={
+                                                                                values.cnpj
+                                                                            }
+                                                                            onChange={handleChange(
+                                                                                "cnpj"
+                                                                            )}
+                                                                        />
+                                                                        {errors.cnpj &&
+                                                                        touched.cnpj ? (
+                                                                            <>
+                                                                                <Typography
+                                                                                    color={
+                                                                                        "error"
+                                                                                    }
+                                                                                    variant="subtitle2"
+                                                                                >
+                                                                                    {
+                                                                                        errors.cnpj
+                                                                                    }
+                                                                                </Typography>
+                                                                            </>
+                                                                        ) : (
+                                                                            <>
+
+                                                                            </>
+                                                                        )}
+                                                                    </Grid>
+                                                                    <Grid
+                                                                        item
+                                                                        xs={12}
+                                                                    >
+                                                                        <TextField
+                                                                            required
+                                                                            fullWidth
+                                                                            onChange={
+                                                                                handleImageAsFile
+                                                                            }
+                                                                            label="Logo"
+                                                                            type="file"
+                                                                        />
+                                                                    </Grid>
+                                                                    <Grid
+                                                                        item
+                                                                        xs={12}
+                                                                    >
+                                                                        <TextField
+                                                                            required
+                                                                            fullWidth
+                                                                            label="Cor"
+                                                                            type="color"
+                                                                            onBlur={handleBlur(
+                                                                                "color"
+                                                                            )}
+                                                                            value={
+                                                                                values.color
+                                                                            }
+                                                                            onChange={handleChange(
+                                                                                "color"
+                                                                            )}
+                                                                        />
+                                                                        {errors.name &&
+                                                                        touched.color ? (
+                                                                            <>
+                                                                                <Typography
+                                                                                    color={
+                                                                                        "error"
+                                                                                    }
+                                                                                    variant="subtitle2"
+                                                                                >
+                                                                                    {
+                                                                                        errors.color
+                                                                                    }
+                                                                                </Typography>
+                                                                            </>
+                                                                        ) : (
+                                                                            <>
+
+                                                                            </>
+                                                                        )}
+                                                                    </Grid>
+                                                                </Grid>
+                                                                <Button
+                                                                    fullWidth
+                                                                    type="submit"
+                                                                    variant="contained"
+                                                                    sx={{
+                                                                        mt: 3,
+                                                                        mb: 2,
+                                                                    }}
+                                                                    onClick={() => {
+                                                                        handleSubmit();
+                                                                    }}
+                                                                >
+                                                                    Criar
+                                                                </Button>
                                                             </>
                                                         )}
-                                                    </Grid>
-                                                    <Grid
-                                                        item
-                                                        xs={12}
-                                                    >
-                                                        <TextField
-                                                            required
-                                                            fullWidth
-                                                            label="CNPJ"
-                                                            type="text"
-                                                            onBlur={handleBlur(
-                                                                "cnpj"
-                                                            )}
-                                                            value={
-                                                                values.cnpj
-                                                            }
-                                                            onChange={handleChange(
-                                                                "cnpj"
-                                                            )}
-                                                        />
-                                                        {errors.cnpj &&
-                                                        touched.cnpj ? (
-                                                            <>
-                                                                <Typography
-                                                                    color={
-                                                                        "error"
-                                                                    }
-                                                                    variant="subtitle2"
-                                                                >
-                                                                    {
-                                                                        errors.cnpj
-                                                                    }
-                                                                </Typography>
-                                                            </>
-                                                        ) : (
-                                                            <>
-
-                                                            </>
-                                                        )}
-                                                    </Grid>
-                                                    <Grid
-                                                        item
-                                                        xs={12}
-                                                    >
-                                                        <TextField
-                                                            required
-                                                            fullWidth
-                                                            onChange={
-                                                                handleImageAsFile
-                                                            }
-                                                            label="Logo"
-                                                            type="file"
-                                                        />
-                                                    </Grid>
-                                                    <Grid
-                                                        item
-                                                        xs={12}
-                                                    >
-                                                        <TextField
-                                                            required
-                                                            fullWidth
-                                                            label="Cor"
-                                                            type="color"
-                                                            onBlur={handleBlur(
-                                                                "color"
-                                                            )}
-                                                            value={
-                                                                values.color
-                                                            }
-                                                            onChange={handleChange(
-                                                                "color"
-                                                            )}
-                                                        />
-                                                        {errors.name &&
-                                                        touched.color ? (
-                                                            <>
-                                                                <Typography
-                                                                    color={
-                                                                        "error"
-                                                                    }
-                                                                    variant="subtitle2"
-                                                                >
-                                                                    {
-                                                                        errors.color
-                                                                    }
-                                                                </Typography>
-                                                            </>
-                                                        ) : (
-                                                            <>
-
-                                                            </>
-                                                        )}
-                                                    </Grid>
-                                                </Grid>
-                                                <Button
-                                                    fullWidth
-                                                    type="submit"
-                                                    variant="contained"
-                                                    sx={{
-                                                        mt: 3,
-                                                        mb: 2,
-                                                    }}
-                                                    onClick={() => {
-                                                        handleSubmit();
-                                                    }}
-                                                >
-                                                    Criar
-                                                </Button>
-                                            </>
-                                        )}
-                                    </Formik>
+                                                    </Formik>
                                                 </>
                                             )}
                                             <Box

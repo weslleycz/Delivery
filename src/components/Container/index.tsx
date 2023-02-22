@@ -1,12 +1,12 @@
 import { Box, createTheme, ThemeProvider } from "@mui/material";
 import { ReactNode } from "react";
 
-type Props={
-    color:string,
-    children:ReactNode
-}
+type Props = {
+    color: string;
+    children: ReactNode;
+};
 
-export const Container = ({children,color}:Props) => {
+export const Container = ({ children, color }: Props) => {
     return (
         <Box>
             <ThemeProvider

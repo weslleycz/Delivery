@@ -212,8 +212,9 @@ export default function Login() {
                                 </Typography>
                                 <Divider
                                     sx={{
-                                        border: `0.1rem solid ${"#" + query.color
-                                            }`,
+                                        border: `0.1rem solid ${
+                                            "#" + query.color
+                                        }`,
                                         width: "100%",
                                         margin: "1rem 0",
                                         background: "#" + query.color,
@@ -221,11 +222,7 @@ export default function Login() {
                                 />
                                 <Typography variant="body1" gutterBottom>
                                     Não tem conta?{" "}
-                                    <Link
-                                        href={"signup"}
-                                    >
-                                        Cadastrar-se
-                                    </Link>
+                                    <Link href={"signup"}>Cadastrar-se</Link>
                                 </Typography>
                             </>
                         )}
