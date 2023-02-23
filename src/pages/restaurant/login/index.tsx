@@ -30,6 +30,7 @@ import {
     Typography,
 } from "@mui/material";
 import style from "./styles.module.scss";
+import { Logo } from "@/components/Logo";
 
 export default function Login() {
     type AxiosError = {
@@ -75,13 +76,7 @@ export default function Login() {
                             alignItems: "center",
                         }}
                     >
-                        <Image
-                            src={"/logo.svg"}
-                            alt="Logo"
-                            color="#ff0000"
-                            width={100}
-                            height={100}
-                        />
+                        <Logo color={"#" + query.color}/>
                     </Box>
                     <p>Use suas credenciais para realizar o login.</p>
                     <Formik

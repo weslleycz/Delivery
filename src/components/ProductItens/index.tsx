@@ -18,7 +18,7 @@ type Props = {
 export const ProductItens = ({ product }: Props) => {
     return (
         <>
-            <Grid item sx={{ marginLeft: 4, marginTop: 2,":active":{
+            <Grid item sx={{ marginLeft: 4, marginTop: 1,":active":{
                   outline: "none"
             },
             ":focus":{

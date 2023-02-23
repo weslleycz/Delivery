@@ -5,6 +5,8 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Button } from "@mui/material";
 import { getCookie } from "cookies-next";
 import { ExportToCsv } from "export-to-csv";
+import { MRT_ColumnDef } from "material-react-table";
+import { useMemo } from "react";
 import { Notify, notifySuccess,notifyError } from "../Notify";
 
 type Product = {
@@ -23,7 +25,6 @@ type Product = {
 type Props = {
     rowSelection: {};
     data: Product[];
-    columns: any;
     refetch: any;
     setRowSelection:any;
 };
@@ -31,10 +32,43 @@ type Props = {
 export const ButtonsCrud = ({
     rowSelection,
     data,
-    columns,
     refetch,
     setRowSelection
 }: Props) => {
+    const columns = useMemo<MRT_ColumnDef[]>(
+        () => [
+            {
+                accessorKey: "id",
+                header: "Id",
+            },
+            {
+                accessorKey: "name",
+                header: "Nome",
+            },
+            {
+                accessorKey: "price",
+                header: "Preço",
+            },
+            {
+                accessorKey: "type",
+                header: "Tipo",
+            },
+            {
+                accessorKey: "img",
+                header: "Imagem",
+            },
+            {
+                accessorKey: "discount",
+                header: "Disconto",
+            },
+            {
+                accessorKey: "description",
+                header: "Descrição",
+            },
+        ],
+        []
+    );
+
     const handleDeactivate = async () => {
         const token = getCookie("@tokenAdmin");
         console.clear();
@@ -53,6 +87,7 @@ export const ButtonsCrud = ({
         refetch();
         setRowSelection({})
     };
+
 
     const csvOptions = {
         fieldSeparator: ",",

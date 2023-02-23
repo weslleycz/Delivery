@@ -72,13 +72,12 @@ export default function ListProducts() {
             }
         })();
     }, [router.query]);
-
     return (
         <>
             <Head>
                 <meta name="theme-color" content={rest.color} />
                 <link rel="icon" href={rest.logo} />
-                <title>Produtos do Restaurante</title>
+                <title>Produtos</title>
             </Head>
             <ThemeProvider
                 theme={createTheme({

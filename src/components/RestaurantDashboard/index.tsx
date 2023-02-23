@@ -45,7 +45,7 @@ export const RestaurantDashboard = ({ setPage, restaurant }: Props) => {
                             </Box>
                         </Button>
                     </Paper>
-                    <Paper elevation={3}>
+                    <Paper onClick={() => setPage("Metrics")} elevation={3}>
                         <Button
                             fullWidth
                             sx={{ height: 180 }}

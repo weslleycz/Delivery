@@ -132,13 +132,13 @@ class OrderHandler {
                     },
                 });
 
-               productsCard.map((iten) => {
+                productsCard.map((iten) => {
                     const data = products.findIndex((product) => {
                         return product.id === iten.id;
-                    })
+                    });
                     products[data].quantity = iten.quantity as number;
                 });
-                
+
                 await setDoc(doc(firestore, "orders", order.id), {
                     card: products,
                 });
@@ -586,6 +586,42 @@ class OrderHandler {
                 capital: deleteField(),
             });
             return res.status(200).json({ status: "confirmed" });
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
+    @Get("/metrics/:id")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async getOrdersMetrics(
+        @Param("id") id: string,
+        @Res() res: Next.NextApiResponse
+    ) {
+        try {
+            const canceled = await prismaClient.order.findMany({
+                where: {
+                    restaurantId: id,
+                    status: "Cancelado",
+                },
+            });
+            const confirmed = await prismaClient.order.findMany({
+                where: {
+                    restaurantId: id,
+                    status: "Entregue",
+                },
+            });
+            const pending = await prismaClient.order.findMany({
+                where: {
+                    restaurantId: id,
+                    status: "Aguardando o envio",
+                },
+            });
+            return res.status(200).json({
+                canceled: canceled.length,
+                confirmed: confirmed.length,
+                pending: pending.length
+            });
         } catch (error) {
             return res.status(400).json(error);
         }

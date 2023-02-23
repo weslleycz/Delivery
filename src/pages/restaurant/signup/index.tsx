@@ -4,13 +4,13 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import createValidator from "class-validator-formik";
 import { Formik } from "formik";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
 import { api } from "../../../services/apí";
 import { CreateUserDTO } from "../../../validators/User.dto";
 
+import { Logo } from "@/components/Logo";
 import { Notify, notifyError, notifySuccess } from "@/components/Notify";
 import {
     Box,
@@ -59,7 +59,7 @@ export default function SignUp() {
                 <title>Cadastrar-se</title>
             </Head>
             <Container
-                sx={{ marginBlock: 5 }}
+                sx={{ marginBlock: 2 }}
                 maxWidth="xs"
                 className={style["container-all"]}
             >
@@ -78,15 +78,9 @@ export default function SignUp() {
                             justifyContent: "center",
                             display: "flex",
                             alignItems: "center",
-                            marginTop: 1,
                         }}
                     >
-                        <Image
-                            src={"/logo.svg"}
-                            alt="Logo"
-                            width={100}
-                            height={100}
-                        />
+                        <Logo color={"#" + query.color} />
                     </Box>
                     <div className={style.logo}>
                         <p>Realizar um Cadastro no App.</p>

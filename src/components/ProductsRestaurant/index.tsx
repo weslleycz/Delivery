@@ -60,7 +60,7 @@ export const ProductsRestaurant = ({ setPage, restaurant }: Props) => {
                     <Box
                         component="span"
                         sx={(theme) => ({
-                            backgroundColor: "#69e439",
+                            backgroundColor: "#bd77eb",
                             borderRadius: "0.25rem",
                             color: "#fff",
                             maxWidth: "9ch",
@@ -113,7 +113,6 @@ export const ProductsRestaurant = ({ setPage, restaurant }: Props) => {
                                 <ButtonsCrud
                                     setRowSelection={setRowSelection}
                                     refetch={refetch}
-                                    columns={columns}
                                     data={data}
                                     rowSelection={rowSelection}
                                 />
@@ -124,7 +123,7 @@ export const ProductsRestaurant = ({ setPage, restaurant }: Props) => {
                         return (
                             <>
                                 <Box sx={{ p: 1 }}>
-                                    <Fab color="success" aria-label="add">
+                                    <Fab color="primary" aria-label="add">
                                         <AddIcon />
                                     </Fab>
                                 </Box>

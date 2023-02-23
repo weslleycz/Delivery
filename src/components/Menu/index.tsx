@@ -57,12 +57,6 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                                     Produtos
                                 </Button>
                             </Link>
-
-                            <Link href="/login">
-                                <Button color="primary" variant="text">
-                                    Contato
-                                </Button>
-                            </Link>
                         </Stack>
                     </Container>
                     <Stack direction="row" spacing={3}>
@@ -132,16 +126,6 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                                     variant="text"
                                 >
                                     Produtos
-                                </Button>
-                            </Link>
-
-                            <Link href="/restaurant/login">
-                                <Button
-                                    size="large"
-                                    color="primary"
-                                    variant="text"
-                                >
-                                    Contato
                                 </Button>
                             </Link>
                         </Stack>
