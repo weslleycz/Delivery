@@ -46,7 +46,7 @@ class ProductHandler {
                     price,
                     type,
                     discount,
-                    img:imagens[0],
+                    img: imagens[0],
                     Restaurant: {
                         connect: {
                             id: idRestaurant,
@@ -98,7 +98,7 @@ class ProductHandler {
             } else {
                 const products = await prismaClient.product.findMany({
                     take: 12,
-                    skip:cursor * 12/Number(page),
+                    skip: (cursor * 12) / Number(page),
                     orderBy: {
                         id: "asc",
                     },
@@ -174,20 +174,37 @@ class ProductHandler {
         }
     }
 
+    @Get("/restaurant/:id")
+    @JwtAuthGuard()
+    @isAdmin()
+    public async getProductRestaurant(@Param("id") id: string,
+    @Res() res: Next.NextApiResponse,
+    ) {
+        try {
+            const products = await prismaClient.product.findMany({
+                where:{
+                    restaurantId:id
+                }
+            })
+            return res.status(200).json(products);
+        } catch (error) {
+            return res.status(400).json(error);
+        }
+    }
+
     @Get("/imagems/:id")
     public async getImagens(
         @Param("id") id: string,
         @Res() res: Next.NextApiResponse
     ) {
         const product = await prismaClient.product.findFirst({
-            where:{
-               id 
+            where: {
+                id,
             },
-            select:{
-               img:true
-
-            }
-        })
+            select: {
+                img: true,
+            },
+        });
         return res.status(200).json(product?.img);
     }
 

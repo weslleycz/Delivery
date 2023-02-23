@@ -68,12 +68,11 @@ export const ListRestaurantsAdm = ({ setPage, setRestaurant }: Props) => {
             (snapshot) => {
                 const percent = Math.round(
                     (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                ); // update progress
+                );
                 setPercent(percent);
             },
             (err) => console.log(err),
             () => {
-                // download url
                 getDownloadURL(uploadTask.snapshot.ref).then((url) => {
                     setLogo(url);
                 });
@@ -118,7 +117,7 @@ export const ListRestaurantsAdm = ({ setPage, setRestaurant }: Props) => {
                                         <>
                                             <Grid
                                                 onClick={() => {
-                                                    setPage("Product");
+                                                    setPage("Restaurant");
                                                     setRestaurant(restaurant);
                                                 }}
                                                 alignItems={"center"}

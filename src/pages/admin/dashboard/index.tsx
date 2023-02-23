@@ -1,6 +1,7 @@
 import { ListRestaurantsAdm } from "@/components/ListRestaurantsAdm";
 import { MenuAdmin } from "@/components/MenuAdmin";
 import { OrdersList } from "@/components/OrdersList";
+import { ProductsRestaurant } from "@/components/ProductsRestaurant";
 import { RestaurantDashboard } from "@/components/RestaurantDashboard";
 import { ThemeProvider } from "@emotion/react";
 import { Box, Grid } from "@mui/material";
@@ -34,20 +35,24 @@ export default function Dashboard() {
                                         setPage={setPage}
                                     />
                                 </>
-                            ) : page === "restaurant" ? (
-                                <></>
-                            ) : page === "order" ? (
-                                <>
-                                    <OrdersList />
-                                </>
-                            ) : (
+                            ) : page === "Restaurant" ? (
                                 <>
                                     <RestaurantDashboard
                                         restaurant={restaurant}
                                         setPage={setPage}
                                     />
                                 </>
-                            )}
+                            ) : page === "order" ? (
+                                <>
+                                    <OrdersList />
+                                </>
+                            ) : page === "Products" ? (
+                                <>
+                                    <ProductsRestaurant
+                                    restaurant={restaurant}
+                                     setPage={setPage} />
+                                </>
+                            ) : null}
                         </Grid>
                     </Grid>
                 </Box>

@@ -7,10 +7,10 @@ import { Pros } from "../../components/CardRestaurant";
 
 type Props = {
     setPage: any;
-    restaurant:Pros | undefined;
+    restaurant: Pros | undefined;
 };
 
-export const RestaurantDashboard = ({ setPage,restaurant }: Props) => {
+export const RestaurantDashboard = ({ setPage, restaurant }: Props) => {
     return (
         <>
             <Container sx={{ m: 7 }}>
@@ -35,12 +35,11 @@ export const RestaurantDashboard = ({ setPage,restaurant }: Props) => {
                             href={`/restaurant/${restaurant?.id}`}
                             fullWidth
                             sx={{ height: 180 }}
-                            variant="outlined"
+                            variant="contained"
                         >
                             <Box alignItems={"center"} textAlign={"center"}>
                                 <HouseIcon
-                                    sx={{ fontSize: 100 }}
-                                    color="primary"
+                                    sx={{ fontSize: 100, color: "white" }}
                                 />
                                 Página
                             </Box>
@@ -50,28 +49,26 @@ export const RestaurantDashboard = ({ setPage,restaurant }: Props) => {
                         <Button
                             fullWidth
                             sx={{ height: 180 }}
-                            variant="outlined"
+                            variant="contained"
                         >
                             <Box alignItems={"center"} textAlign={"center"}>
                                 <EqualizerIcon
-                                    sx={{ fontSize: 100 }}
-                                    color="primary"
+                                    sx={{ fontSize: 100, color: "white" }}
                                 />
                                 <strong>Métricas</strong>
                             </Box>
                         </Button>
                     </Paper>
 
-                    <Paper elevation={3}>
+                    <Paper onClick={() => setPage("Products")} elevation={3}>
                         <Button
                             fullWidth
                             sx={{ height: 180 }}
-                            variant="outlined"
+                            variant="contained"
                         >
                             <Box alignItems={"center"} textAlign={"center"}>
                                 <Inventory2Icon
-                                    sx={{ fontSize: 100 }}
-                                    color="primary"
+                                    sx={{ fontSize: 100, color: "white" }}
                                 />
                                 <strong>Produtos</strong>
                             </Box>
