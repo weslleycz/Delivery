@@ -57,9 +57,9 @@ export default function Dashboard() {
                             ) : (
                                 <>
                                     <RestaurantMetrics
-                                    setPage={setPage}
-                                    restaurant={restaurant}
-                                     />
+                                        setPage={setPage}
+                                        restaurant={restaurant}
+                                    />
                                 </>
                             )}
                         </Grid>

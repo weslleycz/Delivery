@@ -1,7 +1,6 @@
 import { api } from "@/services/apí";
-import AddIcon from "@mui/icons-material/Add";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { Box, Container, Fab } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { getCookie } from "cookies-next";
 import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
 import { MRT_Localization_PT_BR } from "material-react-table/locales/pt-BR";
@@ -9,6 +8,7 @@ import { useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { Pros } from "../../components/CardRestaurant";
 import { ButtonsCrud } from "../ButtonsCrud";
+import { ModalProduct } from "../ModalProduct";
 
 type Props = {
     setPage: any;
@@ -87,6 +87,8 @@ export const ProductsRestaurant = ({ setPage, restaurant }: Props) => {
         []
     );
 
+    const [openCreate, setOpenCreate] = useState(false);
+
     return (
         <>
             <Container sx={{ m: 7 }}>
@@ -114,6 +116,7 @@ export const ProductsRestaurant = ({ setPage, restaurant }: Props) => {
                                     setRowSelection={setRowSelection}
                                     refetch={refetch}
                                     data={data}
+                                    restaurantId={restaurant?.id}
                                     rowSelection={rowSelection}
                                 />
                             </>
@@ -123,9 +126,12 @@ export const ProductsRestaurant = ({ setPage, restaurant }: Props) => {
                         return (
                             <>
                                 <Box sx={{ p: 1 }}>
-                                    <Fab color="primary" aria-label="add">
-                                        <AddIcon />
-                                    </Fab>
+                                    <ModalProduct
+                                        restaurantId={restaurant?.id}
+                                        refetch={refetch}
+                                        openCreate={openCreate}
+                                        setOpenCreate={setOpenCreate}
+                                    />
                                 </Box>
                             </>
                         );

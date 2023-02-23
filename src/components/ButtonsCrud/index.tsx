@@ -6,8 +6,9 @@ import { Button } from "@mui/material";
 import { getCookie } from "cookies-next";
 import { ExportToCsv } from "export-to-csv";
 import { MRT_ColumnDef } from "material-react-table";
-import { useMemo } from "react";
-import { Notify, notifySuccess,notifyError } from "../Notify";
+import { useMemo, useState } from "react";
+import { ModalProductEdit } from "../ModalProductEdit";
+import { Notify, notifyError, notifySuccess } from "../Notify";
 
 type Product = {
     id: string;
@@ -26,15 +27,19 @@ type Props = {
     rowSelection: {};
     data: Product[];
     refetch: any;
-    setRowSelection:any;
+    setRowSelection: any;
+    restaurantId: string | undefined;
 };
 
 export const ButtonsCrud = ({
     rowSelection,
     data,
     refetch,
-    setRowSelection
+    setRowSelection,
+    restaurantId,
 }: Props) => {
+    const [open, setOpen] = useState(false);
+    const token = getCookie("@tokenAdmin");
     const columns = useMemo<MRT_ColumnDef[]>(
         () => [
             {
@@ -70,7 +75,6 @@ export const ButtonsCrud = ({
     );
 
     const handleDeactivate = async () => {
-        const token = getCookie("@tokenAdmin");
         console.clear();
         Object.keys(rowSelection).map(async (index, axi, array) => {
             try {
@@ -81,13 +85,12 @@ export const ButtonsCrud = ({
                 });
                 notifySuccess("Apagado com sucesso");
             } catch (error) {
-                notifyError("Ocorreu um erro inesperado")
+                notifyError("Ocorreu um erro inesperado");
             }
         });
         refetch();
-        setRowSelection({})
+        setRowSelection({});
     };
-
 
     const csvOptions = {
         fieldSeparator: ",",
@@ -102,7 +105,6 @@ export const ButtonsCrud = ({
     const csvExporter = new ExportToCsv(csvOptions);
 
     const handleExportData = () => {
-
         csvExporter.generateCsv(data);
     };
 
@@ -123,6 +125,8 @@ export const ButtonsCrud = ({
             <Button
                 disabled={Object.keys(rowSelection).length === 1 ? false : true}
                 color="info"
+                onClick={() => {
+                    setOpen(true)}}
                 startIcon={<CreateIcon />}
                 variant="contained"
             >
@@ -133,10 +137,18 @@ export const ButtonsCrud = ({
                 disabled={data.length != 0 ? false : true}
                 startIcon={<FileDownloadIcon />}
                 variant="contained"
-                onClick={() => handleExportData()}
+                onClick={() =>{ 
+                    handleExportData()}}
             >
                 Exportar
             </Button>
+            <ModalProductEdit
+                product={data[Number(Object.keys(rowSelection)[0])]}
+                openCreate={open}
+                refetch={refetch}
+                setOpenCreate={setOpen}
+                restaurantId={restaurantId}
+            />
         </div>
     );
 };
