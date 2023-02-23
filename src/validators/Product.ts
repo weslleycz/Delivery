@@ -58,6 +58,6 @@ export class UpdateProductDTO {
     discount!: string;
 
     @IsOptional()
-    @IsArray()
-    imagens!: string[];
+    @IsString()
+    img!: string;
 }

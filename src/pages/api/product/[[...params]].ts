@@ -39,6 +39,7 @@ class ProductHandler {
                 imagens,
                 idRestaurant,
             } = body;
+            console.log(body);
             const product = await prismaClient.product.create({
                 data: {
                     description,
@@ -165,15 +166,15 @@ class ProductHandler {
                     id: id,
                 },
             });
-            await stripe.products.update(id, {
-                ...body,
-            });
+            // await stripe.products.update(id, {
+            //     ...body,
+            // });
             return res.status(200).json({ status: "update" });
         } catch (error) {
+            console.log(error);
             return res.status(400).json(error);
         }
     }
-
     @Get("/restaurant/:id")
     @JwtAuthGuard()
     @isAdmin()

@@ -20,7 +20,7 @@ type IMetrics = {
 export const RestaurantMetrics = ({ setPage, restaurant }: Props) => {
     const [metrics, setMetrics] = useState<IMetrics>({
         canceled: 1,
-        confirmed: 0,
+        confirmed: 1,
         pending: 1,
     });
 
