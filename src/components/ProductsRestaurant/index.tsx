@@ -67,13 +67,11 @@ export const ProductsRestaurant = ({ setPage, restaurant }: Props) => {
                             p: "0.25rem",
                         })}
                     >
-                        {(cell.getValue<number>() / 100).toLocaleString?.(
+                        {(cell.getValue<number>() / 100).toLocaleString(
                             "pt-br",
                             {
                                 style: "currency",
                                 currency: "BRL",
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
                             }
                         )}
                     </Box>

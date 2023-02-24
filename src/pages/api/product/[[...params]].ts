@@ -39,7 +39,6 @@ class ProductHandler {
                 imagens,
                 idRestaurant,
             } = body;
-            console.log(body);
             const product = await prismaClient.product.create({
                 data: {
                     description,
@@ -86,7 +85,7 @@ class ProductHandler {
                     where: {
                         restaurantId,
                     },
-                    take: 12,
+                    take: 10,
                     orderBy: {
                         id: "asc",
                     },
@@ -171,7 +170,6 @@ class ProductHandler {
             // });
             return res.status(200).json({ status: "update" });
         } catch (error) {
-            console.log(error);
             return res.status(400).json(error);
         }
     }

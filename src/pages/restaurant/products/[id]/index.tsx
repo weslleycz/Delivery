@@ -2,7 +2,7 @@ import { Menu } from "@/components/Menu";
 import { ProductItens } from "@/components/ProductItens";
 import { api } from "@/services/apí";
 import { ThemeProvider } from "@emotion/react";
-import { createTheme, Grid } from "@mui/material";
+import { Box, createTheme, Grid } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -99,10 +99,11 @@ export default function ListProducts() {
                             id={rest.id}
                             logo={rest.logo}
                         />
+                        <Box marginLeft={7}>
                         <Grid
                             container
-                            spacing={0.2}
-                            sx={{ marginBottom: 5, marginTop: 5 }}
+                            spacing={1}
+                            sx={{ marginBottom: 3, marginTop: 3 }}
                         >
                             {data?.map((product) => {
                                 return (
@@ -124,6 +125,7 @@ export default function ListProducts() {
                                 );
                             })}
                         </Grid>
+                        </Box>
                         <Pagination
                             className={styles.pagination}
                             count={totalPags}

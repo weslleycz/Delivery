@@ -3,7 +3,6 @@
 import { ListRestaurants } from "@/components/ListRestaurants";
 import Head from "next/head";
 
-
 export default function Home() {
     return (
         <>

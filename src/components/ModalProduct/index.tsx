@@ -3,6 +3,7 @@ import { api } from "@/services/apí";
 import { storage } from "@/services/firebase";
 import AddIcon from "@mui/icons-material/Add";
 import {
+    Autocomplete,
     Box,
     Button,
     Container,
@@ -36,6 +37,18 @@ type Props = {
     refetch: () => void;
 };
 
+const top100Films = [
+    { label: "Refeição", type: "Refeição" },
+    { label: "Lanche", type: "Lanche" },
+    { label: "Bebida", type: "Bebida" },
+    { label: "Sobremesa", type: "Sobremesa" },
+];
+
+type IValore={
+    label:string;
+    type:string;
+}
+
 export const ModalProduct = ({
     openCreate,
     setOpenCreate,
@@ -47,6 +60,7 @@ export const ModalProduct = ({
     const [percent, setPercent] = useState(0);
     const [img, setImg] = useState<string>();
     const token = getCookie("@tokenAdmin");
+    const [value, setValue] = useState<IValore | null>();
 
     const handleImageAsFile = (e: any) => {
         const image = e.target.files[0];
@@ -95,9 +109,9 @@ export const ModalProduct = ({
                                         "/product",
                                         {
                                             name: values.name,
-                                            price: values.price*100,
+                                            price: values.price * 100,
                                             description: values.description,
-                                            type: values.type,
+                                            type: value?.type,
                                             idRestaurant: restaurantId,
                                             imagens: [img],
                                         },
@@ -166,14 +180,31 @@ export const ModalProduct = ({
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextField
-                                            required
+                                        <Autocomplete
+                                            style={{ width: "100%" }}
                                             fullWidth
-                                            label="Tipo"
-                                            autoFocus
-                                            onBlur={handleBlur("type")}
-                                            value={values.type}
-                                            onChange={handleChange("type")}
+                                            disablePortal
+                                            options={top100Films}
+                                            sx={{ width: 300 }}
+                                            onChange={(
+                                                event: any,
+                                                newValue
+                                            ) => {
+                                                setValue(newValue);
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    onChange={handleChange(
+                                                        "type"
+                                                    )}
+                                                    required
+                                                    label="Tipo"
+                                                    autoFocus
+                                                    onBlur={handleBlur("type")}
+                                                    value={values.type}
+                                                    {...params}
+                                                />
+                                            )}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>

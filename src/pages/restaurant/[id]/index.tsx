@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-title-in-document-head */
 import { Hero } from "@/components/Hero";
-import { HeroRestaurant } from "@/components/HeroRestaurant";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -18,11 +17,11 @@ type IRestaurant = {
     addressId: string;
 };
 
-export async function getServerSideProps({ }) {
+export async function getServerSideProps({}) {
     return {
-      props: {},
-    }
-  }
+        props: {},
+    };
+}
 
 export default function HomeRestaurant() {
     const router = useRouter();
@@ -55,7 +54,7 @@ export default function HomeRestaurant() {
                     id={data.id}
                     logo={data.logo}
                 />
-                <Hero/>
+                <Hero color={data.color} />
             </Container>
         </>
     ) : (
