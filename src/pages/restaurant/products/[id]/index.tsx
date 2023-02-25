@@ -1,4 +1,5 @@
 import { Menu } from "@/components/Menu";
+import { Notify } from "@/components/Notify";
 import { ProductItens } from "@/components/ProductItens";
 import { api } from "@/services/apí";
 import { ThemeProvider } from "@emotion/react";
@@ -26,6 +27,7 @@ type Products = {
     id: string;
     type: string;
     img: string;
+    description:string;
 };
 
 export async function getServerSideProps({}) {
@@ -99,6 +101,7 @@ export default function ListProducts() {
                             id={rest.id}
                             logo={rest.logo}
                         />
+                        <Notify/>
                         <Box marginLeft={7}>
                         <Grid
                             container
@@ -110,6 +113,7 @@ export default function ListProducts() {
                                     <>
                                         <ProductItens
                                             product={{
+                                                
                                                 idProd: product.id,
                                                 idRest: router.query
                                                     .id as string,
@@ -117,8 +121,10 @@ export default function ListProducts() {
                                                 price: product.price,
                                                 type: product.type,
                                                 img: product.img,
+                                                description: product.description,
                                                 restaurantId: router.query
                                                     .id as string,
+                                                
                                             }}
                                         />
                                     </>

@@ -9,12 +9,12 @@ import { setCookie } from "cookies-next";
 import { Formik } from "formik";
 import moment from "moment";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Notify, notifyError } from "../../../components/Notify";
 import { api } from "../../../services/apí";
 
+import { Logo } from "@/components/Logo";
 import { LoginUserDTO } from "@/validators/User.dto";
 import {
     Box,
@@ -30,7 +30,6 @@ import {
     Typography,
 } from "@mui/material";
 import style from "./styles.module.scss";
-import { Logo } from "@/components/Logo";
 
 export default function Login() {
     type AxiosError = {
@@ -48,8 +47,6 @@ export default function Login() {
     };
 
     const { query } = useRouter();
-
-    console.log(query.logo);
 
     return (
         <>
@@ -76,7 +73,7 @@ export default function Login() {
                             alignItems: "center",
                         }}
                     >
-                        <Logo color={"#" + query.color}/>
+                        <Logo color={"#" + query.color} />
                     </Box>
                     <p>Use suas credenciais para realizar o login.</p>
                     <Formik

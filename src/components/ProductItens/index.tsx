@@ -9,6 +9,7 @@ type Products = {
     type: string;
     restaurantId: string;
     img: string;
+    description:string;
 };
 
 type Props = {
@@ -33,6 +34,7 @@ export const ProductItens = ({ product }: Props) => {
                     type={product.type}
                     idRest={product.idRest}
                     img={product.img}
+                    description={product.description}
                 />
             </Grid>
         </>
