@@ -6,7 +6,7 @@ export const Logo = ({color}:Props) => {
     return (
         <>
             <svg
-                style={{marginTop:2}}
+                style={{marginTop:24}}
                 width="120"
                 height="120"
                 viewBox="0 0 1602 1672"

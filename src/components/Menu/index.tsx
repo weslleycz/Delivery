@@ -4,7 +4,7 @@ import { Box, Button, Container, Link, Stack } from "@mui/material";
 import { getCookie, removeCookies } from "cookies-next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { CartButton } from "../CartButton";
+import { Cart } from "../Cart";
 import style from "./styles.module.scss";
 
 type IRestaurant = {
@@ -65,7 +65,7 @@ export const Menu = ({ id, logo, name, color }: IRestaurant) => {
                                     >
                                         <LogoutIcon color="primary" />
                                     </Button>
-                                    <CartButton />
+                                    <Cart />
                                 </Stack>
                             </>
                         ) : (

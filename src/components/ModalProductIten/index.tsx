@@ -3,8 +3,7 @@ import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
-import { CartButton } from "../CartButton";
-import {  notifySuccess } from "../Notify";
+import { notifySuccess } from "../Notify";
 
 const style = {
     position: "absolute" as "absolute",
@@ -43,7 +42,7 @@ export const ModalProductIten = ({
     const [num, setNum] = useState<number>(1);
     const { addItem, getItem, updateItemQuantity } = useCart();
 
-    const handlingAddItem = () => {
+    const handlingAddItem = async () => {
         if (num != 0) {
             const item = getItem(id);
             if (item === undefined) {
@@ -51,8 +50,8 @@ export const ModalProductIten = ({
                     id: id,
                     name: name,
                     discount_price: 0,
-                    price:price,
-                    quantity: num,
+                    price: price,
+                    quantity: Number(num),
                     itemSku: {
                         discount_price: 0,
                         id: id,
@@ -62,9 +61,10 @@ export const ModalProductIten = ({
                 handleClose();
                 notifySuccess("Item adicionado");
             } else {
-                console.log(typeof item.quantity);
-                
-                updateItemQuantity(item.id, Number(num) + Number(item.quantity));
+                updateItemQuantity(
+                    item.id,
+                    Number(num) + Number(item.quantity)
+                );
                 handleClose();
                 notifySuccess("Item adicionado");
             }
